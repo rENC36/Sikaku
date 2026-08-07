@@ -11,12 +11,29 @@
       :term "--"
     }
   }
+  :scene {
+    :grid {
+      :opacity 0.1
+    }
+  }
   :workflow {
     :open-tabs [
       [
         [
-          "/game/view/board_view.lua"
-          :code
+          "/assets/atlas/game.atlas"
+          :scene
+        ]
+        [
+          "/ui/menu/menu.gui"
+          :scene
+        ]
+        [
+          "/assets/fonts/nunitoREGULAR.font"
+          :scene
+        ]
+        [
+          "/assets/fonts/nunitoBOLD.font"
+          :scene
         ]
       ]
     ]
@@ -42,10 +59,6 @@
         :cljfx-form-view
       ]
       [
-        "/assets/atlas/game.atlas"
-        :scene
-      ]
-      [
         "/objects/cell/cell.go"
         :scene
       ]
@@ -56,14 +69,6 @@
       [
         "/factories/cell.factory"
         :cljfx-form-view
-      ]
-      [
-        "/ui/menu/menu.gui"
-        :scene
-      ]
-      [
-        "/ui/gameplay/game.gui"
-        :scene
       ]
       [
         "/game/shikaku/solver.lua"
@@ -136,6 +141,26 @@
       [
         "/game/view/board_view.lua"
         :code
+      ]
+      [
+        "/ui/gameplay/game.gui"
+        :scene
+      ]
+      [
+        "/assets/fonts/nunitoBOLD.font"
+        :scene
+      ]
+      [
+        "/assets/atlas/game.atlas"
+        :scene
+      ]
+      [
+        "/assets/fonts/nunitoREGULAR.font"
+        :scene
+      ]
+      [
+        "/ui/menu/menu.gui"
+        :scene
       ]
     ]
   }

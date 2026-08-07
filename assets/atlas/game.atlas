@@ -1,7 +1,4 @@
 images {
-  image: "/assets/textures/background.jpg"
-}
-images {
   image: "/assets/textures/board.png"
 }
 images {
@@ -33,5 +30,8 @@ images {
 }
 images {
   image: "/assets/textures/cell.png"
+}
+images {
+  image: "/assets/textures/background_main.jpg"
 }
 extrude_borders: 2
