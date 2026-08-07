@@ -1,0 +1,37 @@
+images {
+  image: "/assets/textures/background.jpg"
+}
+images {
+  image: "/assets/textures/board.png"
+}
+images {
+  image: "/assets/textures/btn_leaderboard.png"
+}
+images {
+  image: "/assets/textures/btn_play.png"
+}
+images {
+  image: "/assets/textures/gameplay_background.jpg"
+}
+images {
+  image: "/assets/textures/language_board.png"
+}
+images {
+  image: "/assets/textures/line.png"
+}
+images {
+  image: "/assets/textures/logo.png"
+}
+images {
+  image: "/assets/textures/switch_off.png"
+}
+images {
+  image: "/assets/textures/switch_on.png"
+}
+images {
+  image: "/assets/textures/switcher.png"
+}
+images {
+  image: "/assets/textures/cell.png"
+}
+extrude_borders: 2

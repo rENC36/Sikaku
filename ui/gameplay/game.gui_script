@@ -1,0 +1,14 @@
+function init(self)
+	msg.post(".", "acquire_input_focus")
+	self.btn_menu = gui.get_node("btn_menu")
+end
+
+function on_input(self, action_id, action)
+	if action_id == hash("touch") and action.pressed then
+		if gui.pick_node(self.btn_menu, action.x, action.y) then
+			msg.post("/main", "back_to_menu")
+			return true
+		end
+	end
+	return false
+end

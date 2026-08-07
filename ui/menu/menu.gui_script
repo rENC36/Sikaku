@@ -1,0 +1,14 @@
+function init(self)
+	msg.post(".", "acquire_input_focus")
+	self.btn_start = gui.get_node("btn_start")
+end
+
+function on_input(self, action_id, action)
+	if action_id == hash("touch") and action.pressed then
+		if gui.pick_node(self.btn_start, action.x, action.y) then
+			msg.post("/main", "start_game", { category = "easy" })
+			return true
+		end
+	end
+	return false
+end

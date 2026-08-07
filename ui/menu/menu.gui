@@ -1,0 +1,17 @@
+script: "/ui/menu/menu.gui_script"
+nodes {
+  position {
+    x: 970.0
+    y: 619.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "btn_start"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT

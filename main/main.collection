@@ -1,2 +1,34 @@
 name: "main"
 scale_along_z: 0
+embedded_instances {
+  id: "main"
+  data: "components {\n"
+  "  id: \"main\"\n"
+  "  component: \"/main/main.script\"\n"
+  "}\n"
+  ""
+}
+embedded_instances {
+  id: "Factories"
+  data: "components {\n"
+  "  id: \"cellfactory\"\n"
+  "  component: \"/factories/cell.factory\"\n"
+  "}\n"
+  ""
+}
+embedded_instances {
+  id: "game"
+  data: "components {\n"
+  "  id: \"game\"\n"
+  "  component: \"/ui/gameplay/game.gui\"\n"
+  "}\n"
+  ""
+}
+embedded_instances {
+  id: "menu"
+  data: "components {\n"
+  "  id: \"menu\"\n"
+  "  component: \"/ui/menu/menu.gui\"\n"
+  "}\n"
+  ""
+}
