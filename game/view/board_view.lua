@@ -81,7 +81,7 @@ function BoardView:GetCellFromPosition(px, py)
 	local size = self.settings.cell_size
 	local spacing = self.settings.spacing
 	local step = size + spacing
-	local half_step = step / 
+	local half_step = step / 2
 	
 	local rel_x = (px - self.settings.start_position.x) + half_step
 	local rel_y = (py - self.settings.start_position.y) + half_step

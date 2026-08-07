@@ -7,10 +7,17 @@
         :row 0
       }
     ]
+    :find {
+      :term "--"
+    }
   }
   :workflow {
     :open-tabs [
       [
+        [
+          "/game/view/board_view.lua"
+          :code
+        ]
       ]
     ]
     :recent-files [
@@ -59,30 +66,6 @@
         :scene
       ]
       [
-        "/objects/cell/cell.script"
-        :code
-      ]
-      [
-        "/ui/menu/menu.gui_script"
-        :code
-      ]
-      [
-        "/ui/gameplay/game.gui_script"
-        :code
-      ]
-      [
-        "/main/main.script"
-        :code
-      ]
-      [
-        "/game/view/cell_view.lua"
-        :code
-      ]
-      [
-        "/game/view/board_view.lua"
-        :code
-      ]
-      [
         "/game/shikaku/solver.lua"
         :code
       ]
@@ -129,6 +112,30 @@
       [
         "/main/main.collection"
         :scene
+      ]
+      [
+        "/ui/gameplay/game.gui_script"
+        :code
+      ]
+      [
+        "/ui/menu/menu.gui_script"
+        :code
+      ]
+      [
+        "/objects/cell/cell.script"
+        :code
+      ]
+      [
+        "/game/view/cell_view.lua"
+        :code
+      ]
+      [
+        "/main/main.script"
+        :code
+      ]
+      [
+        "/game/view/board_view.lua"
+        :code
       ]
     ]
   }
