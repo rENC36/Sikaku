@@ -20,20 +20,12 @@
     :open-tabs [
       [
         [
-          "/assets/atlas/game.atlas"
-          :scene
-        ]
-        [
           "/ui/menu/menu.gui"
           :scene
         ]
         [
-          "/assets/fonts/nunitoREGULAR.font"
-          :scene
-        ]
-        [
-          "/assets/fonts/nunitoBOLD.font"
-          :scene
+          "/main/main.script"
+          :code
         ]
       ]
     ]
@@ -57,6 +49,10 @@
       [
         "/builtins/materials/sprite.material"
         :cljfx-form-view
+      ]
+      [
+        "/assets/atlas/game.atlas"
+        :scene
       ]
       [
         "/objects/cell/cell.go"
@@ -135,7 +131,15 @@
         :code
       ]
       [
-        "/main/main.script"
+        "/ui/gameplay/game.gui"
+        :scene
+      ]
+      [
+        "/ui/menu/menu.gui"
+        :scene
+      ]
+      [
+        "/libs/screen_manager.lua"
         :code
       ]
       [
@@ -143,24 +147,8 @@
         :code
       ]
       [
-        "/ui/gameplay/game.gui"
-        :scene
-      ]
-      [
-        "/assets/fonts/nunitoBOLD.font"
-        :scene
-      ]
-      [
-        "/assets/atlas/game.atlas"
-        :scene
-      ]
-      [
-        "/assets/fonts/nunitoREGULAR.font"
-        :scene
-      ]
-      [
-        "/ui/menu/menu.gui"
-        :scene
+        "/main/main.script"
+        :code
       ]
     ]
   }
