@@ -111,7 +111,7 @@ pre_renderered_icons = 0
 privacymanifest = /builtins/manifests/ios/PrivacyInfo.xcprivacy
 
 [label]
-max_count = 1024
+max_count = 512
 subpixels = 1
 
 [light]
@@ -119,8 +119,6 @@ max_count = 64
 
 [liveupdate]
 enabled = 1
-exclude_entries_from_main_manifest = 1
-mount_on_start = 1
 settings = /liveupdate.settings
 
 [mesh]
@@ -130,6 +128,8 @@ max_count = 128
 max_bone_matrix_texture_height = 1024
 max_bone_matrix_texture_width = 1024
 max_count = 128
+max_morph_target_texture_height = 1024
+max_morph_target_texture_width = 1024
 split_meshes = 0
 
 [network]
@@ -179,6 +179,7 @@ max_sample_count = 4096
 performance_timeline_enabled = 0
 sleep_between_server_updates = 0
 track_cpu = 0
+track_detailed_memory = 0
 
 [project]
 compress_archive = 1

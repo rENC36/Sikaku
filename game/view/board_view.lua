@@ -176,7 +176,11 @@ function BoardView:UpdatePreviewBg(rectangle, color)
 	local cy = self.board_start_y - (rectangle.y - 1) * step - (h + pad * 2) / 2
 
 	local base_size = self.settings.cell_size
-	local target_scale = vmath.vector3(w / base_size, h / base_size, 1)
+	local target_scale = vmath.vector3(
+	math.max(0.01, w / base_size), 
+	math.max(0.01, h / base_size), 
+	1
+)
 	local pos = vmath.vector3(cx, cy, -0.05)
 
 	if not self.preview_bg_id then
