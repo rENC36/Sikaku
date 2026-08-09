@@ -1,11 +1,15 @@
 local Levels = {}
 
 Levels.banks = {
-	easy = require("game.shikaku.levels.easy"),
+	easy   = require("game.shikaku.levels.easy"),
+	medium = require("game.shikaku.levels.medium"),
+	hard   = require("game.shikaku.levels.hard"),
 }
 
 Levels.index = {
-	easy = 1,
+	easy   = 1,
+	medium = 1,
+	hard   = 1,
 }
 
 function Levels.load(category)

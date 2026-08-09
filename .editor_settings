@@ -19,6 +19,18 @@
   :workflow {
     :open-tabs [
       [
+        [
+          "/ui/mode_select/mode_select.gui_script"
+          :code
+        ]
+        [
+          "/main/main.script"
+          :code
+        ]
+        [
+          "/ui/menu/menu.gui_script"
+          :code
+        ]
       ]
     ]
     :recent-files [
@@ -28,14 +40,6 @@
       ]
       [
         "/game/shikaku/generator.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/levels/hard.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/levels/medium.lua"
         :code
       ]
       [
@@ -75,10 +79,6 @@
         :code
       ]
       [
-        "/ui/mode_select/mode_select.gui_script"
-        :code
-      ]
-      [
         "/utils/screen_manager.lua"
         :code
       ]
@@ -91,20 +91,8 @@
         :scene
       ]
       [
-        "/game/shikaku/levels/levels.lua"
-        :code
-      ]
-      [
         "/builtins/fonts/default.font"
         :scene
-      ]
-      [
-        "/data/config/animations.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/levels/easy.lua"
-        :code
       ]
       [
         "/objects/classic_cell/classic_cell.script"
@@ -123,19 +111,31 @@
         :scene
       ]
       [
-        "/game/player/player_data.lua"
-        :code
-      ]
-      [
         "/ui/mode_select/classic_select.gui"
         :scene
       ]
       [
-        "/ui/mode_select/classic_select.gui_script"
+        "/utils/animator.lua"
         :code
       ]
       [
-        "/ui/menu/menu.gui_script"
+        "/data/config/animations.lua"
+        :code
+      ]
+      [
+        "/game/player/player_data.lua"
+        :code
+      ]
+      [
+        "/game/shikaku/levels/hard.lua"
+        :code
+      ]
+      [
+        "/game/shikaku/levels/easy.lua"
+        :code
+      ]
+      [
+        "/game/shikaku/levels/medium.lua"
         :code
       ]
       [
@@ -143,11 +143,23 @@
         :scene
       ]
       [
+        "/game/shikaku/levels/levels.lua"
+        :code
+      ]
+      [
+        "/ui/mode_select/classic_select.gui_script"
+        :code
+      ]
+      [
+        "/ui/mode_select/mode_select.gui_script"
+        :code
+      ]
+      [
         "/main/main.script"
         :code
       ]
       [
-        "/utils/animator.lua"
+        "/ui/menu/menu.gui_script"
         :code
       ]
     ]

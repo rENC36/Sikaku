@@ -1,18 +1,37 @@
 local Anim = require("utils.animator")
 local CFG = require("data.config.animations")
+local PD = require("game.player.player_data")
+local Levels = require("game.shikaku.levels.levels")
 
 function init(self)
 	msg.post(".", "acquire_input_focus")
 
 	self.buttons = Anim.register_buttons({
-		{ node = "btn_start",       anim = CFG.btn_start,       action = function() msg.post("/main", "open_mode_select") end },
-		{ node = "btn_leaderboard", anim = CFG.btn_leaderboard, action = function() msg.post("/main", "open_leaderboard") end },
+		{ node = "btn_start",       anim = CFG.btn_menu, action = function() msg.post("/main", "open_mode_select") end },
+		{ node = "btn_leaderboard", anim = CFG.btn_menu, action = function() msg.post("/main", "open_leaderboard") end },
 	})
+
+	self.stat = gui.get_node("classic_stats")
+	refresh_stats(self)
+end
+
+function refresh_stats(self)
+	local completed = PD.get_completed_count("easy") 
+	+ PD.get_completed_count("medium") 
+	+ PD.get_completed_count("hard")
+
+	local total = Levels.count("easy") 
+	+ Levels.count("medium") 
+	+ Levels.count("hard")
+
+	gui.set_text(self.stat, completed .. "/" .. total)
+	print("[Menu] Total progress:", completed .. "/" .. total)
 end
 
 function on_message(self, message_id, message, sender)
 	if message_id == hash("reset_ui") then
 		Anim.reset_buttons(self.buttons)
+		refresh_stats(self)
 	end
 end
 

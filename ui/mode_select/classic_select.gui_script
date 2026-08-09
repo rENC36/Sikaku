@@ -17,6 +17,12 @@ function init(self)
 
 	self.category = "easy"
 	self.total_levels = Levels.count(self.category)
+	print("[ClassicSelect] Total levels:", self.total_levels)
+
+	if self.total_levels == 0 then
+		print("[ClassicSelect] WARNING: No levels found! Check levels.lua")
+	end
+
 	self.max_page = math.max(1, math.ceil(self.total_levels / PER_PAGE))
 	self.page = PlayerData.get("last_page") or 1
 	if self.page > self.max_page then self.page = self.max_page end
@@ -39,7 +45,6 @@ function init(self)
 
 		local box = gui.new_box_node(vmath.vector3(x, y, 0), vmath.vector3(CELL_SIZE, CELL_SIZE, 0))
 		gui.set_pivot(box, gui.PIVOT_CENTER)
-		
 		gui.set_texture(box, ATLAS_NAME)
 		gui.play_flipbook(box, FRAME_NAME)
 
