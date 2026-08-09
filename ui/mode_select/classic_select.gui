@@ -1,7 +1,11 @@
 script: "/ui/mode_select/classic_select.gui_script"
 fonts {
-  name: "default"
-  font: "/builtins/fonts/default.font"
+  name: "nunitoBOLD"
+  font: "/assets/fonts/nunitoBOLD.font"
+}
+fonts {
+  name: "nunitoREGULAR"
+  font: "/assets/fonts/nunitoREGULAR.font"
 }
 textures {
   name: "game"
@@ -9,58 +13,261 @@ textures {
 }
 nodes {
   position {
-    x: 1822.0
-    y: 1019.0
+    x: 960.0
+    y: 540.0
+  }
+  type: TYPE_BOX
+  texture: "game/background_main"
+  id: "bg_classic_select"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -558.0
+    y: 200.0
+  }
+  size {
+    x: 200.0
+    y: 200.0
+  }
+  type: TYPE_BOX
+  texture: "game/btn_lvl_3"
+  id: "btn_select"
+  parent: "bg_classic_select"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: 20.0
   }
   scale {
-    x: 0.700674
+    x: 1.7
+    y: 1.7
   }
   size {
     x: 200.0
     y: 100.0
   }
   color {
-    y: 0.0
-    z: 0.0
+    x: 0.23921569
+    y: 0.2901961
+    z: 0.41960785
+  }
+  type: TYPE_TEXT
+  text: "1"
+  font: "nunitoBOLD"
+  id: "text"
+  parent: "btn_select"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -890.0
+    y: 470.0
   }
   type: TYPE_BOX
+  texture: "game/arrow_back"
   id: "btn_back"
+  parent: "bg_classic_select"
   inherit_alpha: true
+  alpha: 0.7
   size_mode: SIZE_MODE_AUTO
 }
 nodes {
   position {
-    x: 1822.0
-    y: 563.0
+    y: 490.0
   }
   scale {
-    x: 0.700674
+    x: 1.7
+    y: 1.7
   }
   size {
     x: 200.0
     y: 100.0
   }
-  type: TYPE_BOX
-  id: "btn_right"
+  color {
+    x: 0.23921569
+    y: 0.2901961
+    z: 0.41960785
+  }
+  type: TYPE_TEXT
+  text: "\320\222\320\253\320\221\320\236\320\240 \320\243\320\240\320\236\320\222\320\235\320\257"
+  font: "nunitoBOLD"
+  id: "title_text2"
+  parent: "bg_classic_select"
   inherit_alpha: true
+}
+nodes {
+  position {
+    x: 890.0
+  }
+  type: TYPE_BOX
+  texture: "game/arrow_next_page_3"
+  id: "btn_next_page"
+  parent: "bg_classic_select"
+  inherit_alpha: true
+  alpha: 0.7
   size_mode: SIZE_MODE_AUTO
 }
 nodes {
   position {
-    x: 103.0
-    y: 563.0
+    x: -900.0
+    y: -400.0
   }
   scale {
-    x: 0.700674
+    x: 1.7
+    y: 1.7
   }
   size {
     x: 200.0
     y: 100.0
   }
+  color {
+    x: 0.23921569
+    y: 0.2901961
+    z: 0.41960785
+  }
+  type: TYPE_TEXT
+  text: "\320\232\320\260\321\202\320\265\320\263\320\276\321\200\320\270\321\217:"
+  font: "nunitoBOLD"
+  id: "cat_text"
+  pivot: PIVOT_W
+  parent: "bg_classic_select"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -350.0
+    y: -400.0
+  }
   type: TYPE_BOX
-  id: "btn_left"
+  texture: "game/cat_easy_3"
+  id: "btn_easy"
+  parent: "bg_classic_select"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -2.0
+  }
+  scale {
+    x: 1.3
+    y: 1.3
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  color {
+    x: 0.23921569
+    y: 0.2901961
+    z: 0.41960785
+  }
+  type: TYPE_TEXT
+  text: "\320\233\321\221\320\263\320\272\320\260\321\217"
+  font: "nunitoBOLD"
+  id: "text10"
+  parent: "btn_easy"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 50.0
+    y: -400.0
+  }
+  type: TYPE_BOX
+  texture: "game/cat_medium_3"
+  id: "btn_medium"
+  parent: "bg_classic_select"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -2.0
+  }
+  scale {
+    x: 1.3
+    y: 1.3
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  color {
+    x: 0.23921569
+    y: 0.2901961
+    z: 0.41960785
+  }
+  type: TYPE_TEXT
+  text: "\320\241\321\200\320\265\320\264\320\275\321\217\321\217"
+  font: "nunitoBOLD"
+  id: "text11"
+  parent: "btn_medium"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 450.0
+    y: -400.0
+  }
+  type: TYPE_BOX
+  texture: "game/cat_hard_3"
+  id: "btn_hard"
+  parent: "bg_classic_select"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -2.0
+  }
+  scale {
+    x: 1.3
+    y: 1.3
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  color {
+    x: 0.23921569
+    y: 0.2901961
+    z: 0.41960785
+  }
+  type: TYPE_TEXT
+  text: "\320\242\321\217\320\266\321\221\320\273\320\260\321\217"
+  font: "nunitoBOLD"
+  id: "text12"
+  parent: "btn_hard"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 887.0
+    y: 58.0
+  }
+  scale {
+    x: 1.4
+    y: 1.4
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  color {
+    x: 0.23921569
+    y: 0.2901961
+    z: 0.41960785
+  }
+  type: TYPE_TEXT
+  text: "1/5"
+  font: "nunitoBOLD"
+  id: "page_count_text"
+  parent: "bg_classic_select"
+  inherit_alpha: true
 }
 material: "/builtins/materials/gui.material"
 adjust_reference: ADJUST_REFERENCE_PARENT

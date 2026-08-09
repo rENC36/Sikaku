@@ -1,89 +1,160 @@
 script: "/ui/mode_select/mode_select.gui_script"
+fonts {
+  name: "nunitoREGULAR"
+  font: "/assets/fonts/nunitoREGULAR.font"
+}
+fonts {
+  name: "nunitoBOLD"
+  font: "/assets/fonts/nunitoBOLD.font"
+}
+textures {
+  name: "game"
+  texture: "/assets/atlas/game.atlas"
+}
 nodes {
   position {
-    x: 961.0
-    y: 556.0
-  }
-  scale {
-    x: 5.0
-    y: 9.5
-  }
-  size {
-    x: 100.0
-    y: 100.0
-  }
-  color {
-    x: 0.0
-    y: 0.0
+    x: 960.0
+    y: 540.0
   }
   type: TYPE_BOX
-  id: "btn_classic"
+  texture: "game/background_main"
+  id: "bg_modes"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
 }
 nodes {
   position {
-    x: 1511.0
-    y: 556.0
-  }
-  scale {
-    x: 5.0
-    y: 9.5
-  }
-  size {
-    x: 100.0
-    y: 100.0
-  }
-  color {
-    x: 0.0
-    y: 0.2
-    z: 0.2
+    x: -890.0
+    y: 470.0
   }
   type: TYPE_BOX
-  id: "btn_blitz"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 413.0
-    y: 556.0
-  }
-  scale {
-    x: 5.0
-    y: 9.5
-  }
-  size {
-    x: 100.0
-    y: 100.0
-  }
-  color {
-    x: 0.0
-    y: 0.5019608
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "btn_endless"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 1844.0
-    y: 1013.0
-  }
-  size {
-    x: 100.0
-    y: 100.0
-  }
-  color {
-    y: 0.0
-    z: 0.0
-  }
-  type: TYPE_BOX
+  texture: "game/arrow_back"
   id: "btn_back"
+  parent: "bg_modes"
   inherit_alpha: true
+  alpha: 0.7
   size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -550.0
+  }
+  size {
+    x: 450.0
+    y: 600.0
+  }
+  type: TYPE_BOX
+  texture: "game/infinity_2"
+  id: "btn_endless"
+  parent: "bg_modes"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: 170.0
+  }
+  scale {
+    x: 1.2
+    y: 1.2
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "\320\221\320\225\320\241\320\232\320\236\320\235\320\225\320\247\320\235\320\253\320\231\n"
+  "\320\240\320\225\320\226\320\230\320\234"
+  font: "nunitoBOLD"
+  id: "classic_text2"
+  parent: "btn_endless"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 550.0
+  }
+  size {
+    x: 450.0
+    y: 600.0
+  }
+  type: TYPE_BOX
+  texture: "game/blitz_2"
+  id: "btn_blitz"
+  parent: "bg_modes"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: 200.0
+  }
+  scale {
+    x: 1.2
+    y: 1.2
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "\320\221\320\233\320\230\320\246"
+  font: "nunitoBOLD"
+  id: "classic_text1"
+  parent: "btn_blitz"
+  inherit_alpha: true
+}
+nodes {
+  size {
+    x: 450.0
+    y: 600.0
+  }
+  type: TYPE_BOX
+  texture: "game/classic_2"
+  id: "btn_classic"
+  parent: "bg_modes"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: 200.0
+  }
+  scale {
+    x: 1.2
+    y: 1.2
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "\320\232\320\233\320\220\320\241\320\241\320\230\320\232\320\220"
+  font: "nunitoBOLD"
+  id: "classic_text"
+  parent: "btn_classic"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: 490.0
+  }
+  scale {
+    x: 1.7
+    y: 1.7
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  color {
+    x: 0.23921569
+    y: 0.2901961
+    z: 0.41960785
+  }
+  type: TYPE_TEXT
+  text: "\320\222\320\253\320\221\320\236\320\240 \320\240\320\225\320\226\320\230\320\234\320\220"
+  font: "nunitoBOLD"
+  id: "title_text2"
+  parent: "bg_modes"
+  inherit_alpha: true
 }
 material: "/builtins/materials/gui.material"
 adjust_reference: ADJUST_REFERENCE_PARENT

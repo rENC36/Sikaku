@@ -542,7 +542,7 @@ nodes {
   type: TYPE_TEXT
   text: "0 / 300"
   font: "nunitoREGULAR"
-  id: "classic_stats"
+  id: "classic_stat"
   pivot: PIVOT_E
   parent: "information_board"
   inherit_alpha: true
@@ -568,7 +568,7 @@ nodes {
   type: TYPE_TEXT
   text: "15 \321\203\321\200."
   font: "nunitoREGULAR"
-  id: "infinity_stats"
+  id: "infinity_stat"
   pivot: PIVOT_E
   parent: "information_board"
   inherit_alpha: true
