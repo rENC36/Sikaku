@@ -23,5 +23,5 @@ title = Sikaku
 dependencies#0 = https://github.com/defold/extension-poki-sdk/archive/refs/heads/main.zip
 
 [label]
-max_count = 256
+max_count = 512
 

@@ -6,6 +6,11 @@
         :proj-path "/game/view/cell_view.lua"
         :row 0
       }
+      {
+        :enabled true
+        :proj-path "/main/main.script"
+        :row 63
+      }
     ]
     :find {
       :term "--"
@@ -19,81 +24,9 @@
   :workflow {
     :open-tabs [
       [
-        [
-          "/ui/mode_select/mode_select.gui_script"
-          :code
-        ]
-        [
-          "/main/main.script"
-          :code
-        ]
-        [
-          "/ui/menu/menu.gui_script"
-          :code
-        ]
       ]
     ]
     :recent-files [
-      [
-        "/game/shikaku/input.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/generator.lua"
-        :code
-      ]
-      [
-        "/libs/screen_manager.lua"
-        :code
-      ]
-      [
-        "/libs/animator.lua"
-        :code
-      ]
-      [
-        "/ui/gameplay/game.gui"
-        :scene
-      ]
-      [
-        "/ui/mode_select/mode_select.gui"
-        :scene
-      ]
-      [
-        "/game/view/cell_view.lua"
-        :code
-      ]
-      [
-        "/game/view/board_view.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/board.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/cell.lua"
-        :code
-      ]
-      [
-        "/ui/gameplay/game.gui_script"
-        :code
-      ]
-      [
-        "/utils/screen_manager.lua"
-        :code
-      ]
-      [
-        "/objects/cell/cell.script"
-        :code
-      ]
-      [
-        "/objects/cell/cell.go"
-        :scene
-      ]
-      [
-        "/builtins/fonts/default.font"
-        :scene
-      ]
       [
         "/objects/classic_cell/classic_cell.script"
         :code
@@ -111,15 +44,23 @@
         :scene
       ]
       [
-        "/ui/mode_select/classic_select.gui"
+        "/assets/atlas/game.atlas"
         :scene
       ]
       [
-        "/utils/animator.lua"
+        "/ui/menu/menu.gui"
+        :scene
+      ]
+      [
+        "/ui/menu/menu.gui_script"
         :code
       ]
       [
-        "/data/config/animations.lua"
+        "/ui/mode_select/mode_select.gui"
+        :scene
+      ]
+      [
+        "/ui/mode_select/mode_select.gui_script"
         :code
       ]
       [
@@ -127,11 +68,19 @@
         :code
       ]
       [
-        "/game/shikaku/levels/hard.lua"
+        "/ui/mode_select/classic_select.gui_script"
         :code
       ]
       [
-        "/game/shikaku/levels/easy.lua"
+        "/ui/mode_select/classic_select.gui"
+        :scene
+      ]
+      [
+        "/ui/gameplay/game.gui"
+        :scene
+      ]
+      [
+        "/game/shikaku/levels/hard.lua"
         :code
       ]
       [
@@ -139,19 +88,55 @@
         :code
       ]
       [
-        "/ui/menu/menu.gui"
-        :scene
+        "/game/shikaku/rectangle.lua"
+        :code
+      ]
+      [
+        "/game/shikaku/generator.lua"
+        :code
+      ]
+      [
+        "/game/shikaku/cell.lua"
+        :code
+      ]
+      [
+        "/game/shikaku/levels/easy.lua"
+        :code
+      ]
+      [
+        "/game/shikaku/board.lua"
+        :code
+      ]
+      [
+        "/utils/animator.lua"
+        :code
+      ]
+      [
+        "/ui/gameplay/game.gui_script"
+        :code
+      ]
+      [
+        "/data/config/animations.lua"
+        :code
+      ]
+      [
+        "/game/view/cell_view.lua"
+        :code
+      ]
+      [
+        "/game/shikaku/selection.lua"
+        :code
+      ]
+      [
+        "/game/shikaku/solver.lua"
+        :code
       ]
       [
         "/game/shikaku/levels/levels.lua"
         :code
       ]
       [
-        "/ui/mode_select/classic_select.gui_script"
-        :code
-      ]
-      [
-        "/ui/mode_select/mode_select.gui_script"
+        "/game/shikaku/input.lua"
         :code
       ]
       [
@@ -159,7 +144,15 @@
         :code
       ]
       [
-        "/ui/menu/menu.gui_script"
+        "/input/game.input_binding"
+        :cljfx-form-view
+      ]
+      [
+        "/game.project"
+        :cljfx-form-view
+      ]
+      [
+        "/game/view/board_view.lua"
         :code
       ]
     ]

@@ -20,6 +20,7 @@ function init(self)
 	self.game_active = false
 	self.current_mode = nil
 	self.current_level = 1
+	self.current_category = "easy"
 end
 
 function on_message(self, message_id, message, sender)
@@ -29,11 +30,12 @@ function on_message(self, message_id, message, sender)
 	elseif message_id == hash("start_game") then
 		self.current_mode = message.mode or "classic"
 		self.current_level = message.level or 1
+		self.current_category = message.category or "easy"
 
-		Levels.set_level("easy", self.current_level)
+		Levels.set_level(message.category, self.current_level)
 
 		open_screen(self, "game")
-		load_puzzle_from_levels(self, "easy")
+		load_puzzle_from_levels(self, message.category)
 
 		msg.post(".", "acquire_input_focus")
 		self.game_active = true
@@ -48,6 +50,7 @@ function on_message(self, message_id, message, sender)
 		self.board_view = nil
 		self.current_mode = nil
 		self.current_level = 1
+		self.current_category = "easy"
 
 		open_screen(self, "menu")
 		self.game_active = false
@@ -74,20 +77,24 @@ function on_input(self, action_id, action)
 				local rectangles = self.board:GetAllRectangles()
 				if Solver.Check(self.board, rectangles) then
 					print("SOLVED! Mode:", self.current_mode, "Level:", self.current_level)
-					PlayerData.complete_level("easy", self.current_level)
+					PlayerData.complete_level(self.current_category, self.current_level)
 
 					self.current_level = self.current_level + 1
-					if self.current_level > Levels.count("easy") then
+					if self.current_level > Levels.count(self.current_category) then
 						self.current_level = 1
 					end
 
-					Levels.set_level("easy", self.current_level)
-					load_puzzle_from_levels(self, "easy")
+					Levels.set_level(self.current_category, self.current_level)
+					load_puzzle_from_levels(self, self.current_category)
 				else
 					print("WRONG!")
 				end
 			end
 		end
+	end
+	
+	if action_id == hash("mouse_right") and action.pressed then
+		self.input:RightClick(action.x, action.y)
 	end
 
 	if action.x and action.y then
@@ -117,11 +124,13 @@ function load_puzzle_from_levels(self, category)
 		end
 	end
 
+	local ww, wh = window.get_size()
 	self.board_view = BoardView.new("/Factories#cellfactory", {
 		cell_size = 64,
 		spacing = 32,
-		start_position = vmath.vector3(100, 300, 0)
+		start_position = vmath.vector3(ww / 2, wh / 2, 0)
 	})
+	
 	self.board_view:Create(self.board)
 
 	self.selection = Selection.new(self.board)

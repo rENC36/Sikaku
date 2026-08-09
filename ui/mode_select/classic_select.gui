@@ -24,45 +24,6 @@ nodes {
 }
 nodes {
   position {
-    x: -558.0
-    y: 200.0
-  }
-  size {
-    x: 200.0
-    y: 200.0
-  }
-  type: TYPE_BOX
-  texture: "game/btn_lvl_3"
-  id: "btn_select"
-  parent: "bg_classic_select"
-  inherit_alpha: true
-}
-nodes {
-  position {
-    y: 20.0
-  }
-  scale {
-    x: 1.7
-    y: 1.7
-  }
-  size {
-    x: 200.0
-    y: 100.0
-  }
-  color {
-    x: 0.23921569
-    y: 0.2901961
-    z: 0.41960785
-  }
-  type: TYPE_TEXT
-  text: "1"
-  font: "nunitoBOLD"
-  id: "text"
-  parent: "btn_select"
-  inherit_alpha: true
-}
-nodes {
-  position {
     x: -890.0
     y: 470.0
   }
@@ -104,7 +65,7 @@ nodes {
   }
   type: TYPE_BOX
   texture: "game/arrow_next_page_3"
-  id: "btn_next_page"
+  id: "btn_right"
   parent: "bg_classic_select"
   inherit_alpha: true
   alpha: 0.7
@@ -168,7 +129,7 @@ nodes {
   type: TYPE_TEXT
   text: "\320\233\321\221\320\263\320\272\320\260\321\217"
   font: "nunitoBOLD"
-  id: "text10"
+  id: "btn_easy_text"
   parent: "btn_easy"
   inherit_alpha: true
 }
@@ -204,7 +165,7 @@ nodes {
   type: TYPE_TEXT
   text: "\320\241\321\200\320\265\320\264\320\275\321\217\321\217"
   font: "nunitoBOLD"
-  id: "text11"
+  id: "btn_medium_text"
   parent: "btn_medium"
   inherit_alpha: true
 }
@@ -240,7 +201,7 @@ nodes {
   type: TYPE_TEXT
   text: "\320\242\321\217\320\266\321\221\320\273\320\260\321\217"
   font: "nunitoBOLD"
-  id: "text12"
+  id: "btn_hard_text"
   parent: "btn_hard"
   inherit_alpha: true
 }
@@ -268,6 +229,21 @@ nodes {
   id: "page_count_text"
   parent: "bg_classic_select"
   inherit_alpha: true
+}
+nodes {
+  position {
+    x: -865.0
+  }
+  rotation {
+    z: 180.0
+  }
+  type: TYPE_BOX
+  texture: "game/arrow_next_page_3"
+  id: "btn_left"
+  parent: "bg_classic_select"
+  inherit_alpha: true
+  alpha: 0.7
+  size_mode: SIZE_MODE_AUTO
 }
 material: "/builtins/materials/gui.material"
 adjust_reference: ADJUST_REFERENCE_PARENT

@@ -34,4 +34,37 @@ images {
 images {
   image: "/assets/textures/background_main.jpg"
 }
+images {
+  image: "/assets/textures/classic_2.png"
+}
+images {
+  image: "/assets/textures/arrow_back.png"
+}
+images {
+  image: "/assets/textures/blitz_2.png"
+}
+images {
+  image: "/assets/textures/infinity_2.png"
+}
+images {
+  image: "/assets/textures/arrow_next_page_3.png"
+}
+images {
+  image: "/assets/textures/btn_lvl_3.png"
+}
+images {
+  image: "/assets/textures/cat_easy_3.png"
+}
+images {
+  image: "/assets/textures/cat_hard_3.png"
+}
+images {
+  image: "/assets/textures/cat_medium_3.png"
+}
+images {
+  image: "/assets/textures/lvl_closed_3.png"
+}
+images {
+  image: "/assets/textures/lvl_done_3.png"
+}
 extrude_borders: 2

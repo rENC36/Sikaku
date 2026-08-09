@@ -111,7 +111,7 @@ pre_renderered_icons = 0
 privacymanifest = /builtins/manifests/ios/PrivacyInfo.xcprivacy
 
 [label]
-max_count = 256
+max_count = 1024
 subpixels = 1
 
 [light]
