@@ -1,14 +1,21 @@
+local Anim = require("utils.animator")
+local CFG = require("data.config.animations")
+
 function init(self)
 	msg.post(".", "acquire_input_focus")
-	self.btn_start = gui.get_node("btn_start")
+
+	self.buttons = Anim.register_buttons({
+		{ node = "btn_start",       anim = CFG.btn_start,       action = function() msg.post("/main", "open_mode_select") end },
+		{ node = "btn_leaderboard", anim = CFG.btn_leaderboard, action = function() msg.post("/main", "open_leaderboard") end },
+	})
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("reset_ui") then
+		Anim.reset_buttons(self.buttons)
+	end
 end
 
 function on_input(self, action_id, action)
-	if action_id == hash("touch") and action.pressed then
-		if gui.pick_node(self.btn_start, action.x, action.y) then
-			msg.post("/main", "start_game", { category = "easy" })
-			return true
-		end
-	end
-	return false
+	return Anim.handle_buttons(self.buttons, action_id, action)
 end

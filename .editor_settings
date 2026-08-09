@@ -11,60 +11,29 @@
       :term "--"
     }
   }
+  :scene {
+    :grid {
+      :opacity 0.1
+    }
+  }
   :workflow {
     :open-tabs [
       [
         [
-          "/game/view/board_view.lua"
-          :code
+          "/ui/mode_select/mode_select.gui"
+          :scene
+        ]
+        [
+          "/assets/atlas/game.atlas"
+          :scene
+        ]
+        [
+          "/ui/mode_select/classic_select.gui"
+          :scene
         ]
       ]
     ]
     :recent-files [
-      [
-        "/game/core/dsda.gui_script"
-        :code
-      ]
-      [
-        "/ui/gameplay/templates/ds.go"
-        :scene
-      ]
-      [
-        "/objects/board/board.go"
-        :scene
-      ]
-      [
-        "/objects/board/board.script"
-        :code
-      ]
-      [
-        "/builtins/materials/sprite.material"
-        :cljfx-form-view
-      ]
-      [
-        "/assets/atlas/game.atlas"
-        :scene
-      ]
-      [
-        "/objects/cell/cell.go"
-        :scene
-      ]
-      [
-        "/game.project"
-        :cljfx-form-view
-      ]
-      [
-        "/factories/cell.factory"
-        :cljfx-form-view
-      ]
-      [
-        "/ui/menu/menu.gui"
-        :scene
-      ]
-      [
-        "/ui/gameplay/game.gui"
-        :scene
-      ]
       [
         "/game/shikaku/solver.lua"
         :code
@@ -86,19 +55,7 @@
         :code
       ]
       [
-        "/game/shikaku/cell.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/board.lua"
-        :code
-      ]
-      [
         "/game/shikaku/levels/levels.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/levels/easy.lua"
         :code
       ]
       [
@@ -110,11 +67,27 @@
         :code
       ]
       [
+        "/libs/screen_manager.lua"
+        :code
+      ]
+      [
+        "/libs/animator.lua"
+        :code
+      ]
+      [
+        "/ui/gameplay/game.gui"
+        :scene
+      ]
+      [
+        "/game/shikaku/levels/easy.lua"
+        :code
+      ]
+      [
         "/main/main.collection"
         :scene
       ]
       [
-        "/ui/gameplay/game.gui_script"
+        "/ui/mode_select/classic_select.gui_script"
         :code
       ]
       [
@@ -122,11 +95,27 @@
         :code
       ]
       [
-        "/objects/cell/cell.script"
+        "/game/view/cell_view.lua"
         :code
       ]
       [
-        "/game/view/cell_view.lua"
+        "/game/view/board_view.lua"
+        :code
+      ]
+      [
+        "/game/player/player_data.lua"
+        :code
+      ]
+      [
+        "/game/shikaku/board.lua"
+        :code
+      ]
+      [
+        "/game/shikaku/cell.lua"
+        :code
+      ]
+      [
+        "/ui/gameplay/game.gui_script"
         :code
       ]
       [
@@ -134,8 +123,44 @@
         :code
       ]
       [
-        "/game/view/board_view.lua"
+        "/ui/mode_select/mode_select.gui_script"
         :code
+      ]
+      [
+        "/data/config/animations.lua"
+        :code
+      ]
+      [
+        "/utils/screen_manager.lua"
+        :code
+      ]
+      [
+        "/utils/animator.lua"
+        :code
+      ]
+      [
+        "/objects/cell/cell.script"
+        :code
+      ]
+      [
+        "/ui/menu/menu.gui"
+        :scene
+      ]
+      [
+        "/objects/cell/cell.go"
+        :scene
+      ]
+      [
+        "/assets/atlas/game.atlas"
+        :scene
+      ]
+      [
+        "/ui/mode_select/mode_select.gui"
+        :scene
+      ]
+      [
+        "/ui/mode_select/classic_select.gui"
+        :scene
       ]
     ]
   }
