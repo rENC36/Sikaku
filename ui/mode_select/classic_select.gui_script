@@ -5,7 +5,7 @@ function init(self)
 	msg.post(".", "acquire_input_focus")
 
 	self.buttons = Anim.register_buttons({
-		{ node = "btn_menu", anim = CFG.btn_menu, action = function() msg.post("/main", "back_to_menu") end },
+		{ node = "btn_select", anim = CFG.btn_mode, action = function() msg.post("/main", "start_game", { mode = "classic" }) end },
 	})
 end
 

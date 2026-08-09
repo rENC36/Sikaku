@@ -32,3 +32,19 @@ embedded_instances {
   "}\n"
   ""
 }
+embedded_instances {
+  id: "mode_select"
+  data: "components {\n"
+  "  id: \"mode_select\"\n"
+  "  component: \"/ui/mode_select/mode_select.gui\"\n"
+  "}\n"
+  ""
+}
+embedded_instances {
+  id: "classic_select"
+  data: "components {\n"
+  "  id: \"classic_select\"\n"
+  "  component: \"/ui/mode_select/classic_select.gui\"\n"
+  "}\n"
+  ""
+}

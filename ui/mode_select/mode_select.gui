@@ -1,0 +1,89 @@
+script: "/ui/mode_select/mode_select.gui_script"
+nodes {
+  position {
+    x: 961.0
+    y: 556.0
+  }
+  scale {
+    x: 5.0
+    y: 9.5
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+  }
+  type: TYPE_BOX
+  id: "btn_classic"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 1511.0
+    y: 556.0
+  }
+  scale {
+    x: 5.0
+    y: 9.5
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  color {
+    x: 0.0
+    y: 0.2
+    z: 0.2
+  }
+  type: TYPE_BOX
+  id: "btn_blitz"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 413.0
+    y: 556.0
+  }
+  scale {
+    x: 5.0
+    y: 9.5
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  color {
+    x: 0.0
+    y: 0.5019608
+    z: 0.0
+  }
+  type: TYPE_BOX
+  id: "btn_endless"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 1844.0
+    y: 1013.0
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  color {
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_BOX
+  id: "btn_back"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT

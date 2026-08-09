@@ -1,0 +1,17 @@
+script: "/ui/mode_select/classic_select.gui_script"
+nodes {
+  position {
+    x: 1092.0
+    y: 585.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "btn_select"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT
