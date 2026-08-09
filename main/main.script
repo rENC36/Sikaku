@@ -4,20 +4,22 @@ local Input = require("game.shikaku.input")
 local Solver = require("game.shikaku.solver")
 local Board = require("game.shikaku.board")
 local Levels = require("game.shikaku.levels.levels")
+local PlayerData = require("game.player.player_data")
 
 function init(self)
 	msg.post(".", "acquire_input_focus")
-	
+
 	self.screens = {
-		menu        = "/menu",
-		mode_select = "/mode_select",
-		game        = "/game",
-		classic_select = "/classic_select"
+		menu           = "/menu",
+		mode_select    = "/mode_select",
+		game           = "/game",
+		classic_select = "/classic_select",
 	}
 
 	open_screen(self, "menu")
 	self.game_active = false
 	self.current_mode = nil
+	self.current_level = 1
 end
 
 function on_message(self, message_id, message, sender)
@@ -26,10 +28,12 @@ function on_message(self, message_id, message, sender)
 
 	elseif message_id == hash("start_game") then
 		self.current_mode = message.mode or "classic"
+		self.current_level = message.level or 1
+
+		Levels.set_level("easy", self.current_level)
 
 		open_screen(self, "game")
 
-		-- Загружаем пазл
 		if self.current_mode == "classic" then
 			load_puzzle_from_levels(self, "easy")
 		elseif self.current_mode == "blitz" then
@@ -42,7 +46,6 @@ function on_message(self, message_id, message, sender)
 		self.game_active = true
 
 	elseif message_id == hash("back_to_menu") then
-		-- Чистим данные игры
 		if self.board_view then
 			self.board_view:Clear()
 		end
@@ -51,6 +54,7 @@ function on_message(self, message_id, message, sender)
 		self.selection = nil
 		self.board_view = nil
 		self.current_mode = nil
+		self.current_level = 1
 
 		open_screen(self, "menu")
 		self.game_active = false
@@ -76,7 +80,19 @@ function on_input(self, action_id, action)
 			if self.board:IsFull() then
 				local rectangles = self.board:GetAllRectangles()
 				if Solver.Check(self.board, rectangles) then
-					print("SOLVED! Mode:", self.current_mode)
+					print("SOLVED! Mode:", self.current_mode, "Level:", self.current_level)
+					
+					PlayerData.complete_level("easy", self.current_level)
+					
+					self.current_level = self.current_level + 1
+					local total = Levels.count("easy")
+
+					if self.current_level > total then
+						print("ALL LEVELS COMPLETED!")
+						self.current_level = 1
+					end
+
+					Levels.set_level("easy", self.current_level)
 					load_puzzle_from_levels(self, "easy")
 				else
 					print("WRONG!")
@@ -131,11 +147,11 @@ function open_screen(self, name)
 		print("ERROR: Unknown screen:", name)
 		return
 	end
-	
+
 	for _, u in pairs(self.screens) do
 		msg.post(u, "disable")
 	end
-	
+
 	msg.post(url, "reset_ui")
 	msg.post(url, "enable")
 	msg.post(url, "acquire_input_focus")

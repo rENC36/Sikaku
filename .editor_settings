@@ -19,39 +19,15 @@
   :workflow {
     :open-tabs [
       [
-        [
-          "/objects/cell/cell.go"
-          :scene
-        ]
       ]
     ]
     :recent-files [
-      [
-        "/factories/cell.factory"
-        :cljfx-form-view
-      ]
-      [
-        "/game/shikaku/solver.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/selection.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/rectangle.lua"
-        :code
-      ]
       [
         "/game/shikaku/input.lua"
         :code
       ]
       [
         "/game/shikaku/generator.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/levels/levels.lua"
         :code
       ]
       [
@@ -71,19 +47,7 @@
         :code
       ]
       [
-        "/ui/menu/menu.gui"
-        :scene
-      ]
-      [
         "/ui/gameplay/game.gui"
-        :scene
-      ]
-      [
-        "/game/shikaku/levels/easy.lua"
-        :code
-      ]
-      [
-        "/main/main.collection"
         :scene
       ]
       [
@@ -91,27 +55,11 @@
         :scene
       ]
       [
-        "/ui/mode_select/classic_select.gui"
-        :scene
-      ]
-      [
-        "/ui/mode_select/classic_select.gui_script"
-        :code
-      ]
-      [
-        "/ui/menu/menu.gui_script"
-        :code
-      ]
-      [
         "/game/view/cell_view.lua"
         :code
       ]
       [
         "/game/view/board_view.lua"
-        :code
-      ]
-      [
-        "/game/player/player_data.lua"
         :code
       ]
       [
@@ -127,23 +75,11 @@
         :code
       ]
       [
-        "/main/main.script"
-        :code
-      ]
-      [
         "/ui/mode_select/mode_select.gui_script"
         :code
       ]
       [
-        "/data/config/animations.lua"
-        :code
-      ]
-      [
         "/utils/screen_manager.lua"
-        :code
-      ]
-      [
-        "/utils/animator.lua"
         :code
       ]
       [
@@ -153,6 +89,66 @@
       [
         "/objects/cell/cell.go"
         :scene
+      ]
+      [
+        "/game/shikaku/levels/levels.lua"
+        :code
+      ]
+      [
+        "/builtins/fonts/default.font"
+        :scene
+      ]
+      [
+        "/data/config/animations.lua"
+        :code
+      ]
+      [
+        "/game/shikaku/levels/easy.lua"
+        :code
+      ]
+      [
+        "/objects/classic_cell/classic_cell.script"
+        :code
+      ]
+      [
+        "/objects/classic_cell/classic_cell.go"
+        :scene
+      ]
+      [
+        "/factories/levelfactory.factory"
+        :cljfx-form-view
+      ]
+      [
+        "/main/main.collection"
+        :scene
+      ]
+      [
+        "/game/player/player_data.lua"
+        :code
+      ]
+      [
+        "/ui/mode_select/classic_select.gui"
+        :scene
+      ]
+      [
+        "/ui/mode_select/classic_select.gui_script"
+        :code
+      ]
+      [
+        "/ui/menu/menu.gui_script"
+        :code
+      ]
+      [
+        "/ui/menu/menu.gui"
+        :scene
+      ]
+      [
+        "/main/main.script"
+        :code
+      ]
+      [
+        "/utils/animator.lua"
+        :code
       ]
     ]
   }

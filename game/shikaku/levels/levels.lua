@@ -32,4 +32,18 @@ function Levels.load(category)
 	return puzzle
 end
 
+function Levels.set_level(category, level_id)
+	Levels.index[category] = level_id
+end
+
+function Levels.get(category, index)
+	local bank = Levels.banks[category]
+	return bank and bank[index] or nil
+end
+
+function Levels.count(category)
+	local bank = Levels.banks[category]
+	return bank and #bank or 0
+end
+
 return Levels

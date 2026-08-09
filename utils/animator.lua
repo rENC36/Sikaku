@@ -82,21 +82,30 @@ end
 
 function M.register_buttons(list)
 	local buttons = { items = {}, locked = false }
+	if not list then
+		print("[Animator] WARNING: register_buttons got nil list")
+		return buttons
+	end
 	for _, cfg in ipairs(list) do
-		local node = gui.get_node(cfg.node)
-		M.apply(node, cfg.anim.default)
-		table.insert(buttons.items, {
-			node    = node,
-			anim    = cfg.anim,
-			action  = cfg.action,
-			pressed = false,
-			hovered = false,
-		})
+		local ok, node = pcall(gui.get_node, cfg.node)
+		if not ok or not node then
+			print("[Animator] WARNING: node not found:", cfg.node)
+		else
+			M.apply(node, cfg.anim.default)
+			table.insert(buttons.items, {
+				node    = node,
+				anim    = cfg.anim,
+				action  = cfg.action,
+				pressed = false,
+				hovered = false,
+			})
+		end
 	end
 	return buttons
 end
 
 function M.reset_buttons(buttons)
+	if not buttons then return end
 	buttons.locked = false
 	for _, btn in ipairs(buttons.items) do
 		btn.pressed = false
@@ -106,11 +115,15 @@ function M.reset_buttons(buttons)
 end
 
 function M.handle_buttons(buttons, action_id, action)
+	if not buttons then
+		print("[Animator] WARNING: handle_buttons got nil")
+		return false
+	end
 	if action_id ~= hash("touch") and action_id ~= nil then return false end
 	if not action then return false end
-	
+
 	if buttons.locked then return true end
-	
+
 	local pressed_btn = nil
 	for _, btn in ipairs(buttons.items) do
 		if btn.pressed then pressed_btn = btn; break end
@@ -145,7 +158,7 @@ function M.handle_buttons(buttons, action_id, action)
 			M.animate(btn.node, btn.anim.pressed)
 			return true
 		end
-		
+
 		if not action.pressed then
 			if over and not btn.hovered then
 				btn.hovered = true
