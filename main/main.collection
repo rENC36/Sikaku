@@ -81,3 +81,19 @@ embedded_instances {
   "}\n"
   ""
 }
+embedded_instances {
+  id: "blitz_prepare"
+  data: "components {\n"
+  "  id: \"blitz_prepare\"\n"
+  "  component: \"/ui/mode_select/blitz_prepare.gui\"\n"
+  "}\n"
+  ""
+}
+embedded_instances {
+  id: "blitz_game"
+  data: "components {\n"
+  "  id: \"blitz_game\"\n"
+  "  component: \"/ui/gameplay/blitz_game.gui\"\n"
+  "}\n"
+  ""
+}

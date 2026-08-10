@@ -1,2 +1,138 @@
+fonts {
+  name: "nunitoREGULAR"
+  font: "/assets/fonts/nunitoREGULAR.font"
+}
+nodes {
+  position {
+    x: 953.0
+    y: 980.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "<text>"
+  font: "nunitoREGULAR"
+  id: "timer_text"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 138.0
+    y: 751.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "<text>"
+  font: "nunitoREGULAR"
+  id: "score_text"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 959.0
+    y: 860.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "<text>"
+  font: "nunitoREGULAR"
+  id: "level_size_text"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 138.0
+    y: 549.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "<text>"
+  font: "nunitoREGULAR"
+  id: "go_score"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 138.0
+    y: 389.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "<text>"
+  font: "nunitoREGULAR"
+  id: "go_best"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 141.0
+    y: 229.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "<text>"
+  font: "nunitoREGULAR"
+  id: "go_new_best"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 487.0
+    y: 101.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "btn_menu"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 1448.0
+    y: 101.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "btn_restart"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 1672.0
+    y: 583.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "game_over_group"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
 material: "/builtins/materials/gui.material"
 adjust_reference: ADJUST_REFERENCE_PARENT

@@ -21,28 +21,16 @@
     :open-tabs [
       [
         [
-          "/ui/mode_select/blitz_prepare.gui"
+          "/main/main.script"
+          :code
+        ]
+        [
+          "/ui/gameplay/blitz_game.gui"
           :scene
-        ]
-        [
-          "/data/localization/en_lang.lua"
-          :code
-        ]
-        [
-          "/data/localization/ru_lang.lua"
-          :code
         ]
       ]
     ]
     :recent-files [
-      [
-        "/game/view/board_view/preview_overlay.lua"
-        :code
-      ]
-      [
-        "/game/view/board_view/layout.lua"
-        :code
-      ]
       [
         "/game/view/board_view/cell_factory.lua"
         :code
@@ -100,19 +88,11 @@
         :code
       ]
       [
-        "/main/main.collection"
-        :scene
-      ]
-      [
         "/data/config/sounds.lua"
         :code
       ]
       [
         "/utils/audio_manager.lua"
-        :code
-      ]
-      [
-        "/main/main.script"
         :code
       ]
       [
@@ -132,24 +112,8 @@
         :code
       ]
       [
-        "/ui/mode_select/mode_select.gui_script"
-        :code
-      ]
-      [
         "/game/player/player_data.lua"
         :code
-      ]
-      [
-        "/ui/mode_select/blitz_prepare.gui_script"
-        :code
-      ]
-      [
-        "/ui/gameplay/blitz_game.gui_script"
-        :code
-      ]
-      [
-        "/ui/gameplay/blitz_game.gui"
-        :scene
       ]
       [
         "/ui/mode_select/blitz_prepare.gui"
@@ -162,6 +126,38 @@
       [
         "/data/localization/ru_lang.lua"
         :code
+      ]
+      [
+        "/ui/mode_select/mode_select.gui_script"
+        :code
+      ]
+      [
+        "/main/main.collection"
+        :scene
+      ]
+      [
+        "/input/game.input_binding"
+        :cljfx-form-view
+      ]
+      [
+        "/ui/mode_select/blitz_prepare.gui_script"
+        :code
+      ]
+      [
+        "/game/blitz/blitz_game.lua"
+        :code
+      ]
+      [
+        "/main/main.script"
+        :code
+      ]
+      [
+        "/ui/gameplay/blitz_game.gui_script"
+        :code
+      ]
+      [
+        "/ui/gameplay/blitz_game.gui"
+        :scene
       ]
     ]
   }

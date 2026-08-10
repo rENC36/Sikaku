@@ -1,195 +1,126 @@
-local BoardView  = require("game.view.board_view.board_view")
-local Board      = require("game.shikaku.board")
-local Input      = require("game.shikaku.input")
-local Selection  = require("game.shikaku.selection")
-local Generator  = require("game.shikaku.generator")
-local Solver     = require("game.shikaku.solver")
-local PlayerData = require("game.player.player_data")
-local Anim       = require("utils.animator")
-local GameCFG    = require("data.config.game_config")
-local Lang       = require("utils.localization")
+local BlitzGame    = require("game.blitz.blitz_game")
+local Anim         = require("utils.animator")
+local Lang         = require("utils.localization")
+local PlayerData   = require("game.player.player_data")
+local CFG          = require("data.config.animations")
 
-local START_TIME   = 60
-local TIME_BONUS   = 15
-local TIME_CAP     = 60
-local SCORE_BONUS  = 25
-local START_SIZE   = 5
+local START_TIME = 60
+
+local function safe_node(name)
+	local ok, n = pcall(gui.get_node, name)
+	return ok and n or nil
+end
 
 local function fmt_time(sec)
 	local s = math.max(0, math.ceil(sec))
 	return string.format("%02d:%02d", math.floor(s / 60), s % 60)
 end
 
-local function start_round(self)
-	self.board_view:Clear()
-
-	local success, attempts = false, 0
-	while not success and attempts < 30 do
-		attempts = attempts + 1
-		local b = Generator:Generate(self.grid_size, self.grid_size)
-		if b then
-			self.board = b
-			success = true
-		end
+local function update_hud(self)
+	if self.nodes.score then
+		gui.set_text(self.nodes.score, tostring(self.blitz.score))
 	end
-
-	if not success then
-		print("[Blitz] Board generation failed")
-		return
+	if self.nodes.timer then
+		gui.set_text(self.nodes.timer, fmt_time(self.blitz.timer))
 	end
-
-	self.selection = Selection.new(self.board)
-	self.board_view:Create(self.board)
-	self.input_handler = Input.new(self.selection, self.board_view)
-
-	if self.level_size_text then
-		gui.set_text(self.level_size_text, self.grid_size .. "×" .. self.grid_size)
+	if self.nodes.size then
+		gui.set_text(self.nodes.size, self.blitz.grid_size .. "×" .. self.blitz.grid_size)
 	end
 end
 
-local function game_over(self)
-	if self.is_game_over then return end
-	self.is_game_over = true
-
-	if self.timer_handle then
-		timer.cancel(self.timer_handle)
-		self.timer_handle = nil
-	end
+local function show_game_over(self)
+	if not self.nodes.go_group then return end
 
 	local old_best = PlayerData.get("stats.blitz_best") or 0
-	local is_new_best = self.score > old_best
-	if is_new_best then
-		PlayerData.set("stats.blitz_best", self.score)
-		PlayerData.save()
+	local is_new   = self.blitz.score > old_best
+
+	if self.nodes.go_score then
+		gui.set_text(self.nodes.go_score,
+		(Lang.get("blitz_game.final_score") or "Score") .. ": " .. self.blitz.score)
+	end
+	if self.nodes.go_best then
+		gui.set_text(self.nodes.go_best,
+		(Lang.get("blitz_game.best_score") or "Best") .. ": " .. math.max(old_best, self.blitz.score))
+	end
+	if self.nodes.go_new_best then
+		gui.set_enabled(self.nodes.go_new_best, is_new)
 	end
 
-	gui.set_text(self.go_score, Lang.get("blitz_game.final_score") .. ": " .. self.score)
-	gui.set_text(self.go_best,  Lang.get("blitz_game.best_score")  .. ": " .. math.max(old_best, self.score))
-	gui.set_enabled(self.go_new_best, is_new_best)
-	gui.set_enabled(self.go_group, true)
-
+	gui.set_enabled(self.nodes.go_group, true)
 	Anim.reset_buttons(self.buttons)
 end
 
-local function restart(self)
-	self.score      = 0
-	self.timer      = START_TIME
-	self.grid_size  = START_SIZE
-	self.is_game_over = false
+local function start_blitz(self)
+	if self.nodes.go_group then
+		gui.set_enabled(self.nodes.go_group, false)
+	end
 
-	gui.set_text(self.score_text, "0")
-	gui.set_text(self.timer_text, fmt_time(self.timer))
-	gui.set_enabled(self.go_group, false)
-
-	start_round(self)
-
-	self.timer_handle = timer.delay(1, true, function()
-		if self.is_game_over then return end
-		self.timer = self.timer - 1
-		if self.timer <= 0 then
-			self.timer = 0
-			game_over(self)
+	self.blitz:restart()
+	self.blitz:start_timer(function(t, game_over)
+		if self.nodes.timer then
+			gui.set_text(self.nodes.timer, fmt_time(t))
 		end
-		gui.set_text(self.timer_text, fmt_time(self.timer))
+		if game_over then
+			show_game_over(self)
+		end
 	end)
+
+	update_hud(self)
 end
 
 function init(self)
 	msg.post(".", "acquire_input_focus")
 
-	self.score      = 0
-	self.timer      = START_TIME
-	self.grid_size  = START_SIZE
-	self.is_game_over = false
-
-	self.timer_text       = gui.get_node("timer_text")
-	self.score_text       = gui.get_node("score_text")
-	self.level_size_text  = gui.get_node("level_size_text")
-	self.go_group         = gui.get_node("game_over_group")
-	self.go_score         = gui.get_node("go_score")
-	self.go_best          = gui.get_node("go_best")
-	self.go_new_best      = gui.get_node("go_new_best")
-
-	gui.set_text(self.timer_text, fmt_time(self.timer))
-	gui.set_text(self.score_text, "0")
-	gui.set_enabled(self.go_group, false)
-
-	local settings = GameCFG.BOARD_VIEW
-	self.board_view = BoardView.new(
-	GameCFG.FACTORIES.cell,
-	settings,
-	{
-		badge_factory_url    = GameCFG.FACTORIES.badge,
-		preview_factory_url  = GameCFG.FACTORIES.preview_bg,
-		overlay_factory_url  = GameCFG.FACTORIES.overlay,
-		board_bg_factory_url = GameCFG.FACTORIES.board_bg,
+	self.nodes = {
+		timer       = safe_node("timer_text"),
+		score       = safe_node("score_text"),
+		size        = safe_node("level_size_text"),
+		go_group    = safe_node("game_over_group"),
+		go_score    = safe_node("go_score"),
+		go_best     = safe_node("go_best"),
+		go_new_best = safe_node("go_new_best"),
 	}
-)
 
-start_round(self)
+	if self.nodes.go_group then gui.set_enabled(self.nodes.go_group, false) end
 
-self.buttons = Anim.register_buttons({
-	{ node = "btn_menu",    anim = require("data.config.animations").btn_menu, sound = "click",
-	action = function() msg.post("/main", "back_to_menu") end },
-	{ node = "btn_restart", anim = require("data.config.animations").btn_menu, sound = "click",
-	action = function() restart(self) end },
-})
+	self.blitz = BlitzGame.new()
 
-self.timer_handle = timer.delay(1, true, function()
-	if self.is_game_over then return end
-	self.timer = self.timer - 1
-	if self.timer <= 0 then
-		self.timer = 0
-		game_over(self)
-	end
-	gui.set_text(self.timer_text, fmt_time(self.timer))
-end)
+	self.buttons = Anim.register_buttons({
+		{ node = "btn_menu",    anim = CFG.btn_menu, sound = "click",
+		action = function() msg.post("/main", "back_to_menu") end },
+		{ node = "btn_restart", anim = CFG.btn_menu, sound = "click",
+		action = function() start_blitz(self) end },
+	})
+
+	-- Стартуем игру сразу (fallback, если reset_ui не придёт из-за disabled GO)
+	start_blitz(self)
 end
 
 function final(self)
-if self.timer_handle then
-	timer.cancel(self.timer_handle)
-end
-if self.board_view then
-	self.board_view:Clear()
-end
-end
-
-function on_input(self, action_id, action)
-if self.is_game_over then
-	return Anim.handle_buttons(self.buttons, action_id, action)
-end
-
-if action_id == hash("touch") or action_id == nil then
-	if action.pressed then
-		self.input_handler:MousePressed(action.x, action.y)
-		return true
-	elseif action.released then
-		local placed = self.input_handler:MouseReleased(action.x, action.y)
-		if placed and self.board:IsFull() then
-			local rects = self.board:GetAllRectangles()
-			if Solver.Check(self.board, rects) then
-				self.score = self.score + SCORE_BONUS
-				self.timer = math.min(TIME_CAP, self.timer + TIME_BONUS)
-				self.grid_size = self.grid_size + 1
-
-				gui.set_text(self.score_text, tostring(self.score))
-				gui.set_text(self.timer_text, fmt_time(self.timer))
-
-				start_round(self)
-			end
-		end
-		return true
-	else
-		self.input_handler:MouseMoved(action.x, action.y)
-		return true
+	if self.blitz then
+		self.blitz:cleanup()
 	end
 end
 
-if action_id == hash("mouse_button_right") and action.pressed then
-	self.input_handler:RightClick(action.x, action.y)
-	return true
+function on_message(self, message_id, message, sender)
+	if message_id == hash("reset_ui") then
+		Anim.reset_buttons(self.buttons)
+		start_blitz(self)
+	end
 end
 
-return Anim.handle_buttons(self.buttons, action_id, action)
+function on_input(self, action_id, action)
+	if self.blitz and self.blitz.is_game_over then
+		return Anim.handle_buttons(self.buttons, action_id, action)
+	end
+
+	if self.blitz and self.blitz:on_input(action_id, action) then
+		update_hud(self)
+		if self.blitz.is_game_over then
+			show_game_over(self)
+		end
+		return true
+	end
+
+	return Anim.handle_buttons(self.buttons, action_id, action)
 end

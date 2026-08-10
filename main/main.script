@@ -1,12 +1,13 @@
-local BoardView = require("game.view.board_view.board_view")
-local Selection = require("game.shikaku.selection")
-local Input = require("game.shikaku.input")
-local Solver = require("game.shikaku.solver")
-local Board = require("game.shikaku.board")
-local Levels = require("game.shikaku.levels")
+local BoardView  = require("game.view.board_view.board_view")
+local Selection  = require("game.shikaku.selection")
+local Input      = require("game.shikaku.input")
+local Solver     = require("game.shikaku.solver")
+local Board      = require("game.shikaku.board")
+local Levels     = require("game.shikaku.levels")
 local PlayerData = require("game.player.player_data")
-local CFG = require("data.config.sounds")
-local Audio = require("utils.audio_manager")
+local GameCFG    = require("data.config.game_config")
+local SoundCFG   = require("data.config.sounds")
+local Audio      = require("utils.audio_manager")
 
 local CATEGORY_ORDER = { "easy", "medium", "hard" }
 
@@ -20,7 +21,7 @@ local function get_next_category(current)
 end
 
 local function get_ui_message(x, y)
-	for _, button in ipairs(CFG.GAME_UI_BUTTONS) do
+	for _, button in ipairs(GameCFG.GAME_UI_BUTTONS) do
 		local ok, over = pcall(gui.pick_node, button.node, x, y)
 		if ok and over then
 			return button.message
@@ -33,25 +34,28 @@ function init(self)
 	msg.post(".", "acquire_input_focus")
 
 	Audio.init()
-	Audio.SOUNDS = CFG.SOUNDS or {}
-	Audio.MUSICS = CFG.MUSICS or {}
+	Audio.SOUNDS = SoundCFG.SOUNDS or {}
+	Audio.MUSICS = SoundCFG.MUSICS or {}
 
 	self.screens = {
 		menu           = "/menu",
 		mode_select    = "/mode_select",
 		game           = "/game",
-		classic_select = "/classic_select"
+		classic_select = "/classic_select",
+		blitz_prepare  = "/blitz_prepare",
+		blitz_game     = "/blitz_game",
 	}
 
 	open_screen(self, "menu")
-	self.game_active = false
-	self.current_mode = nil
-	self.current_level = 1
+
+	self.game_active      = false
+	self.current_mode     = nil
+	self.current_level    = 1
 	self.current_category = "easy"
-	self.board = nil
-	self.board_view = nil
-	self.selection = nil
-	self.input = nil
+	self.board            = nil
+	self.board_view       = nil
+	self.selection        = nil
+	self.input            = nil
 end
 
 function on_message(self, message_id, message, sender)
@@ -59,40 +63,48 @@ function on_message(self, message_id, message, sender)
 		self.game_active = false
 		open_screen(self, "mode_select")
 
+	elseif message_id == hash("open_classic_levels") then
+		self.game_active = false
+		open_screen(self, "classic_select")
+
+	elseif message_id == hash("open_blitz_prepare") then
+		self.game_active = false
+		open_screen(self, "blitz_prepare")
+
+	elseif message_id == hash("back_to_mode_select") then
+		self.game_active = false
+		open_screen(self, "mode_select")
+
 	elseif message_id == hash("start_game") then
 		self.current_mode = message.mode or "classic"
-		self.current_level = message.level or 1
-		self.current_category = message.category or "easy"
 
-		Levels.set_level(self.current_category, self.current_level)
-		open_screen(self, "game")
-		load_puzzle_from_levels(self, self.current_category)
-
-		msg.post(".", "acquire_input_focus")
-		self.game_active = true
+		if self.current_mode == "blitz" then
+			open_screen(self, "blitz_game")
+		else
+			self.current_level    = message.level    or 1
+			self.current_category = message.category or "easy"
+			Levels.set_level(self.current_category, self.current_level)
+			open_screen(self, "game")
+			load_puzzle_from_levels(self, self.current_category)
+			self.game_active = true
+		end
 
 	elseif message_id == hash("back_to_menu") then
 		if self.board_view then
 			self.board_view:Clear()
 		end
-
-		self.board = nil
-		self.board_view = nil
-		self.selection = nil
-		self.input = nil
-		self.game_active = false
-		self.current_mode = nil
-		self.current_level = 1
+		self.board            = nil
+		self.board_view       = nil
+		self.selection        = nil
+		self.input            = nil
+		self.game_active      = false
+		self.current_mode     = nil
+		self.current_level    = 1
 		self.current_category = "easy"
-
 		open_screen(self, "menu")
 
 	elseif message_id == hash("open_leaderboard") then
 		print("LEADERBOARD (TODO)")
-
-	elseif message_id == hash("open_classic_levels") then
-		self.game_active = false
-		open_screen(self, "classic_select")
 	end
 end
 
@@ -166,9 +178,9 @@ function load_puzzle_from_levels(self, category)
 		self.board_view:Clear()
 	end
 
-	self.board = nil
-	self.selection = nil
-	self.input = nil
+	self.board       = nil
+	self.selection   = nil
+	self.input       = nil
 
 	local puzzle = Levels.load(category)
 	if not puzzle then
@@ -191,24 +203,24 @@ function load_puzzle_from_levels(self, category)
 	end
 
 	local ww, wh = window.get_size()
-	local bv = CFG.BOARD_VIEW
-	local fac = CFG.FACTORIES
+	local bv = GameCFG.BOARD_VIEW
+	local fac = GameCFG.FACTORIES
 
 	self.board_view = BoardView.new(fac.cell, {
-		cell_size = bv.cell_size,
-		spacing = bv.spacing,
+		cell_size      = bv.cell_size,
+		spacing        = bv.spacing,
 		start_position = vmath.vector3(ww / 2, wh / 2, 0)
 	}, {
-		preview_factory_url = fac.preview_bg,
-		overlay_factory_url = fac.overlay,
-		badge_factory_url = fac.badge,
+		preview_factory_url  = fac.preview_bg,
+		overlay_factory_url  = fac.overlay,
+		badge_factory_url    = fac.badge,
 		board_bg_factory_url = fac.board_bg
 	})
 
 	self.board_view:Create(self.board)
 
 	self.selection = Selection.new(self.board)
-	self.input = Input.new(self.selection, self.board_view)
+	self.input     = Input.new(self.selection, self.board_view)
 
 	print("LOADED:", category, "puzzle #", (Levels.index[category] or 1) - 1)
 end
@@ -224,15 +236,16 @@ function open_screen(self, name)
 		msg.post(u, "disable")
 	end
 
-	msg.post(url, "reset_ui")
+	-- ВАЖНО: сначала enable, потом reset_ui, иначе сообщение потеряется
 	msg.post(url, "enable")
+	msg.post(url, "reset_ui")
 	msg.post(url, "acquire_input_focus")
 
 	print("SCREEN:", name)
 
-	if name == "menu" or name == "mode_select" or name == "classic_select" then
+	if name == "menu" or name == "mode_select" or name == "classic_select" or name == "blitz_prepare" then
 		Audio.play_music_id("menu")
-	elseif name == "game" then
+	elseif name == "game" or name == "blitz_game" then
 		Audio.play_music_id("game")
 	end
 end
