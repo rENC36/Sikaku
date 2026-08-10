@@ -24,13 +24,17 @@
   :workflow {
     :open-tabs [
       [
+        [
+          "/game.project"
+          :cljfx-form-view
+        ]
+        [
+          "/.gitignore"
+          :code
+        ]
       ]
     ]
     :recent-files [
-      [
-        "/objects/classic_cell/classic_cell.script"
-        :code
-      ]
       [
         "/objects/classic_cell/classic_cell.go"
         :scene
@@ -148,11 +152,15 @@
         :cljfx-form-view
       ]
       [
+        "/game/view/board_view.lua"
+        :code
+      ]
+      [
         "/game.project"
         :cljfx-form-view
       ]
       [
-        "/game/view/board_view.lua"
+        "/.gitignore"
         :code
       ]
     ]
