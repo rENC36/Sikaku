@@ -24,6 +24,10 @@
     ]
     :recent-files [
       [
+        "/game/player/player_data.lua"
+        :code
+      ]
+      [
         "/factories/Factories.collectionfactory"
         :cljfx-form-view
       ]
@@ -58,10 +62,6 @@
       [
         "/factories/cell.factory"
         :cljfx-form-view
-      ]
-      [
-        "/ui/mode_select/classic_select.gui_script"
-        :code
       ]
       [
         "/objects/cell/cell.script"
@@ -144,7 +144,7 @@
         :code
       ]
       [
-        "/game/view/board_view/board_view.lua"
+        "/ui/mode_select/classic_select.gui_script"
         :code
       ]
       [
