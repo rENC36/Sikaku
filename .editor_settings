@@ -3,17 +3,13 @@
     :breakpoints [
       {
         :enabled true
-        :proj-path "/main/main.script"
-        :row 63
-      }
-      {
-        :enabled true
         :proj-path "/game/view/cell_view.lua"
         :row 0
       }
     ]
     :find {
-      :term "--"
+      :term ""
+      :wrap false
     }
   }
   :scene {
@@ -29,15 +25,11 @@
           :scene
         ]
         [
-          "/utils/animator.lua"
-          :code
-        ]
-        [
-          "/objects/cell/cell.script"
-          :code
-        ]
-        [
           "/game/view/board_view.lua"
+          :code
+        ]
+        [
+          "/game/shikaku/input.lua"
           :code
         ]
         [
@@ -45,60 +37,44 @@
           :code
         ]
         [
-          "/game/shikaku/input.lua"
+          "/ui/gameplay/game.gui"
+          :scene
+        ]
+        [
+          "/factories/grid_bg_factory.factory"
+          :cljfx-form-view
+        ]
+        [
+          "/factories/cell.factory"
+          :cljfx-form-view
+        ]
+        [
+          "/main/main.collection"
+          :scene
+        ]
+        [
+          "/objects/badge.go"
+          :scene
+        ]
+        [
+          "/objects/cell/cell.script"
           :code
+        ]
+        [
+          "/objects/selection_bg.go"
+          :scene
+        ]
+        [
+          "/assets/atlas/game.atlas"
+          :scene
+        ]
+        [
+          "/objects/cell/cell.go"
+          :scene
         ]
       ]
     ]
     :recent-files [
-      [
-        "/objects/classic_cell/classic_cell.go"
-        :scene
-      ]
-      [
-        "/factories/levelfactory.factory"
-        :cljfx-form-view
-      ]
-      [
-        "/main/main.collection"
-        :scene
-      ]
-      [
-        "/assets/atlas/game.atlas"
-        :scene
-      ]
-      [
-        "/ui/menu/menu.gui_script"
-        :code
-      ]
-      [
-        "/ui/mode_select/mode_select.gui_script"
-        :code
-      ]
-      [
-        "/game/player/player_data.lua"
-        :code
-      ]
-      [
-        "/ui/mode_select/classic_select.gui_script"
-        :code
-      ]
-      [
-        "/ui/gameplay/game.gui"
-        :scene
-      ]
-      [
-        "/game/shikaku/levels/hard.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/levels/medium.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/rectangle.lua"
-        :code
-      ]
       [
         "/game/shikaku/generator.lua"
         :code
@@ -108,19 +84,7 @@
         :code
       ]
       [
-        "/game/shikaku/levels/easy.lua"
-        :code
-      ]
-      [
         "/game/shikaku/board.lua"
-        :code
-      ]
-      [
-        "/ui/gameplay/game.gui_script"
-        :code
-      ]
-      [
-        "/data/config/animations.lua"
         :code
       ]
       [
@@ -128,16 +92,44 @@
         :code
       ]
       [
-        "/game/shikaku/selection.lua"
+        "/ui/gameplay/game.gui_script"
         :code
       ]
       [
-        "/game/shikaku/solver.lua"
+        "/ui/menu/menu.gui_script"
         :code
       ]
       [
-        "/game/shikaku/levels/levels.lua"
+        "/ui/mode_select/classic_select.gui_script"
         :code
+      ]
+      [
+        "/ui/mode_select/mode_select.gui_script"
+        :code
+      ]
+      [
+        "/utils/animator.lua"
+        :code
+      ]
+      [
+        "/assets/textures/selection_bg.png"
+        :scene
+      ]
+      [
+        "/factories/selection_bg.factory"
+        :cljfx-form-view
+      ]
+      [
+        "/factories/grid_bg.factory"
+        :cljfx-form-view
+      ]
+      [
+        "/objects/grid_bg.go"
+        :scene
+      ]
+      [
+        "/factories/badge.factory"
+        :cljfx-form-view
       ]
       [
         "/input/game.input_binding"
@@ -148,24 +140,20 @@
         :cljfx-form-view
       ]
       [
-        "/ui/mode_select/mode_select.gui"
+        "/game/player/player_data.lua"
+        :code
+      ]
+      [
+        "/factories/Factories.collectionfactory"
+        :cljfx-form-view
+      ]
+      [
+        "/assets/fonts/nunitoBOLD.font"
         :scene
       ]
       [
         "/ui/menu/menu.gui"
         :scene
-      ]
-      [
-        "/ui/mode_select/classic_select.gui"
-        :scene
-      ]
-      [
-        "/utils/animator.lua"
-        :code
-      ]
-      [
-        "/objects/cell/cell.script"
-        :code
       ]
       [
         "/game/shikaku/input.lua"
@@ -176,8 +164,44 @@
         :code
       ]
       [
+        "/factories/grid_bg_factory.factory"
+        :cljfx-form-view
+      ]
+      [
+        "/factories/cell.factory"
+        :cljfx-form-view
+      ]
+      [
+        "/main/main.collection"
+        :scene
+      ]
+      [
+        "/objects/badge.go"
+        :scene
+      ]
+      [
+        "/objects/cell/cell.script"
+        :code
+      ]
+      [
+        "/assets/atlas/game.atlas"
+        :scene
+      ]
+      [
         "/game/view/board_view.lua"
         :code
+      ]
+      [
+        "/objects/cell/cell.go"
+        :scene
+      ]
+      [
+        "/objects/selection_bg.go"
+        :scene
+      ]
+      [
+        "/ui/gameplay/game.gui"
+        :scene
       ]
     ]
   }

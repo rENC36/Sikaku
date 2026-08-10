@@ -18,6 +18,7 @@ function on_message(self, message_id, message)
 		end
 
 	elseif message_id == hash("set_color") then
+		
 		go.set("#sprite", "tint", message.color)
 	end
 end

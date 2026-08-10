@@ -224,7 +224,7 @@ use_linear_gain = 1
 use_thread = 1
 
 [sprite]
-max_count = 128
+max_count = 1024
 subpixels = 1
 
 [tilemap]
