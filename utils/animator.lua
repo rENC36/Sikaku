@@ -91,6 +91,7 @@ function M.register_buttons(list)
 				node    = node,
 				anim    = cfg.anim,
 				action  = cfg.action,
+				sound   = cfg.sound,
 				pressed = false,
 				hovered = false,
 			})
@@ -151,6 +152,10 @@ function M.handle_buttons(buttons, action_id, action)
 		if action.pressed and over then
 			btn.pressed = true
 			M.animate(btn.node, btn.anim.pressed)
+			if btn.sound then
+				local ok, Audio = pcall(require, "utils.audio_manager")
+				if ok and Audio then Audio.play_sound_id(btn.sound) end
+			end
 			return true
 		end
 

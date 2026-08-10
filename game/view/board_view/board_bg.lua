@@ -1,3 +1,5 @@
+local CFG = require("data.config.board_view_config")
+
 local BoardBg = {}
 BoardBg.__index = BoardBg
 
@@ -18,12 +20,12 @@ function BoardBg:create(board)
 	local cell_size = self.layout.effective_cell_size
 	local total_w   = board.width  * step - spacing
 	local total_h   = board.height * step - spacing
-	local padding   = cell_size * 1.1
+	local padding   = cell_size * CFG.BOARD_BG.padding_ratio
 	local panel_w   = total_w + padding * 2
 	local panel_h   = total_h + padding * 2
-	local base_size = 1024
+	local base_size = CFG.BOARD_BG.base_size
 
-	local pos = vmath.vector3(self.layout.settings.start_position.x, self.layout.settings.start_position.y, -0.5)
+	local pos = vmath.vector3(self.layout.settings.start_position.x, self.layout.settings.start_position.y, CFG.Z.board_bg)
 	self.id = factory.create(self.factory_url, pos)
 
 	if self.id then

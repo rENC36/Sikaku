@@ -60,3 +60,24 @@ embedded_instances {
   "}\n"
   ""
 }
+embedded_instances {
+  id: "sounds"
+  data: "embedded_components {\n"
+  "  id: \"click\"\n"
+  "  type: \"sound\"\n"
+  "  data: \"sound: \\\"/assets/sounds/click.ogg\\\"\\n"
+  "\"\n"
+  "}\n"
+  ""
+}
+embedded_instances {
+  id: "music"
+  data: "embedded_components {\n"
+  "  id: \"menu\"\n"
+  "  type: \"sound\"\n"
+  "  data: \"sound: \\\"/assets/sounds/menu_music.ogg\\\"\\n"
+  "looping: 1\\n"
+  "\"\n"
+  "}\n"
+  ""
+}

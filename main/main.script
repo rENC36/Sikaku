@@ -3,27 +3,38 @@ local Selection = require("game.shikaku.selection")
 local Input = require("game.shikaku.input")
 local Solver = require("game.shikaku.solver")
 local Board = require("game.shikaku.board")
-local Levels = require("game.shikaku.levels.levels")
+local Levels = require("game.shikaku.levels")
 local PlayerData = require("game.player.player_data")
+local CFG = require("data.config.sounds")
+local Audio = require("utils.audio_manager")
 
-local GAME_UI_BUTTONS = {
-	{ node = "btn_menu", message = "back_to_menu" },
-}
+local CATEGORY_ORDER = { "easy", "medium", "hard" }
+
+local function get_next_category(current)
+	for i, cat in ipairs(CATEGORY_ORDER) do
+		if cat == current then
+			return CATEGORY_ORDER[i + 1] or CATEGORY_ORDER[1]
+		end
+	end
+	return "easy"
+end
 
 local function get_ui_message(x, y)
-	for _, button in ipairs(GAME_UI_BUTTONS) do
+	for _, button in ipairs(CFG.GAME_UI_BUTTONS) do
 		local ok, over = pcall(gui.pick_node, button.node, x, y)
-
 		if ok and over then
 			return button.message
 		end
 	end
-
 	return nil
 end
 
 function init(self)
 	msg.post(".", "acquire_input_focus")
+
+	Audio.init()
+	Audio.SOUNDS = CFG.SOUNDS or {}
+	Audio.MUSICS = CFG.MUSICS or {}
 
 	self.screens = {
 		menu           = "/menu",
@@ -33,13 +44,10 @@ function init(self)
 	}
 
 	open_screen(self, "menu")
-
 	self.game_active = false
-
 	self.current_mode = nil
 	self.current_level = 1
 	self.current_category = "easy"
-
 	self.board = nil
 	self.board_view = nil
 	self.selection = nil
@@ -57,9 +65,7 @@ function on_message(self, message_id, message, sender)
 		self.current_category = message.category or "easy"
 
 		Levels.set_level(self.current_category, self.current_level)
-
 		open_screen(self, "game")
-
 		load_puzzle_from_levels(self, self.current_category)
 
 		msg.post(".", "acquire_input_focus")
@@ -74,9 +80,7 @@ function on_message(self, message_id, message, sender)
 		self.board_view = nil
 		self.selection = nil
 		self.input = nil
-
 		self.game_active = false
-
 		self.current_mode = nil
 		self.current_level = 1
 		self.current_category = "easy"
@@ -95,12 +99,10 @@ end
 function on_input(self, action_id, action)
 	if action_id == hash("touch") and action and action.x and action.y then
 		local ui_message = get_ui_message(action.x, action.y)
-
 		if ui_message then
 			if action.released then
 				msg.post("/main", ui_message)
 			end
-
 			return true
 		end
 	end
@@ -112,10 +114,8 @@ function on_input(self, action_id, action)
 	if action_id == hash("touch") then
 		if action.pressed then
 			self.input:MousePressed(action.x, action.y)
-
 		elseif action.released then
 			local placed = self.input:MouseReleased(action.x, action.y)
-
 			if placed then
 				check_solved(self)
 			end
@@ -134,29 +134,27 @@ function on_input(self, action_id, action)
 end
 
 function check_solved(self)
-	if not self.board then
-		return
-	end
-
-	if not self.board:IsFull() then
+	if not self.board or not self.board:IsFull() then
 		return
 	end
 
 	local rectangles = self.board:GetAllRectangles()
-
 	if Solver.Check(self.board, rectangles) then
 		print("SOLVED! Mode:", self.current_mode, "Level:", self.current_level)
-
 		PlayerData.complete_level(self.current_category, self.current_level)
 
 		self.current_level = self.current_level + 1
 
 		if self.current_level > Levels.count(self.current_category) then
+			self.current_category = get_next_category(self.current_category)
 			self.current_level = 1
+
+			PlayerData.set("last_category", self.current_category)
+			PlayerData.set("last_page", 1)
+			PlayerData.save()
 		end
 
 		Levels.set_level(self.current_category, self.current_level)
-
 		load_puzzle_from_levels(self, self.current_category)
 	else
 		print("WRONG!")
@@ -173,7 +171,6 @@ function load_puzzle_from_levels(self, category)
 	self.input = nil
 
 	local puzzle = Levels.load(category)
-
 	if not puzzle then
 		print("NO PUZZLE FOUND")
 		return
@@ -184,10 +181,8 @@ function load_puzzle_from_levels(self, category)
 	for y = 1, puzzle.height do
 		for x = 1, puzzle.width do
 			local number = puzzle.data[y][x]
-
 			if number and number ~= 0 then
 				local cell = self.board:GetCell(x, y)
-
 				if cell then
 					cell:SetNumber(number)
 				end
@@ -196,16 +191,18 @@ function load_puzzle_from_levels(self, category)
 	end
 
 	local ww, wh = window.get_size()
+	local bv = CFG.BOARD_VIEW
+	local fac = CFG.FACTORIES
 
-	self.board_view = BoardView.new("/Factories#cellfactory", {
-		cell_size = 64,
-		spacing = 4,
+	self.board_view = BoardView.new(fac.cell, {
+		cell_size = bv.cell_size,
+		spacing = bv.spacing,
 		start_position = vmath.vector3(ww / 2, wh / 2, 0)
 	}, {
-		preview_factory_url = "/Factories#selection_bg_factory",
-		overlay_factory_url = "/Factories#selection_bg_factory",
-		badge_factory_url = "/Factories#badge_factory",
-		board_bg_factory_url = "/Factories#grid_bg_factory"
+		preview_factory_url = fac.preview_bg,
+		overlay_factory_url = fac.overlay,
+		badge_factory_url = fac.badge,
+		board_bg_factory_url = fac.board_bg
 	})
 
 	self.board_view:Create(self.board)
@@ -218,7 +215,6 @@ end
 
 function open_screen(self, name)
 	local url = self.screens[name]
-
 	if not url then
 		print("ERROR: Unknown screen:", name)
 		return
@@ -233,4 +229,10 @@ function open_screen(self, name)
 	msg.post(url, "acquire_input_focus")
 
 	print("SCREEN:", name)
+
+	if name == "menu" or name == "mode_select" or name == "classic_select" then
+		Audio.play_music_id("menu")
+	elseif name == "game" then
+		Audio.play_music_id("game")
+	end
 end

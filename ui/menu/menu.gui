@@ -247,7 +247,7 @@ nodes {
   }
   type: TYPE_BOX
   texture: "game/switcher"
-  id: "switcher1"
+  id: "switcher_off"
   parent: "switch_off"
   inherit_alpha: true
 }
@@ -274,7 +274,7 @@ nodes {
   }
   type: TYPE_BOX
   texture: "game/switcher"
-  id: "switcher"
+  id: "switcher_on"
   parent: "switch_on"
   inherit_alpha: true
 }
@@ -308,14 +308,43 @@ nodes {
   }
   type: TYPE_BOX
   texture: "game/language_board"
-  id: "box"
+  id: "lang"
   parent: "settings_board"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
 }
 nodes {
+  rotation {
+    z: 90.0
+  }
+  size {
+    x: 35.0
+    y: 2.0
+  }
+  type: TYPE_BOX
+  texture: "game/line"
+  id: "line2"
+  parent: "lang"
+  inherit_alpha: true
+}
+nodes {
   position {
-    x: 40.0
+    x: 93.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "en_box"
+  parent: "lang"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    x: -1.0
   }
   scale {
     x: 0.9
@@ -334,13 +363,27 @@ nodes {
   text: "\320\220\320\275\320\263\320\273"
   font: "nunitoREGULAR"
   id: "en_text"
-  parent: "box"
+  parent: "en_box"
   inherit_alpha: true
-  alpha: 0.7
 }
 nodes {
   position {
-    x: -40.0
+    x: -88.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "ru_box"
+  parent: "lang"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    x: -1.0
   }
   scale {
     x: 0.9
@@ -358,22 +401,8 @@ nodes {
   type: TYPE_TEXT
   text: "\320\240\321\203\321\201"
   font: "nunitoREGULAR"
-  id: "rus_text"
-  parent: "box"
-  inherit_alpha: true
-}
-nodes {
-  rotation {
-    z: 90.0
-  }
-  size {
-    x: 35.0
-    y: 2.0
-  }
-  type: TYPE_BOX
-  texture: "game/line"
-  id: "line2"
-  parent: "box"
+  id: "ru_text"
+  parent: "ru_box"
   inherit_alpha: true
 }
 nodes {

@@ -1,9 +1,9 @@
 local Levels = {}
 
 Levels.banks = {
-	easy   = require("game.shikaku.levels.easy"),
-	medium = require("game.shikaku.levels.medium"),
-	hard   = require("game.shikaku.levels.hard"),
+	easy   = require("data.levels.easy"),
+	medium = require("data.levels.medium"),
+	hard   = require("data.levels.hard"),
 }
 
 Levels.index = {

@@ -1,7 +1,7 @@
+local CFG = require("data.config.board_view_config")
+
 local RectangleOverlay = {}
 RectangleOverlay.__index = RectangleOverlay
-
-local PLACED_FILL_ALPHA = 1
 
 function RectangleOverlay.new(layout, overlay_factory_url)
 	local self = setmetatable({}, RectangleOverlay)
@@ -16,13 +16,13 @@ function RectangleOverlay:create(rectangle, color)
 	color = color or vmath.vector4(1, 1, 1, 1)
 
 	local cx, cy, outer_w, outer_h = self.layout:get_preview_bounds(rectangle)
-	local pos = vmath.vector3(cx, cy, 0.06)
+	local pos = vmath.vector3(cx, cy, CFG.Z.placed_bg)
 	local id = factory.create(self.overlay_factory_url, pos)
 	if not id then return end
 
 	go.set_scale(vmath.vector3(1, 1, 1), id)
 
-	local bg_color = vmath.vector4(color.x, color.y, color.z, PLACED_FILL_ALPHA)
+	local bg_color = vmath.vector4(color.x, color.y, color.z, CFG.PLACED_FILL_ALPHA)
 	local sprite_url = msg.url(nil, id, "sprite")
 
 	go.set_position(pos, id)

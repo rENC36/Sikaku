@@ -1,7 +1,7 @@
+local CFG = require("data.config.input_config")
+
 local Input = {}
 Input.__index = Input
-
-local COLOR_DEFAULT = vmath.vector4(1, 1, 1, 1)
 
 local function hsv_to_rgb(h, s, v)
 	local r, g, b
@@ -90,26 +90,27 @@ function Input:GetCellDisplayColor(x, y)
 			return rectangle.color
 		end
 	end
-	return COLOR_DEFAULT
+	return CFG.COLOR_DEFAULT
 end
 
 function Input:GenerateColor()
+	local gen = CFG.GENERATOR
 	if #self.used_colors == 0 then
-		local color = hsv_to_rgb(math.random(), 0.30, 0.95)
+		local color = hsv_to_rgb(math.random(), gen.first_s, gen.first_v)
 		table.insert(self.used_colors, color)
 		return color
 	end
 
-	for _ = 1, 30 do
+	for _ = 1, gen.max_attempts do
 		local h = math.random()
-		local s = 0.25 + math.random() * 0.25
-		local v = 0.88 + math.random() * 0.10
+		local s = gen.loop_s_min + math.random() * (gen.loop_s_max - gen.loop_s_min)
+		local v = gen.loop_v_min + math.random() * (gen.loop_v_max - gen.loop_v_min)
 		local color = hsv_to_rgb(h, s, v)
 
 		local too_similar = false
 		for _, old in ipairs(self.used_colors) do
 			local dist = math.abs(color.x - old.x) + math.abs(color.y - old.y) + math.abs(color.z - old.z)
-			if dist < 0.35 then
+			if dist < gen.similarity_threshold then
 				too_similar = true
 				break
 			end
@@ -122,7 +123,7 @@ function Input:GenerateColor()
 	end
 
 	local h = (math.random() + 0.5) % 1
-	local color = hsv_to_rgb(h, 0.30, 0.92)
+	local color = hsv_to_rgb(h, gen.fallback_s, gen.fallback_v)
 	table.insert(self.used_colors, color)
 	return color
 end
@@ -214,8 +215,8 @@ function Input:MouseReleased(x, y)
 		self.pending_color = nil
 		return false
 	end
-	
-	local placed_color = self.pending_color or COLOR_DEFAULT
+
+	local placed_color = self.pending_color or CFG.COLOR_DEFAULT
 
 	self.board_view:ClearPreviewBg()
 	self:RestoreHighlightedCells()

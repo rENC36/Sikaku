@@ -1,12 +1,7 @@
+local CFG = require("data.config.board_view_config")
+
 local PreviewOverlay = {}
 PreviewOverlay.__index = PreviewOverlay
-
-local PREVIEW_FILL_ALPHA = 0.7
-
-local PALETTE = {
-	valid   = vmath.vector4(91 / 255, 217 / 255, 139 / 255, 1),
-	invalid = vmath.vector4(245 / 255, 95 / 255, 95 / 255, 1),
-}
 
 function PreviewOverlay.new(layout, badge_factory_url, overlay_factory_url, badge_base_size)
 	local self = setmetatable({}, PreviewOverlay)
@@ -29,11 +24,13 @@ function PreviewOverlay:update(rectangle, color, info)
 	local cx, cy, outer_w, outer_h = self.layout:get_preview_bounds(rectangle)
 	local valid = info.valid ~= false
 
+	local pal = CFG.PALETTE
+	local alpha = CFG.PREVIEW_FILL_ALPHA
 	local fill_color = valid
-	and vmath.vector4(PALETTE.valid.x, PALETTE.valid.y, PALETTE.valid.z, PREVIEW_FILL_ALPHA)
-	or  vmath.vector4(PALETTE.invalid.x, PALETTE.invalid.y, PALETTE.invalid.z, PREVIEW_FILL_ALPHA)
+	and vmath.vector4(pal.valid.x, pal.valid.y, pal.valid.z, alpha)
+	or  vmath.vector4(pal.invalid.x, pal.invalid.y, pal.invalid.z, alpha)
 
-	local preview_pos = vmath.vector3(cx, cy, 0.08)
+	local preview_pos = vmath.vector3(cx, cy, CFG.Z.preview_bg)
 
 	if not self.preview_bg_id then
 		self.preview_bg_id = factory.create(self.overlay_factory_url, preview_pos)
@@ -50,10 +47,11 @@ function PreviewOverlay:update(rectangle, color, info)
 		go.set(sprite_url, "tint", fill_color)
 	end
 
-	local badge_size = math.max(24, math.min(38, self.layout.effective_cell_size * 0.85))
+	local badge_cfg = CFG.BADGE
+	local badge_size = math.max(badge_cfg.min_size, math.min(badge_cfg.max_size, self.layout.effective_cell_size * badge_cfg.size_ratio))
 	local badge_base = self.badge_base_size or self.layout.base_cell_size or 64
 	local badge_scale = vmath.vector3(badge_size / badge_base, badge_size / badge_base, 1)
-	local badge_pos = vmath.vector3(cx + outer_w / 2, cy + outer_h / 2, 0.3)
+	local badge_pos = vmath.vector3(cx + outer_w / 2, cy + outer_h / 2, CFG.Z.badge)
 
 	if not self.preview_badge_id then
 		self.preview_badge_id = factory.create(self.badge_factory_url, badge_pos)
@@ -70,10 +68,7 @@ function PreviewOverlay:update(rectangle, color, info)
 		end
 		label.set_text(badge_label_url, badge_text)
 
-		local badge_color = valid
-		and vmath.vector4(0.08, 0.95, 0.35, 1)
-		or  vmath.vector4(1.0, 0.12, 0.12, 1)
-
+		local badge_color = valid and badge_cfg.valid_color or badge_cfg.invalid_color
 		go.set(msg.url(nil, self.preview_badge_id, "sprite"), "tint", badge_color)
 	end
 end

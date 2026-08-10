@@ -1,16 +1,91 @@
-local Anim = require("utils.animator")
-local CFG = require("data.config.animations")
+local Anim       = require("utils.animator")
+local CFG        = require("data.config.animations")
+local SELECT_CFG = require("data.config.classic_select_config")
 local PlayerData = require("game.player.player_data")
-local Levels = require("game.shikaku.levels.levels")
+local Levels     = require("game.shikaku.levels")
 
-local COLS = 5
-local ROWS = 2
-local PER_PAGE = COLS * ROWS
-local GAP = 64
+local GRID      = SELECT_CFG.GRID
+local PER_PAGE  = GRID.COLS * GRID.ROWS
+local COLORS    = SELECT_CFG.COLORS
+local ANIM      = SELECT_CFG.ANIM
 
-local ATLAS_NAME = "game"
-local FRAME_NAME = "btn_lvl_3"
-local CELL_SIZE = 150
+local function update_category_highlight(self)
+	local map = { easy = self.btn_easy, medium = self.btn_medium, hard = self.btn_hard }
+	for cat, node in pairs(map) do
+		if node then
+			gui.set_color(node, cat == self.category and COLORS.CATEGORY_ACTIVE or COLORS.CATEGORY_INACTIVE)
+		end
+	end
+end
+
+local function refresh_grid(self)
+	gui.set_text(gui.get_node("page_count_text"), self.page .. "/" .. self.max_page)
+
+	local start_level = (self.page - 1) * PER_PAGE + 1
+	local current_unlocked = PlayerData.get_current_level(self.category)
+
+	for i, cell in ipairs(self.cells) do
+		local level_num = start_level + (i - 1)
+		cell.level_num = level_num
+
+		if level_num > self.total_levels then
+			gui.set_enabled(cell.box, false)
+			gui.set_enabled(cell.text, false)
+		else
+			gui.set_enabled(cell.box, true)
+			gui.set_enabled(cell.text, true)
+			gui.set_text(cell.text, tostring(level_num))
+
+			local completed = PlayerData.is_level_completed(self.category, level_num)
+
+			if completed then
+				gui.set_color(cell.box, COLORS.COMPLETED_BG)
+				gui.set_color(cell.text, COLORS.COMPLETED_TEXT)
+			elseif level_num <= current_unlocked then
+				gui.set_color(cell.box, COLORS.UNLOCKED_BG)
+				gui.set_color(cell.text, COLORS.UNLOCKED_TEXT)
+			else
+				gui.set_color(cell.box, COLORS.LOCKED_BG)
+				gui.set_color(cell.text, COLORS.LOCKED_TEXT)
+			end
+
+			gui.set_scale(cell.box, vmath.vector3(1, 1, 1))
+		end
+	end
+end
+
+local function update_arrows(self)
+	gui.set_enabled(self.btn_left, self.page > 1)
+	gui.set_enabled(self.btn_right, self.page < self.max_page)
+end
+
+local function change_page(self, delta)
+	local new_page = self.page + delta
+	if new_page >= 1 and new_page <= self.max_page then
+		self.page = new_page
+		PlayerData.set("last_page", self.page)
+		PlayerData.save()
+		refresh_grid(self)
+		update_arrows(self)
+	end
+end
+
+local function change_category(self, category)
+	if self.category == category then return end
+
+	self.category = category
+	PlayerData.set("last_category", category)
+	PlayerData.set("last_page", 1)
+	PlayerData.save()
+
+	self.page = 1
+	self.total_levels = Levels.count(self.category)
+	self.max_page = math.max(1, math.ceil(self.total_levels / PER_PAGE))
+
+	refresh_grid(self)
+	update_arrows(self)
+	update_category_highlight(self)
+end
 
 function init(self)
 	msg.post(".", "acquire_input_focus")
@@ -32,32 +107,28 @@ function init(self)
 	local cx = gui.get_width() / 2
 	local cy = gui.get_height() / 2
 
-	local grid_w = COLS * CELL_SIZE + (COLS - 1) * GAP
-	local grid_h = ROWS * CELL_SIZE + (ROWS - 1) * GAP
-	local start_x = cx - grid_w / 2 + CELL_SIZE / 2
-	local start_y = cy + grid_h / 2 - CELL_SIZE / 2
+	local grid_w = GRID.COLS * GRID.CELL_SIZE + (GRID.COLS - 1) * GRID.GAP
+	local grid_h = GRID.ROWS * GRID.CELL_SIZE + (GRID.ROWS - 1) * GRID.GAP
+	local start_x = cx - grid_w / 2 + GRID.CELL_SIZE / 2
+	local start_y = cy + grid_h / 2 - GRID.CELL_SIZE / 2
 
 	self.cells = {}
 	for i = 1, PER_PAGE do
-		local col = (i - 1) % COLS
-		local row = math.floor((i - 1) / COLS)
-		local x = start_x + col * (CELL_SIZE + GAP)
-		local y = start_y - row * (CELL_SIZE + GAP)
+		local col = (i - 1) % GRID.COLS
+		local row = math.floor((i - 1) / GRID.COLS)
+		local x = start_x + col * (GRID.CELL_SIZE + GRID.GAP)
+		local y = start_y - row * (GRID.CELL_SIZE + GRID.GAP)
 
-		local box = gui.new_box_node(vmath.vector3(x, y, 0), vmath.vector3(CELL_SIZE, CELL_SIZE, 0))
+		local box = gui.new_box_node(vmath.vector3(x, y, 0), vmath.vector3(GRID.CELL_SIZE, GRID.CELL_SIZE, 0))
 		gui.set_pivot(box, gui.PIVOT_CENTER)
-		gui.set_texture(box, ATLAS_NAME)
-		gui.play_flipbook(box, FRAME_NAME)
+		gui.set_texture(box, SELECT_CFG.ATLAS.NAME)
+		gui.play_flipbook(box, SELECT_CFG.ATLAS.FRAME)
 
 		local text = gui.new_text_node(vmath.vector3(x, y, 0), "")
 		gui.set_pivot(text, gui.PIVOT_CENTER)
 		gui.set_font(text, "nunitoREGULAR")
 
-		table.insert(self.cells, {
-			box = box,
-			text = text,
-			level_num = 0,
-		})
+		table.insert(self.cells, { box = box, text = text, level_num = 0 })
 	end
 
 	self.btn_back   = gui.get_node("btn_back")
@@ -79,92 +150,6 @@ function init(self)
 	refresh_grid(self)
 	update_arrows(self)
 	update_category_highlight(self)
-end
-
-function update_category_highlight(self)
-	local map = {
-		easy   = self.btn_easy,
-		medium = self.btn_medium,
-		hard   = self.btn_hard,
-	}
-	for cat, node in pairs(map) do
-		if node then
-			if cat == self.category then
-				gui.set_color(node, vmath.vector4(1, 1, 1, 1))
-			else
-				gui.set_color(node, vmath.vector4(0.5, 0.5, 0.5, 1))
-			end
-		end
-	end
-end
-
-function change_category(self, category)
-	if self.category == category then return end
-
-	self.category = category
-	PlayerData.set("last_category", category)
-	PlayerData.set("last_page", 1)
-	PlayerData.save()
-
-	self.page = 1
-	self.total_levels = Levels.count(self.category)
-	self.max_page = math.max(1, math.ceil(self.total_levels / PER_PAGE))
-
-	refresh_grid(self)
-	update_arrows(self)
-	update_category_highlight(self)
-end
-
-function refresh_grid(self)
-	gui.set_text(gui.get_node("page_count_text"), self.page .. "/" .. self.max_page)
-
-	local start_level = (self.page - 1) * PER_PAGE + 1
-	local current_unlocked = PlayerData.get_current_level(self.category)
-
-	for i, cell in ipairs(self.cells) do
-		local level_num = start_level + (i - 1)
-		cell.level_num = level_num
-
-		if level_num > self.total_levels then
-			gui.set_enabled(cell.box, false)
-			gui.set_enabled(cell.text, false)
-		else
-			gui.set_enabled(cell.box, true)
-			gui.set_enabled(cell.text, true)
-			gui.set_text(cell.text, tostring(level_num))
-
-			local completed = PlayerData.is_level_completed(self.category, level_num)
-
-			if completed then
-				gui.set_color(cell.box, vmath.vector4(0.2, 0.85, 0.3, 1))
-				gui.set_color(cell.text, vmath.vector4(1, 1, 1, 1))
-			elseif level_num <= current_unlocked then
-				gui.set_color(cell.box, vmath.vector4(1, 1, 1, 1))
-				gui.set_color(cell.text, vmath.vector4(0, 0, 0, 1))
-			else
-				gui.set_color(cell.box, vmath.vector4(0.25, 0.25, 0.25, 1))
-				gui.set_color(cell.text, vmath.vector4(0.5, 0.5, 0.5, 1))
-			end
-
-			gui.set_scale(cell.box, vmath.vector3(1, 1, 1))
-		end
-	end
-end
-
-function update_arrows(self)
-	gui.set_enabled(self.btn_left, self.page > 1)
-	gui.set_enabled(self.btn_right, self.page < self.max_page)
-end
-
-function change_page(self, delta)
-	local new_page = self.page + delta
-	if new_page >= 1 and new_page <= self.max_page then
-		self.page = new_page
-		PlayerData.set("last_page", self.page)
-		PlayerData.save()
-		refresh_grid(self)
-		update_arrows(self)
-	end
 end
 
 function on_message(self, message_id, message, sender)
@@ -191,19 +176,9 @@ function on_input(self, action_id, action)
 				if cell.level_num <= current_unlocked then
 					local selected = cell
 
-					Anim.animate(selected.box, {
-						scale = vmath.vector3(0.9, 0.9, 1),
-						duration = 0.05,
-						easing = gui.EASING_OUTQUAD,
-						cancel = true,
-					}, function()
-						Anim.animate(selected.box, {
-							scale = vmath.vector3(1, 1, 1),
-							duration = 0.2,
-							easing = gui.EASING_OUTBACK,
-							cancel = true,
-						})
-						
+					Anim.animate(selected.box, ANIM.PRESSED, function()
+						Anim.animate(selected.box, ANIM.RELEASED)
+
 						PlayerData.set("last_category", self.category)
 						PlayerData.set("last_page", self.page)
 						PlayerData.save()

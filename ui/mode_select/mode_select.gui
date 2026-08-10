@@ -65,7 +65,7 @@ nodes {
   text: "\320\221\320\225\320\241\320\232\320\236\320\235\320\225\320\247\320\235\320\253\320\231\n"
   "\320\240\320\225\320\226\320\230\320\234"
   font: "nunitoBOLD"
-  id: "classic_text2"
+  id: "endless_text"
   parent: "btn_endless"
   inherit_alpha: true
 }
@@ -98,7 +98,7 @@ nodes {
   type: TYPE_TEXT
   text: "\320\221\320\233\320\230\320\246"
   font: "nunitoBOLD"
-  id: "classic_text1"
+  id: "blitz_text"
   parent: "btn_blitz"
   inherit_alpha: true
 }

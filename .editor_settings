@@ -20,99 +20,23 @@
   :workflow {
     :open-tabs [
       [
+        [
+          "/ui/mode_select/blitz_prepare.gui"
+          :scene
+        ]
+        [
+          "/data/localization/en_lang.lua"
+          :code
+        ]
+        [
+          "/data/localization/ru_lang.lua"
+          :code
+        ]
       ]
     ]
     :recent-files [
       [
-        "/game/player/player_data.lua"
-        :code
-      ]
-      [
-        "/factories/Factories.collectionfactory"
-        :cljfx-form-view
-      ]
-      [
-        "/assets/fonts/nunitoBOLD.font"
-        :scene
-      ]
-      [
-        "/ui/menu/menu.gui"
-        :scene
-      ]
-      [
-        "/ui/gameplay/game.gui"
-        :scene
-      ]
-      [
-        "/factories/grid_bg_factory.factory"
-        :cljfx-form-view
-      ]
-      [
-        "/assets/atlas/game.atlas"
-        :scene
-      ]
-      [
-        "/objects/cell/cell.go"
-        :scene
-      ]
-      [
-        "/main/main.collection"
-        :scene
-      ]
-      [
-        "/factories/cell.factory"
-        :cljfx-form-view
-      ]
-      [
-        "/objects/cell/cell.script"
-        :code
-      ]
-      [
-        "/objects/grid_bg.go"
-        :scene
-      ]
-      [
-        "/objects/badge.go"
-        :scene
-      ]
-      [
-        "/objects/selection_bg.go"
-        :scene
-      ]
-      [
-        "/utils/animator.lua"
-        :code
-      ]
-      [
-        "/ui/gameplay/game.gui_script"
-        :code
-      ]
-      [
-        "/ui/menu/menu.gui_script"
-        :code
-      ]
-      [
-        "/ui/mode_select/mode_select.gui_script"
-        :code
-      ]
-      [
-        "/game/shikaku/levels/levels.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/levels/medium.lua"
-        :code
-      ]
-      [
-        "/input/game.input_binding"
-        :cljfx-form-view
-      ]
-      [
-        "/game/shikaku/input.lua"
-        :code
-      ]
-      [
-        "/.gitignore"
+        "/game/view/board_view/preview_overlay.lua"
         :code
       ]
       [
@@ -124,23 +48,67 @@
         :code
       ]
       [
-        "/game/view/board_view/preview_overlay.lua"
+        "/data/config/classic_select_config.lua"
         :code
       ]
       [
-        "/game/view/board_view/rectangle_overlay.lua"
+        "/data/config/animations_сonfig.lua"
         :code
       ]
       [
-        "/game/view/board_view/board_bg.lua"
+        "/game.project"
+        :cljfx-form-view
+      ]
+      [
+        "/data/config/animations.lua"
         :code
       ]
       [
-        "/game/view/board_view.lua"
+        "/utils/animator.lua"
         :code
       ]
       [
-        "/ui/mode_select/classic_select.gui_script"
+        "/ui/gameplay/game.gui"
+        :scene
+      ]
+      [
+        "/ui/menu/menu.gui"
+        :scene
+      ]
+      [
+        "/utils/localization.lua"
+        :code
+      ]
+      [
+        "/ui/mode_select/mode_select.gui"
+        :scene
+      ]
+      [
+        "/game/shikaku/levels/easy.lua"
+        :code
+      ]
+      [
+        "/game/shikaku/levels/levels.lua"
+        :code
+      ]
+      [
+        "/game/shikaku/levels.lua"
+        :code
+      ]
+      [
+        "/data/config/game_config.lua"
+        :code
+      ]
+      [
+        "/main/main.collection"
+        :scene
+      ]
+      [
+        "/data/config/sounds.lua"
+        :code
+      ]
+      [
+        "/utils/audio_manager.lua"
         :code
       ]
       [
@@ -148,8 +116,52 @@
         :code
       ]
       [
-        "/game.project"
-        :cljfx-form-view
+        "/objects/cell/cell.script"
+        :code
+      ]
+      [
+        "/ui/gameplay/game.gui_script"
+        :code
+      ]
+      [
+        "/ui/menu/menu.gui_script"
+        :code
+      ]
+      [
+        "/ui/mode_select/classic_select.gui_script"
+        :code
+      ]
+      [
+        "/ui/mode_select/mode_select.gui_script"
+        :code
+      ]
+      [
+        "/game/player/player_data.lua"
+        :code
+      ]
+      [
+        "/ui/mode_select/blitz_prepare.gui_script"
+        :code
+      ]
+      [
+        "/ui/gameplay/blitz_game.gui_script"
+        :code
+      ]
+      [
+        "/ui/gameplay/blitz_game.gui"
+        :scene
+      ]
+      [
+        "/ui/mode_select/blitz_prepare.gui"
+        :scene
+      ]
+      [
+        "/data/localization/en_lang.lua"
+        :code
+      ]
+      [
+        "/data/localization/ru_lang.lua"
+        :code
       ]
     ]
   }
