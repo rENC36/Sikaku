@@ -20,7 +20,6 @@ show_made_with_defold = 0
 
 [project]
 title = Sikaku
-dependencies#0 = https://github.com/defold/extension-poki-sdk/archive/refs/heads/main.zip
 
 [label]
 max_count = 1024

@@ -104,10 +104,6 @@
         :code
       ]
       [
-        "/game.project"
-        :cljfx-form-view
-      ]
-      [
         "/input/game.input_binding"
         :cljfx-form-view
       ]
@@ -150,6 +146,10 @@
       [
         "/main/main.script"
         :code
+      ]
+      [
+        "/game.project"
+        :cljfx-form-view
       ]
     ]
   }
