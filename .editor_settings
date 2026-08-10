@@ -6,14 +6,10 @@
         :proj-path "/game/view/cell_view.lua"
         :row 0
       }
-      {
-        :enabled true
-        :proj-path "/main/main.script"
-        :row 63
-      }
     ]
     :find {
-      :term "--"
+      :term ""
+      :wrap false
     }
   }
   :scene {
@@ -24,31 +20,15 @@
   :workflow {
     :open-tabs [
       [
-        [
-          "/game.project"
-          :cljfx-form-view
-        ]
-        [
-          "/.gitignore"
-          :code
-        ]
       ]
     ]
     :recent-files [
       [
-        "/objects/classic_cell/classic_cell.go"
-        :scene
-      ]
-      [
-        "/factories/levelfactory.factory"
+        "/factories/Factories.collectionfactory"
         :cljfx-form-view
       ]
       [
-        "/main/main.collection"
-        :scene
-      ]
-      [
-        "/assets/atlas/game.atlas"
+        "/assets/fonts/nunitoBOLD.font"
         :scene
       ]
       [
@@ -56,60 +36,48 @@
         :scene
       ]
       [
-        "/ui/menu/menu.gui_script"
-        :code
-      ]
-      [
-        "/ui/mode_select/mode_select.gui"
+        "/ui/gameplay/game.gui"
         :scene
       ]
       [
-        "/ui/mode_select/mode_select.gui_script"
-        :code
+        "/factories/grid_bg_factory.factory"
+        :cljfx-form-view
       ]
       [
-        "/game/player/player_data.lua"
-        :code
+        "/assets/atlas/game.atlas"
+        :scene
+      ]
+      [
+        "/objects/cell/cell.go"
+        :scene
+      ]
+      [
+        "/main/main.collection"
+        :scene
+      ]
+      [
+        "/factories/cell.factory"
+        :cljfx-form-view
       ]
       [
         "/ui/mode_select/classic_select.gui_script"
         :code
       ]
       [
-        "/ui/mode_select/classic_select.gui"
+        "/objects/cell/cell.script"
+        :code
+      ]
+      [
+        "/objects/grid_bg.go"
         :scene
       ]
       [
-        "/ui/gameplay/game.gui"
+        "/objects/badge.go"
         :scene
       ]
       [
-        "/game/shikaku/levels/hard.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/levels/medium.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/rectangle.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/generator.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/cell.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/levels/easy.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/board.lua"
-        :code
+        "/objects/selection_bg.go"
+        :scene
       ]
       [
         "/utils/animator.lua"
@@ -120,19 +88,11 @@
         :code
       ]
       [
-        "/data/config/animations.lua"
+        "/ui/menu/menu.gui_script"
         :code
       ]
       [
-        "/game/view/cell_view.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/selection.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/solver.lua"
+        "/ui/mode_select/mode_select.gui_script"
         :code
       ]
       [
@@ -140,19 +100,7 @@
         :code
       ]
       [
-        "/game/shikaku/input.lua"
-        :code
-      ]
-      [
-        "/main/main.script"
-        :code
-      ]
-      [
-        "/input/game.input_binding"
-        :cljfx-form-view
-      ]
-      [
-        "/game/view/board_view.lua"
+        "/game/shikaku/levels/medium.lua"
         :code
       ]
       [
@@ -160,7 +108,47 @@
         :cljfx-form-view
       ]
       [
+        "/input/game.input_binding"
+        :cljfx-form-view
+      ]
+      [
+        "/game/shikaku/input.lua"
+        :code
+      ]
+      [
         "/.gitignore"
+        :code
+      ]
+      [
+        "/game/view/board_view/layout.lua"
+        :code
+      ]
+      [
+        "/game/view/board_view/cell_factory.lua"
+        :code
+      ]
+      [
+        "/game/view/board_view/preview_overlay.lua"
+        :code
+      ]
+      [
+        "/game/view/board_view/rectangle_overlay.lua"
+        :code
+      ]
+      [
+        "/game/view/board_view/board_bg.lua"
+        :code
+      ]
+      [
+        "/game/view/board_view.lua"
+        :code
+      ]
+      [
+        "/game/view/board_view/board_view.lua"
+        :code
+      ]
+      [
+        "/main/main.script"
         :code
       ]
     ]

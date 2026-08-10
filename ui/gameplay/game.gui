@@ -1,8 +1,12 @@
 script: "/ui/gameplay/game.gui_script"
+textures {
+  name: "game"
+  texture: "/assets/atlas/game.atlas"
+}
 nodes {
   position {
-    x: 1860.0
-    y: 1031.0
+    x: 1834.0
+    y: 983.0
   }
   size {
     x: 50.0
@@ -19,8 +23,8 @@ nodes {
 }
 nodes {
   position {
-    x: 1000.0
-    y: 580.0
+    x: 1006.0
+    y: 492.0
   }
   size {
     x: 200.0

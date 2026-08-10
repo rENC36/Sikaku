@@ -14,6 +14,18 @@ embedded_instances {
   "  id: \"cellfactory\"\n"
   "  component: \"/factories/cell.factory\"\n"
   "}\n"
+  "components {\n"
+  "  id: \"selection_bg_factory\"\n"
+  "  component: \"/factories/selection_bg_factory.factory\"\n"
+  "}\n"
+  "components {\n"
+  "  id: \"grid_bg_factory\"\n"
+  "  component: \"/factories/grid_bg_factory.factory\"\n"
+  "}\n"
+  "components {\n"
+  "  id: \"badge_factory\"\n"
+  "  component: \"/factories/badge_factory.factory\"\n"
+  "}\n"
   ""
 }
 embedded_instances {
