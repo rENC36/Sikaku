@@ -1,3 +1,4 @@
+script: "/ui/gameplay/blitz_game.gui_script"
 fonts {
   name: "nunitoREGULAR"
   font: "/assets/fonts/nunitoREGULAR.font"

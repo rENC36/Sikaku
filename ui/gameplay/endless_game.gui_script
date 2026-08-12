@@ -1,6 +1,8 @@
 local Anim = require("utils.animator")
 local CFG  = require("data.config.animations")
 
+local PlayerData = require("game.player.player_data")
+
 function init(self)
 	msg.post(".", "acquire_input_focus")
 	self.buttons = Anim.register_buttons({
@@ -11,6 +13,9 @@ end
 function on_message(self, message_id, message, sender)
 	if message_id == hash("reset_ui") then
 		Anim.reset_buttons(self.buttons)
+	elseif message_id == hash("set_endless_best") then
+		gui.set_text(gui.get_node("endless_best"), message.best)
+		gui.set_text(gui.get_node("endless_score"), message.score_now)
 	end
 end
 
@@ -18,6 +23,6 @@ function on_input(self, action_id, action)
 	if Anim.handle_buttons(self.buttons, action_id, action) then
 		return true
 	end
-	msg.post("/main", "game_input", { action_id = action_id, action = action })
+	msg.post("/main", "endless_input", { action_id = action_id, action = action })
 	return true
 end

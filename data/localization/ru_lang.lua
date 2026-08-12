@@ -1,5 +1,6 @@
 return {
 	menu = {
+		blitz_stats = "Очков",
 		play_text    = "Играть",
 		leader_text  = "Таблица Лидеров",
 		en_text      = "Англ",

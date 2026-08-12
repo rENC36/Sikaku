@@ -1,5 +1,6 @@
 return {
 	menu = {
+		blitz_stats = "Points",
 		play_text    = "Play",
 		leader_text  = "Leaderboard",
 		en_text      = "EN",

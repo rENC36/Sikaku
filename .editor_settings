@@ -21,12 +21,8 @@
     :open-tabs [
       [
         [
-          "/main/main.script"
+          "/game/endless/endless_game.lua"
           :code
-        ]
-        [
-          "/ui/gameplay/blitz_game.gui"
-          :scene
         ]
       ]
     ]
@@ -36,23 +32,7 @@
         :code
       ]
       [
-        "/data/config/classic_select_config.lua"
-        :code
-      ]
-      [
-        "/data/config/animations_сonfig.lua"
-        :code
-      ]
-      [
-        "/game.project"
-        :cljfx-form-view
-      ]
-      [
-        "/data/config/animations.lua"
-        :code
-      ]
-      [
-        "/utils/animator.lua"
+        "/game/view/board_view/board_view.lua"
         :code
       ]
       [
@@ -60,43 +40,19 @@
         :scene
       ]
       [
-        "/ui/menu/menu.gui"
+        "/ui/gameplay/blitz_game.gui"
         :scene
       ]
       [
-        "/utils/localization.lua"
+        "/game/view/board_view/preview_overlay.lua"
         :code
       ]
       [
-        "/ui/mode_select/mode_select.gui"
-        :scene
-      ]
-      [
-        "/game/shikaku/levels/easy.lua"
+        "/game/view/board_view/rectangle_overlay.lua"
         :code
       ]
       [
-        "/game/shikaku/levels/levels.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/levels.lua"
-        :code
-      ]
-      [
-        "/data/config/game_config.lua"
-        :code
-      ]
-      [
-        "/data/config/sounds.lua"
-        :code
-      ]
-      [
-        "/utils/audio_manager.lua"
-        :code
-      ]
-      [
-        "/objects/cell/cell.script"
+        "/game/shikaku/input.lua"
         :code
       ]
       [
@@ -104,20 +60,32 @@
         :code
       ]
       [
-        "/ui/menu/menu.gui_script"
-        :code
+        "/main/main.collection"
+        :scene
       ]
       [
         "/ui/mode_select/classic_select.gui_script"
         :code
       ]
       [
-        "/game/player/player_data.lua"
+        "/ui/mode_select/blitz_prepare.gui_script"
         :code
       ]
       [
-        "/ui/mode_select/blitz_prepare.gui"
-        :scene
+        "/game/shikaku/board.lua"
+        :code
+      ]
+      [
+        "/game/shikaku/levels.lua"
+        :code
+      ]
+      [
+        "/game/classic/classic_game.lua"
+        :code
+      ]
+      [
+        "/ui/mode_select/mode_select.gui_script"
+        :code
       ]
       [
         "/data/localization/en_lang.lua"
@@ -128,19 +96,43 @@
         :code
       ]
       [
-        "/ui/mode_select/mode_select.gui_script"
+        "/utils/localization.lua"
         :code
       ]
       [
-        "/main/main.collection"
+        "/ui/menu/menu.gui"
         :scene
       ]
       [
-        "/input/game.input_binding"
-        :cljfx-form-view
+        "/ui/gameplay/blitz_game.gui_script"
+        :code
       ]
       [
-        "/ui/mode_select/blitz_prepare.gui_script"
+        "/ui/menu/menu.gui_script"
+        :code
+      ]
+      [
+        "/game/view/cell_view.lua"
+        :code
+      ]
+      [
+        "/game/shikaku/cell.lua"
+        :code
+      ]
+      [
+        "/game/shikaku/selection.lua"
+        :code
+      ]
+      [
+        "/game/shikaku/solver.lua"
+        :code
+      ]
+      [
+        "/game/shikaku/generator.lua"
+        :code
+      ]
+      [
+        "/game/player/player_data.lua"
         :code
       ]
       [
@@ -152,11 +144,15 @@
         :code
       ]
       [
-        "/ui/gameplay/blitz_game.gui_script"
+        "/ui/gameplay/endless_game.gui_script"
         :code
       ]
       [
-        "/ui/gameplay/blitz_game.gui"
+        "/game/endless/endless_game.lua"
+        :code
+      ]
+      [
+        "/ui/gameplay/endless_game.gui"
         :scene
       ]
     ]

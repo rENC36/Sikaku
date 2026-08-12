@@ -4,9 +4,8 @@ local Rectangle = require("game.shikaku.rectangle")
 local Generator = {}
 
 local SIZES = {
-	{ 1, 2 }, { 2, 1 }, { 2, 2 },
+	{ 1, 2 }, { 2, 1 }, { 2, 2 }, { 1, 1 },
 	{ 1, 3 }, { 3, 1 }, { 2, 3 }, { 3, 2 },
-	{ 1, 1 }
 }
 
 function Generator:SetSeed(seed)

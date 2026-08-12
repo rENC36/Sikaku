@@ -25,6 +25,12 @@ end
 local function refresh_stats(self)
 	local completed = PD.get_completed_count("easy") + PD.get_completed_count("medium") + PD.get_completed_count("hard")
 	local total = Levels.count("easy") + Levels.count("medium") + Levels.count("hard")
+
+	local setlang = gui.get_text(gui.get_node("blitz_stats"))
+	gui.set_text(self.blitz_stats, PD.get("stats.blitz_best") .. " " .. setlang)
+
+	gui.set_text(self.endless_stats, PD.get("stats.endless_best") or 0)
+	
 	gui.set_text(self.stat, completed .. "/" .. total)
 	print("[Menu] Total progress:", completed .. "/" .. total)
 end
@@ -36,6 +42,8 @@ function init(self)
 	Lang.init()
 
 	self.stat = gui.get_node("classic_stats")
+	self.blitz_stats = gui.get_node("blitz_stats")
+	self.endless_stats = gui.get_node("endless_stats")
 
 	self.switch_on    = gui.get_node("switch_on")
 	self.switch_off   = gui.get_node("switch_off")
@@ -59,10 +67,12 @@ function init(self)
 		{ node = "en_box",           anim = CFG.btn_menu, sound = "click", action = function()
 			Lang.load("en")
 			Lang.apply_to_gui("menu")
+			refresh_stats(self)
 		end },
 		{ node = "ru_box",          anim = CFG.btn_menu, sound = "click", action = function()
 			Lang.load("ru")
 			Lang.apply_to_gui("menu")
+			refresh_stats(self)
 		end },
 	})
 

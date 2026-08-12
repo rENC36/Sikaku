@@ -97,3 +97,11 @@ embedded_instances {
   "}\n"
   ""
 }
+embedded_instances {
+  id: "endless_game"
+  data: "components {\n"
+  "  id: \"endless_game\"\n"
+  "  component: \"/ui/gameplay/endless_game.gui\"\n"
+  "}\n"
+  ""
+}

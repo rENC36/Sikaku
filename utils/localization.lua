@@ -55,6 +55,8 @@ function Localization.set_text(node_or_id, key)
 		return
 	end
 	gui.set_text(node, Localization.get(key or ""))
+
+	return Localization.get(key or "")
 end
 
 function Localization.apply_to_gui(screen)
