@@ -1,11 +1,15 @@
 script: "/ui/gameplay/game.gui_script"
+fonts {
+  name: "nunitoREGULAR"
+  font: "/assets/fonts/nunitoREGULAR.font"
+}
 textures {
   name: "game"
   texture: "/assets/atlas/game.atlas"
 }
 nodes {
   position {
-    x: 1834.0
+    x: 88.0
     y: 983.0
   }
   size {
@@ -37,6 +41,35 @@ nodes {
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
   visible: false
+}
+nodes {
+  position {
+    x: 1742.0
+    y: 571.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "btn_hint"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -144.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "3"
+  font: "nunitoREGULAR"
+  id: "hint_balance"
+  parent: "btn_hint"
+  inherit_alpha: true
 }
 layers {
   name: "bg"

@@ -22,6 +22,9 @@ local DEFAULT_DATA = {
 		best_time = nil,
 		blitz_best = 0,
 	},
+	hints = {
+		balance = 3,
+	},
 	last_category = "easy",
 	last_page = 1,
 }

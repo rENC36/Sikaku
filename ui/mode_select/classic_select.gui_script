@@ -139,12 +139,12 @@ function init(self)
 	self.btn_hard   = gui.get_node("btn_hard")
 
 	self.buttons = Anim.register_buttons({
-		{ node = "btn_back",   anim = CFG.btn_menu, action = function() msg.post("/main", "open_mode_select") end },
-		{ node = "btn_left",   anim = CFG.btn_menu, action = function() change_page(self, -1) end },
-		{ node = "btn_right",  anim = CFG.btn_menu, action = function() change_page(self, 1) end },
-		{ node = "btn_easy",   anim = CFG.btn_mode, action = function() change_category(self, "easy") end },
-		{ node = "btn_medium", anim = CFG.btn_mode, action = function() change_category(self, "medium") end },
-		{ node = "btn_hard",   anim = CFG.btn_mode, action = function() change_category(self, "hard") end },
+		{ node = "btn_back",   anim = CFG.btn_menu, sound = "click", action = function() msg.post("/main", "open_mode_select") end },
+		{ node = "btn_left",   anim = CFG.btn_menu, sound = "click", action = function() change_page(self, -1) end },
+		{ node = "btn_right",  anim = CFG.btn_menu, sound = "click", action = function() change_page(self, 1) end },
+		{ node = "btn_easy",   anim = CFG.btn_mode, sound = "click", action = function() change_category(self, "easy") end },
+		{ node = "btn_medium", anim = CFG.btn_mode, sound = "click", action = function() change_category(self, "medium") end },
+		{ node = "btn_hard",   anim = CFG.btn_mode, sound = "click", action = function() change_category(self, "hard") end },
 	})
 
 	refresh_grid(self)

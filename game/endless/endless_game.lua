@@ -4,21 +4,23 @@ local Input      = require("game.shikaku.input")
 local Selection  = require("game.shikaku.selection")
 local Generator  = require("game.shikaku.generator")
 local Solver     = require("game.shikaku.solver")
-local PlayerData = require("game.player.player_data")
 local GameCFG    = require("data.config.game_config")
+local HintsManager = require("utils.hints_manager")
 
 local EndlessGame = {}
 EndlessGame.__index = EndlessGame
 
+local START_SIZE = 5
+
 function EndlessGame.new()
 	local self = setmetatable({}, EndlessGame)
 	self.score       = 0
+	self.grid_size   = START_SIZE
 	self.board        = nil
 	self.board_view   = nil
 	self.selection    = nil
 	self.input        = nil
-	self.grid_size = 5
-	self.cycle_grid_size = 0
+	self.hints        = nil
 	return self
 end
 
@@ -42,104 +44,112 @@ function EndlessGame:init_board_view()
 end
 
 function EndlessGame:_generate(size)
-	for _ = 1, 30 do
-		local b = Generator:Generate(size, size)
-		if b then return b end
-	end
-	return nil
+for _ = 1, 30 do
+	local b = Generator:Generate(size, size)
+	if b then return b end
+end
+return nil
 end
 
 function EndlessGame:start_round()
-	self:init_board_view()
-	
 	if self.board_view then
 		self.board_view:Clear()
 	end
 
 	self.board = self:_generate(self.grid_size)
 	if not self.board then
-		print("[BlitzGame] Board generation failed")
+		print("[EndlessGame] Board generation failed")
 		return false
 	end
 
 	self.selection = Selection.new(self.board)
 	self.board_view:Create(self.board)
 	self.input = Input.new(self.selection, self.board_view)
+	self.hints = HintsManager.new(self.board, self.board_view, self.input)
 	return true
 end
 
-function EndlessGame:load_level()
-	self:update_grid_size()
-	
-	if self.board_view then
-		self.board_view:Clear()
+function EndlessGame:start()
+	self.score       = 0
+	self.grid_size   = START_SIZE
+
+	if not self.board_view then
+		self:init_board_view()
 	end
 
-	local puzzle = self:_generate(self.grid_size)
-	if not puzzle then
-		print("[EndlessGame] No puzzle")
-		return false
-	end
-	
 	self:start_round()
-	self:save_data()
-	msg.post("/endless_game", "set_endless_best", { best = PlayerData.get("stats.endless_best") or 0, score_now = self.score or 0})
-	return true
 end
 
-function EndlessGame:update_grid_size()
-	if self.cycle_grid_size >= 3 then
-		self.grid_size = self.grid_size + 1
-		self.cycle_grid_size = 0
-	end
-	self.cycle_grid_size = self.cycle_grid_size + 1
+function EndlessGame:stop()
+if self.board_view then
+	self.board_view:Clear()
+end
 end
 
-function EndlessGame:save_data()
-	local old_best = PlayerData.get("stats.endless_best") or 0
-	if self.score > old_best then
-		PlayerData.set("stats.endless_best", self.score)
-		PlayerData.save()
-	end
+function EndlessGame:cleanup()
+	self:stop()
+	self.board_view = nil
+	self.board      = nil
+	self.selection  = nil
+	self.input      = nil
+	self.hints      = nil
+end
+
+function EndlessGame:restart()
+self:stop()
+self:start()
 end
 
 function EndlessGame:on_input(action_id, action)
-	if not self.input then return false end
+if not self.input then return false end
 
-	if action_id == hash("touch") then
-		if action.pressed then
-			self.input:MousePressed(action.x, action.y)
-		elseif action.released then
-			local placed = self.input:MouseReleased(action.x, action.y)
-			if placed then
-				return self:check_solved()
+if action_id == hash("touch") or action_id == nil then
+	if action.pressed then
+		self.input:MousePressed(action.x, action.y)
+		return true
+	elseif action.released then
+		local placed = self.input:MouseReleased(action.x, action.y)
+		if placed and self.board and self.board:IsFull() then
+			local rects = self.board:GetAllRectangles()
+			if Solver.Check(self.board, rects) then
+				self:solve_round()
 			end
-		else
-			self.input:MouseMoved(action.x, action.y)
 		end
 		return true
-	end
-
-	if action_id == hash("mouse_right") and action.pressed then
-		self.input:RightClick(action.x, action.y)
+	else
+		self.input:MouseMoved(action.x, action.y)
 		return true
 	end
-
-	return false
 end
 
-function EndlessGame:check_solved()
-	if not self.board or not self.board:IsFull() then return false end
-	local rectangles = self.board:GetAllRectangles()
-	if Solver.Check(self.board, rectangles) then
-		print("[EndlessGame] SOLVED!")
-		self.score = self.score + 1
-		self:load_level()
-		return true
+if action_id == hash("mouse_button_right") and action.pressed then
+	self.input:RightClick(action.x, action.y)
+	return true
+end
+
+return false
+end
+
+function EndlessGame:solve_round()
+	self.score     = self.score + 1
+	self.grid_size = self.grid_size + 1
+	self:start_round()
+end
+
+function EndlessGame:use_hint()
+	if not self.hints then return false, "no_game" end
+	local ok, reason = self.hints:ApplyHint()
+	if ok then
+		if self.board and self.board:IsFull() then
+			local rects = self.board:GetAllRectangles()
+			if Solver.Check(self.board, rects) then
+				self:solve_round()
+			end
+		end
 	else
-		print("[EndlessGame] WRONG")
-		return false
+		print("[EndlessGame] Hint failed:", reason)
 	end
+	return ok, reason
 end
 
 return EndlessGame

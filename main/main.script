@@ -1,10 +1,11 @@
 local ScreenManager = require("utils.screen_manager")
 local Audio         = require("utils.audio_manager")
 local SoundCFG      = require("data.config.sounds")
-
 local ClassicGame   = require("game.classic.classic_game")
 local BlitzGame     = require("game.blitz.blitz_game")
-local EndlessGame	= require("game.endless.endless_game")
+local EndlessGame   = require("game.endless.endless_game")
+local HintsManager  = require("utils.hints_manager")
+local PlayerData    = require("game.player.player_data")
 
 function init(self)
 	Audio.init()
@@ -18,7 +19,7 @@ function init(self)
 	self.screens:register("game",           "/game")
 	self.screens:register("blitz_prepare",  "/blitz_prepare")
 	self.screens:register("blitz_game",     "/blitz_game")
-	self.screens:register("endless_game",     "/endless_game")
+	self.screens:register("endless_game",   "/endless_game")
 
 	self.classic = ClassicGame.new()
 	self.blitz   = BlitzGame.new()
@@ -50,6 +51,30 @@ local function start_blitz(self)
 	})
 end
 
+local function start_endless(self)
+	self.endless:cleanup()
+	self.endless:start()
+	local best = PlayerData.get("stats.endless_best") or 0
+	msg.post("/endless_game", "set_endless_best", {
+		best = best,
+		score_now = self.endless.score,
+	})
+end
+
+local function update_endless_hud(self)
+	if not self.endless then return end
+	local best = PlayerData.get("stats.endless_best") or 0
+	if self.endless.score > best then
+		PlayerData.set("stats.endless_best", self.endless.score)
+		PlayerData.save()
+		best = self.endless.score
+	end
+	msg.post("/endless_game", "set_endless_best", {
+		best = best,
+		score_now = self.endless.score,
+	})
+end
+
 function on_message(self, message_id, message, sender)
 	if message_id == hash("open_mode_select") then
 		self.screens:open("mode_select")
@@ -69,17 +94,20 @@ function on_message(self, message_id, message, sender)
 			self.screens:open("blitz_game")
 			start_blitz(self)
 			Audio.play_music_id("game")
-		elseif mode == "classic" then
+		elseif mode == "endless" then
+			self.screens:open("endless_game")
+			start_endless(self)
+			Audio.play_music_id("game")
+		else
 			self.screens:open("game")
 			self.classic:load_level(message.category, message.level)
 			Audio.play_music_id("game")
-		elseif mode == "endless" then
-			self.screens:open("endless_game")
-			self.endless:load_level()
 		end
+
 	elseif message_id == hash("back_to_menu") then
 		self.classic:cleanup()
 		self.blitz:cleanup()
+		self.endless:cleanup()
 		self.screens:open("menu")
 		Audio.play_music_id("menu")
 
@@ -90,11 +118,10 @@ function on_message(self, message_id, message, sender)
 		if self.classic then
 			self.classic:on_input(message.action_id, message.action)
 		end
+
 	elseif message_id == hash("blitz_input") then
-		print("[Main] blitz_input received", message.action_id, message.action and message.action.x, message.action and message.action.y)
 		if self.blitz then
 			local handled = self.blitz:on_input(message.action_id, message.action)
-			print("[Main] blitz handled:", handled)
 			if handled then
 				msg.post("/blitz_game", "update_hud", {
 					timer = self.blitz.timer,
@@ -107,9 +134,27 @@ function on_message(self, message_id, message, sender)
 				end
 			end
 		end
+
 	elseif message_id == hash("endless_input") then
 		if self.endless then
-			self.endless:on_input(message.action_id, message.action)
+			local handled = self.endless:on_input(message.action_id, message.action)
+			if handled then
+				update_endless_hud(self)
+			end
 		end
+
+	elseif message_id == hash("use_hint") then
+		local ok, reason = self.classic:use_hint()
+		msg.post("/game", "update_hint_balance", { balance = HintsManager.GetBalance(), ok = ok, reason = reason })
+
+	elseif message_id == hash("use_hint_endless") then
+		local ok, reason = self.endless:use_hint()
+		if ok then
+			update_endless_hud(self)
+		end
+		msg.post("/endless_game", "update_hint_balance", { balance = HintsManager.GetBalance(), ok = ok, reason = reason })
+
+	elseif message_id == hash("get_hint_balance") then
+		msg.post(sender, "update_hint_balance", { balance = HintsManager.GetBalance() })
 	end
 end

@@ -5,6 +5,14 @@ return {
 		leader_text  = "Leaderboard",
 		en_text      = "EN",
 		ru_text      = "RU",
+		settings_title = "Settings",
+		sfx_text = "Sound",
+		music_text = "Music",
+		language_text = "Language",
+		statistic_text = "Your statistic",
+		endless_text = "Endless", 
+		blitz_text = "Blitz",
+		classic_text = "Classic",
 	},
 
 	mode_select = {

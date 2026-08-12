@@ -6,6 +6,7 @@ local Solver     = require("game.shikaku.solver")
 local Levels     = require("game.shikaku.levels")
 local PlayerData = require("game.player.player_data")
 local GameCFG    = require("data.config.game_config")
+local HintsManager = require("utils.hints_manager")
 
 local ClassicGame = {}
 ClassicGame.__index = ClassicGame
@@ -27,6 +28,7 @@ function ClassicGame.new()
 	self.board_view = nil
 	self.selection = nil
 	self.input = nil
+	self.hints = nil
 	self.category = "easy"
 	self.level = 1
 	return self
@@ -75,6 +77,8 @@ function ClassicGame:load_level(category, level)
 	self.board_view:Create(self.board)
 	self.selection = Selection.new(self.board)
 	self.input = Input.new(self.selection, self.board_view)
+	self.hints = HintsManager.new(self.board, self.board_view, self.input)
+
 	print("[ClassicGame] Loaded", self.category, "level", self.level)
 	return true
 end
@@ -128,6 +132,17 @@ function ClassicGame:check_solved()
 	end
 end
 
+function ClassicGame:use_hint()
+	if not self.hints then return false, "no_game" end
+	local ok, reason = self.hints:ApplyHint()
+	if ok then
+		self:check_solved()
+	else
+		print("[ClassicGame] Hint failed:", reason)
+	end
+	return ok, reason
+end
+
 function ClassicGame:cleanup()
 	if self.board_view then
 		self.board_view:Clear()
@@ -136,6 +151,7 @@ function ClassicGame:cleanup()
 	self.board_view = nil
 	self.selection = nil
 	self.input = nil
+	self.hints = nil
 end
 
 return ClassicGame

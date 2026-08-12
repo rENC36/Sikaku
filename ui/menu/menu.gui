@@ -168,7 +168,7 @@ nodes {
   type: TYPE_TEXT
   text: "\320\235\320\260\321\201\321\202\321\200\320\276\320\271\320\272\320\270"
   font: "nunitoBOLD"
-  id: "settings_text1"
+  id: "settings_title"
   parent: "settings_board"
   inherit_alpha: true
 }
@@ -464,7 +464,7 @@ nodes {
   type: TYPE_TEXT
   text: "\320\232\320\273\320\260\321\201\321\201\320\270\320\272\320\260"
   font: "nunitoREGULAR"
-  id: "classic_text1"
+  id: "classic_text"
   pivot: PIVOT_W
   parent: "information_board"
   inherit_alpha: true
@@ -491,7 +491,7 @@ nodes {
   text: "\320\221\320\265\321\201\320\272\320\276\320\275\320\265\321\207\320\275\321\213\320\271\n"
   "\321\200\320\265\320\266\320\270\320\274"
   font: "nunitoREGULAR"
-  id: "infinity_text2"
+  id: "endless_text"
   pivot: PIVOT_W
   parent: "information_board"
   inherit_alpha: true
@@ -517,7 +517,7 @@ nodes {
   type: TYPE_TEXT
   text: "\320\221\320\273\320\270\321\206"
   font: "nunitoREGULAR"
-  id: "blitz_text3"
+  id: "blitz_text"
   pivot: PIVOT_W
   parent: "information_board"
   inherit_alpha: true

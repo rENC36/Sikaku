@@ -5,6 +5,14 @@ return {
 		leader_text  = "Таблица Лидеров",
 		en_text      = "Англ",
 		ru_text      = "Рус",
+		settings_title = "Настройки",
+		sfx_text = "Звуки",
+		music_text = "Музыка",
+		language_text = "Язык",
+		statistic_text = "Ваша статистика",
+		endless_text = "Бесконечный \nрежим", 
+		blitz_text = "Блитц",
+		classic_text = "Классика",
 	},
 
 	mode_select = {

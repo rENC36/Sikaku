@@ -51,5 +51,34 @@ nodes {
   id: "endless_score"
   inherit_alpha: true
 }
+nodes {
+  position {
+    x: 1799.0
+    y: 578.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "btn_hint"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -144.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "3"
+  font: "nunitoREGULAR"
+  id: "hint_balance"
+  parent: "btn_hint"
+  inherit_alpha: true
+}
 material: "/builtins/materials/gui.material"
 adjust_reference: ADJUST_REFERENCE_PARENT
