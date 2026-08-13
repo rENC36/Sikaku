@@ -48,3 +48,49 @@ embedded_instances {
   "}\n"
   ""
 }
+embedded_instances {
+  id: "sounds"
+  data: "embedded_components {\n"
+  "  id: \"click\"\n"
+  "  type: \"sound\"\n"
+  "  data: \"sound: \\\"/assets/sounds/click.ogg\\\"\\n"
+  "\"\n"
+  "}\n"
+  ""
+}
+embedded_instances {
+  id: "music"
+  data: "embedded_components {\n"
+  "  id: \"menu\"\n"
+  "  type: \"sound\"\n"
+  "  data: \"sound: \\\"/assets/sounds/C418 - depado (modified).ogg\\\"\\n"
+  "looping: 1\\n"
+  "gain: 0.15\\n"
+  "\"\n"
+  "}\n"
+  ""
+}
+embedded_instances {
+  id: "blitz_prepare"
+  data: "components {\n"
+  "  id: \"blitz_prepare\"\n"
+  "  component: \"/ui/mode_select/blitz_prepare.gui\"\n"
+  "}\n"
+  ""
+}
+embedded_instances {
+  id: "blitz_game"
+  data: "components {\n"
+  "  id: \"blitz_game\"\n"
+  "  component: \"/ui/gameplay/blitz_game.gui\"\n"
+  "}\n"
+  ""
+}
+embedded_instances {
+  id: "endless_game"
+  data: "components {\n"
+  "  id: \"endless_game\"\n"
+  "  component: \"/ui/gameplay/endless_game.gui\"\n"
+  "}\n"
+  ""
+}

@@ -83,6 +83,7 @@ end
 function M.register_buttons(list)
 	local buttons = { items = {}, locked = false }
 	for _, cfg in ipairs(list) do
+<<<<<<< Updated upstream
 		local node = gui.get_node(cfg.node)
 		M.apply(node, cfg.anim.default)
 		table.insert(buttons.items, {
@@ -92,6 +93,22 @@ function M.register_buttons(list)
 			pressed = false,
 			hovered = false,
 		})
+=======
+		local ok, node = pcall(gui.get_node, cfg.node)
+		if not ok or not node then
+			print("[Animator] WARNING: node not found:", cfg.node)
+		else
+			M.apply(node, cfg.anim.default)
+			table.insert(buttons.items, {
+				node    = node,
+				anim    = cfg.anim,
+				action  = cfg.action,
+				sound   = cfg.sound,
+				pressed = false,
+				hovered = false,
+			})
+		end
+>>>>>>> Stashed changes
 	end
 	return buttons
 end
@@ -143,6 +160,10 @@ function M.handle_buttons(buttons, action_id, action)
 		if action.pressed and over then
 			btn.pressed = true
 			M.animate(btn.node, btn.anim.pressed)
+			if btn.sound then
+				local ok, Audio = pcall(require, "utils.audio_manager")
+				if ok and Audio then Audio.play_sound_id(btn.sound) end
+			end
 			return true
 		end
 		

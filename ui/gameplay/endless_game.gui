@@ -1,30 +1,15 @@
-script: "/ui/gameplay/game.gui_script"
-<<<<<<< Updated upstream
-nodes {
-  position {
-    x: 1860.0
-    y: 1031.0
-  }
-  scale {
-    x: 0.415261
-    y: 0.675842
-=======
+script: "/ui/gameplay/endless_game.gui_script"
 fonts {
   name: "nunitoREGULAR"
   font: "/assets/fonts/nunitoREGULAR.font"
 }
-textures {
-  name: "game"
-  texture: "/assets/atlas/game.atlas"
-}
 nodes {
   position {
-    x: 88.0
-    y: 983.0
->>>>>>> Stashed changes
+    x: 1857.0
+    y: 1017.0
   }
   size {
-    x: 200.0
+    x: 100.0
     y: 100.0
   }
   color {
@@ -33,30 +18,43 @@ nodes {
   }
   type: TYPE_BOX
   id: "btn_menu"
-  layer: "all"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
 }
 nodes {
   position {
-    x: 1000.0
-    y: 580.0
+    x: 105.0
+    y: 559.0
   }
   size {
     x: 200.0
     y: 100.0
   }
-  type: TYPE_BOX
-  id: "shikaku_start_position"
-  layer: "all"
+  type: TYPE_TEXT
+  text: "0"
+  font: "nunitoREGULAR"
+  id: "endless_best"
   inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-  visible: false
 }
 nodes {
   position {
-    x: 1742.0
-    y: 571.0
+    x: 105.0
+    y: 417.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "0"
+  font: "nunitoREGULAR"
+  id: "endless_score"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 1799.0
+    y: 578.0
   }
   size {
     x: 200.0
@@ -81,12 +79,6 @@ nodes {
   id: "hint_balance"
   parent: "btn_hint"
   inherit_alpha: true
-}
-layers {
-  name: "bg"
-}
-layers {
-  name: "all"
 }
 material: "/builtins/materials/gui.material"
 adjust_reference: ADJUST_REFERENCE_PARENT

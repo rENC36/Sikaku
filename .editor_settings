@@ -20,7 +20,15 @@
     :open-tabs [
       [
         [
+<<<<<<< Updated upstream
           "/ui/mode_select/mode_select.gui"
+=======
+          "/main/main.collection"
+          :scene
+        ]
+        [
+          "/ui/menu/menu.gui"
+>>>>>>> Stashed changes
           :scene
         ]
         [
@@ -31,10 +39,19 @@
           "/ui/mode_select/classic_select.gui"
           :scene
         ]
+        [
+          "/ui/mode_select/classic_select.gui_script"
+          :code
+        ]
+        [
+          "/data/config/classic_select_config.lua"
+          :code
+        ]
       ]
     ]
     :recent-files [
       [
+<<<<<<< Updated upstream
         "/game/shikaku/solver.lua"
         :code
       ]
@@ -52,6 +69,29 @@
       ]
       [
         "/game/shikaku/generator.lua"
+=======
+        "/ui/mode_select/mode_select.gui_script"
+        :code
+      ]
+      [
+        "/ui/mode_select/blitz_prepare.gui_script"
+        :code
+      ]
+      [
+        "/data/levels/hard.lua"
+        :code
+      ]
+      [
+        "/ui/gameplay/blitz_game.gui_script"
+        :code
+      ]
+      [
+        "/data/levels/medium.lua"
+        :code
+      ]
+      [
+        "/data/levels/easy.lua"
+>>>>>>> Stashed changes
         :code
       ]
       [
@@ -63,7 +103,23 @@
         :code
       ]
       [
+<<<<<<< Updated upstream
         "/game/shikaku/levels/medium.lua"
+=======
+        "/game/shikaku/rectangle.lua"
+        :code
+      ]
+      [
+        "/game/player/player_data.lua"
+        :code
+      ]
+      [
+        "/game/shikaku/generator.lua"
+        :code
+      ]
+      [
+        "/game/shikaku/solver_backtrack.lua"
+>>>>>>> Stashed changes
         :code
       ]
       [
@@ -91,6 +147,7 @@
         :code
       ]
       [
+<<<<<<< Updated upstream
         "/ui/menu/menu.gui_script"
         :code
       ]
@@ -116,30 +173,87 @@
       ]
       [
         "/ui/gameplay/game.gui_script"
+=======
+        "/ui/gameplay/game.gui"
+        :scene
+      ]
+      [
+        "/game/endless/endless_game.lua"
         :code
       ]
       [
-        "/main/main.script"
+        "/game/classic/classic_game.lua"
+>>>>>>> Stashed changes
         :code
       ]
       [
+        "/ui/gameplay/endless_game.gui_script"
+        :code
+      ]
+      [
+<<<<<<< Updated upstream
         "/ui/mode_select/mode_select.gui_script"
         :code
       ]
       [
         "/data/config/animations.lua"
         :code
+=======
+        "/ui/gameplay/endless_game.gui"
+        :scene
+      ]
+      [
+        "/utils/hints_manager.lua"
+        :code
+      ]
+      [
+        "/data/config/game_config.lua"
+        :code
+      ]
+      [
+        "/assets/sounds/menu_music1.sound"
+        :cljfx-form-view
+>>>>>>> Stashed changes
       ]
       [
         "/utils/screen_manager.lua"
         :code
       ]
       [
+<<<<<<< Updated upstream
         "/utils/animator.lua"
+        :code
+=======
+        "/data/localization/en_lang.lua"
         :code
       ]
       [
-        "/objects/cell/cell.script"
+        "/data/localization/ru_lang.lua"
+        :code
+      ]
+      [
+        "/objects/selection_bg.go"
+        :scene
+>>>>>>> Stashed changes
+      ]
+      [
+        "/ui/menu/menu.gui"
+        :scene
+      ]
+      [
+        "/ui/mode_select/classic_select.gui"
+        :scene
+      ]
+      [
+        "/main/main.script"
+        :code
+      ]
+      [
+        "/data/config/sounds.lua"
+        :code
+      ]
+      [
+        "/ui/mode_select/classic_select.gui_script"
         :code
       ]
       [
@@ -147,6 +261,7 @@
         :scene
       ]
       [
+<<<<<<< Updated upstream
         "/objects/cell/cell.go"
         :scene
       ]
@@ -161,6 +276,10 @@
       [
         "/ui/mode_select/classic_select.gui"
         :scene
+=======
+        "/data/config/classic_select_config.lua"
+        :code
+>>>>>>> Stashed changes
       ]
     ]
   }

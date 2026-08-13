@@ -17,13 +17,15 @@ function init(self)
 	msg.post(".", "acquire_input_focus")
 
 	self.hint_balance = safe_node("hint_balance")
-	self.hint_icon = safe_node("btn_hint")
+	self.hint_icon    = safe_node("btn_hint")
 
 	update_hint_display(self)
 
 	self.buttons = Anim.register_buttons({
-		{ node = "btn_menu", anim = CFG.btn_menu, sound = "click", action = function() msg.post("/main", "back_to_menu") end },
-		{ node = "btn_hint", anim = CFG.btn_menu, sound = "click", action = function() msg.post("/main", "use_hint") end },
+		{ node = "btn_menu", anim = CFG.btn_menu, sound = "click",
+		action = function() msg.post("/main", "back_to_menu") end },
+		{ node = "btn_hint", anim = CFG.btn_menu, sound = "click",
+		action = function() msg.post("/main", "use_hint_endless") end },
 	})
 end
 
@@ -31,6 +33,13 @@ function on_message(self, message_id, message, sender)
 	if message_id == hash("reset_ui") then
 		Anim.reset_buttons(self.buttons)
 		update_hint_display(self)
+
+	elseif message_id == hash("set_endless_best") then
+		local best_node  = safe_node("endless_best")
+		local score_node = safe_node("endless_score")
+		if best_node  then gui.set_text(best_node,  tostring(message.best or 0)) end
+		if score_node then gui.set_text(score_node, tostring(message.score_now or 0)) end
+
 	elseif message_id == hash("update_hint_balance") then
 		update_hint_display(self)
 	end
@@ -40,8 +49,6 @@ function on_input(self, action_id, action)
 	if Anim.handle_buttons(self.buttons, action_id, action) then
 		return true
 	end
-	msg.post("/main", "game_input", { action_id = action_id, action = action })
+	msg.post("/main", "endless_input", { action_id = action_id, action = action })
 	return true
 end
-
---sound = "click"

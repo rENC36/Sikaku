@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 local BoardView = require("game.view.board_view")
 local Selection = require("game.shikaku.selection")
 local Input = require("game.shikaku.input")
@@ -18,10 +19,88 @@ function init(self)
 	open_screen(self, "menu")
 	self.game_active = false
 	self.current_mode = nil
+=======
+local ScreenManager = require("utils.screen_manager")
+local Audio         = require("utils.audio_manager")
+local SoundCFG      = require("data.config.sounds")
+local ClassicGame   = require("game.classic.classic_game")
+local BlitzGame     = require("game.blitz.blitz_game")
+local EndlessGame   = require("game.endless.endless_game")
+local HintsManager  = require("utils.hints_manager")
+local PlayerData    = require("game.player.player_data")
+
+function init(self)
+	Audio.init()
+	Audio.SOUNDS = SoundCFG.SOUNDS or {}
+	Audio.MUSICS = SoundCFG.MUSICS or {}
+
+	self.screens = ScreenManager.new()
+	self.screens:register("menu",           "/menu")
+	self.screens:register("mode_select",    "/mode_select")
+	self.screens:register("classic_select", "/classic_select")
+	self.screens:register("game",           "/game")
+	self.screens:register("blitz_prepare",  "/blitz_prepare")
+	self.screens:register("blitz_game",     "/blitz_game")
+	self.screens:register("endless_game",   "/endless_game")
+
+	self.classic = ClassicGame.new()
+	self.blitz   = BlitzGame.new()
+	self.endless = EndlessGame.new()
+
+	self.screens:open("menu")
+	Audio.play_music_id("menu")
+end
+
+local function start_blitz(self)
+	self.blitz:cleanup()
+	self.blitz:restart()
+	self.blitz:start_timer(function(t, game_over)
+		msg.post("/blitz_game", "update_hud", {
+			timer = t,
+			score = self.blitz.score,
+			size  = self.blitz.grid_size,
+			game_over = game_over,
+		})
+		if game_over then
+			msg.post("/blitz_game", "show_game_over", { score = self.blitz.score })
+		end
+	end)
+	msg.post("/blitz_game", "update_hud", {
+		timer = self.blitz.timer,
+		score = self.blitz.score,
+		size  = self.blitz.grid_size,
+		game_over = false,
+	})
+end
+
+local function start_endless(self)
+	self.endless:cleanup()
+	self.endless:start()
+	local best = PlayerData.get("stats.endless_best") or 0
+	msg.post("/endless_game", "set_endless_best", {
+		best = best,
+		score_now = self.endless.score,
+	})
+end
+
+local function update_endless_hud(self)
+	if not self.endless then return end
+	local best = PlayerData.get("stats.endless_best") or 0
+	if self.endless.score > best then
+		PlayerData.set("stats.endless_best", self.endless.score)
+		PlayerData.save()
+		best = self.endless.score
+	end
+	msg.post("/endless_game", "set_endless_best", {
+		best = best,
+		score_now = self.endless.score,
+	})
+>>>>>>> Stashed changes
 end
 
 function on_message(self, message_id, message, sender)
 	if message_id == hash("open_mode_select") then
+<<<<<<< Updated upstream
 		open_screen(self, "mode_select")
 
 	elseif message_id == hash("start_game") then
@@ -89,12 +168,51 @@ function on_input(self, action_id, action)
 		self.input:MouseMoved(action.x, action.y)
 	end
 end
+=======
+		self.screens:open("mode_select")
 
-function load_puzzle_from_levels(self, category)
-	if self.board_view then
-		self.board_view:Clear()
-	end
+	elseif message_id == hash("open_classic_levels") then
+		self.screens:open("classic_select")
 
+	elseif message_id == hash("open_blitz_prepare") then
+		self.screens:open("blitz_prepare")
+
+	elseif message_id == hash("back_to_mode_select") then
+		self.screens:open("mode_select")
+
+	elseif message_id == hash("start_game") then
+		local mode = message.mode or "classic"
+		if mode == "blitz" then
+			self.screens:open("blitz_game")
+			start_blitz(self)
+			Audio.play_music_id("game")
+		elseif mode == "endless" then
+			self.screens:open("endless_game")
+			start_endless(self)
+			Audio.play_music_id("game")
+		else
+			self.screens:open("game")
+			self.classic:load_level(message.category, message.level)
+			Audio.play_music_id("game")
+		end
+
+	elseif message_id == hash("back_to_menu") then
+		self.classic:cleanup()
+		self.blitz:cleanup()
+		self.endless:cleanup()
+		self.screens:open("menu")
+		Audio.play_music_id("menu")
+
+	elseif message_id == hash("open_leaderboard") then
+		print("[Main] Leaderboard (TODO)")
+>>>>>>> Stashed changes
+
+	elseif message_id == hash("game_input") then
+		if self.classic then
+			self.classic:on_input(message.action_id, message.action)
+		end
+
+<<<<<<< Updated upstream
 	local puzzle = Levels.load(category)
 	if not puzzle then
 		print("NO PUZZLE FOUND")
@@ -108,9 +226,47 @@ function load_puzzle_from_levels(self, category)
 			local number = puzzle.data[y][x]
 			if number and number ~= 0 then
 				self.board:GetCell(x, y):SetNumber(number)
+=======
+	elseif message_id == hash("blitz_input") then
+		if self.blitz then
+			local handled = self.blitz:on_input(message.action_id, message.action)
+			if handled then
+				msg.post("/blitz_game", "update_hud", {
+					timer = self.blitz.timer,
+					score = self.blitz.score,
+					size  = self.blitz.grid_size,
+					game_over = self.blitz.is_game_over,
+				})
+				if self.blitz.is_game_over then
+					msg.post("/blitz_game", "show_game_over", { score = self.blitz.score })
+				end
+>>>>>>> Stashed changes
 			end
 		end
+
+	elseif message_id == hash("endless_input") then
+		if self.endless then
+			local handled = self.endless:on_input(message.action_id, message.action)
+			if handled then
+				update_endless_hud(self)
+			end
+		end
+
+	elseif message_id == hash("use_hint") then
+		local ok, reason = self.classic:use_hint()
+		msg.post("/game", "update_hint_balance", { balance = HintsManager.GetBalance(), ok = ok, reason = reason })
+
+	elseif message_id == hash("use_hint_endless") then
+		local ok, reason = self.endless:use_hint()
+		if ok then
+			update_endless_hud(self)
+		end
+		msg.post("/endless_game", "update_hint_balance", { balance = HintsManager.GetBalance(), ok = ok, reason = reason })
+
+	elseif message_id == hash("get_hint_balance") then
+		msg.post(sender, "update_hint_balance", { balance = HintsManager.GetBalance() })
 	end
+<<<<<<< Updated upstream
 
 	self.board_view = BoardView.new("/Factories#cellfactory", {
 		cell_size = 64,
@@ -142,3 +298,6 @@ function open_screen(self, name)
 
 	print("SCREEN:", name)
 end
+=======
+end
+>>>>>>> Stashed changes

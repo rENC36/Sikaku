@@ -18,6 +18,10 @@ function on_message(self, message_id, message)
 		end
 
 	elseif message_id == hash("set_color") then
+<<<<<<< Updated upstream
 		sprite.set_constant("#sprite", "tint", message.color)
+=======
+		go.set("#sprite", "tint", message.color)
+>>>>>>> Stashed changes
 	end
 end

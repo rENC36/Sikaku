@@ -168,7 +168,7 @@ nodes {
   type: TYPE_TEXT
   text: "\320\235\320\260\321\201\321\202\321\200\320\276\320\271\320\272\320\270"
   font: "nunitoBOLD"
-  id: "settings_text1"
+  id: "settings_title"
   parent: "settings_board"
   inherit_alpha: true
 }
@@ -191,7 +191,7 @@ nodes {
     z: 0.41960785
   }
   type: TYPE_TEXT
-  text: "\320\227\320\262\321\203\320\272"
+  text: "\320\227\320\262\321\203\320\272\320\276\320\262\321\213\320\265 \321\215\321\204\321\204\320\265\320\272\321\202\321\213"
   font: "nunitoREGULAR"
   id: "sfx_text"
   pivot: PIVOT_W
@@ -247,7 +247,7 @@ nodes {
   }
   type: TYPE_BOX
   texture: "game/switcher"
-  id: "switcher1"
+  id: "switcher_off"
   parent: "switch_off"
   inherit_alpha: true
 }
@@ -274,7 +274,7 @@ nodes {
   }
   type: TYPE_BOX
   texture: "game/switcher"
-  id: "switcher"
+  id: "switcher_on"
   parent: "switch_on"
   inherit_alpha: true
 }
@@ -308,14 +308,43 @@ nodes {
   }
   type: TYPE_BOX
   texture: "game/language_board"
-  id: "box"
+  id: "lang"
   parent: "settings_board"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
 }
 nodes {
+  rotation {
+    z: 90.0
+  }
+  size {
+    x: 35.0
+    y: 2.0
+  }
+  type: TYPE_BOX
+  texture: "game/line"
+  id: "line2"
+  parent: "lang"
+  inherit_alpha: true
+}
+nodes {
   position {
-    x: 40.0
+    x: 93.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "en_box"
+  parent: "lang"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    x: -52.0
   }
   scale {
     x: 0.9
@@ -334,13 +363,27 @@ nodes {
   text: "\320\220\320\275\320\263\320\273"
   font: "nunitoREGULAR"
   id: "en_text"
-  parent: "box"
+  parent: "en_box"
   inherit_alpha: true
-  alpha: 0.7
 }
 nodes {
   position {
-    x: -40.0
+    x: -88.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "ru_box"
+  parent: "lang"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    x: 45.0
   }
   scale {
     x: 0.9
@@ -358,22 +401,8 @@ nodes {
   type: TYPE_TEXT
   text: "\320\240\321\203\321\201"
   font: "nunitoREGULAR"
-  id: "rus_text"
-  parent: "box"
-  inherit_alpha: true
-}
-nodes {
-  rotation {
-    z: 90.0
-  }
-  size {
-    x: 35.0
-    y: 2.0
-  }
-  type: TYPE_BOX
-  texture: "game/line"
-  id: "line2"
-  parent: "box"
+  id: "ru_text"
+  parent: "ru_box"
   inherit_alpha: true
 }
 nodes {
@@ -435,7 +464,7 @@ nodes {
   type: TYPE_TEXT
   text: "\320\232\320\273\320\260\321\201\321\201\320\270\320\272\320\260"
   font: "nunitoREGULAR"
-  id: "classic_text1"
+  id: "classic_text"
   pivot: PIVOT_W
   parent: "information_board"
   inherit_alpha: true
@@ -462,7 +491,7 @@ nodes {
   text: "\320\221\320\265\321\201\320\272\320\276\320\275\320\265\321\207\320\275\321\213\320\271\n"
   "\321\200\320\265\320\266\320\270\320\274"
   font: "nunitoREGULAR"
-  id: "infinity_text2"
+  id: "endless_text"
   pivot: PIVOT_W
   parent: "information_board"
   inherit_alpha: true
@@ -488,7 +517,7 @@ nodes {
   type: TYPE_TEXT
   text: "\320\221\320\273\320\270\321\206"
   font: "nunitoREGULAR"
-  id: "blitz_text3"
+  id: "blitz_text"
   pivot: PIVOT_W
   parent: "information_board"
   inherit_alpha: true
@@ -568,7 +597,11 @@ nodes {
   type: TYPE_TEXT
   text: "15 \321\203\321\200."
   font: "nunitoREGULAR"
+<<<<<<< Updated upstream
   id: "infinity_stat"
+=======
+  id: "endless_stats"
+>>>>>>> Stashed changes
   pivot: PIVOT_E
   parent: "information_board"
   inherit_alpha: true

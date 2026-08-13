@@ -1,12 +1,176 @@
+<<<<<<< Updated upstream
 local Anim = require("utils.animator")
 local CFG = require("data.config.animations")
+=======
+local Anim       = require("utils.animator")
+local CFG        = require("data.config.animations")
+local SELECT_CFG = require("data.config.classic_select_config")
+local PlayerData = require("game.player.player_data")
+local Levels     = require("game.shikaku.levels")
+
+local GRID      = SELECT_CFG.GRID
+local PER_PAGE  = GRID.COLS * GRID.ROWS
+local ANIM      = SELECT_CFG.ANIM
+
+local function update_category_highlight(self)
+	local map = { easy = self.btn_easy, medium = self.btn_medium, hard = self.btn_hard }
+	for cat, node in pairs(map) do
+		if node then
+			local colors = SELECT_CFG.CATEGORY_COLORS[cat]
+			gui.set_color(node, cat == self.category and colors.active or colors.inactive)
+		end
+	end
+end
+
+local function refresh_grid(self)
+	gui.set_text(gui.get_node("page_count_text"), self.page .. "/" .. self.max_page)
+
+	local start_level = (self.page - 1) * PER_PAGE + 1
+	local current_unlocked = PlayerData.get_current_level(self.category)
+
+	for i, cell in ipairs(self.cells) do
+		local level_num = start_level + (i - 1)
+		cell.level_num = level_num
+
+		if level_num > self.total_levels then
+			gui.set_enabled(cell.box, false)
+			gui.set_enabled(cell.text, false)
+			gui.set_enabled(cell.icon, false)
+		else
+			gui.set_enabled(cell.box, true)
+			gui.set_enabled(cell.text, true)
+			gui.set_text(cell.text, tostring(level_num))
+
+			local completed = PlayerData.is_level_completed(self.category, level_num)
+			local unlocked  = level_num <= current_unlocked
+
+			local status = SELECT_CFG.STATUS.LOCKED
+			if completed then
+				status = SELECT_CFG.STATUS.COMPLETED
+			elseif unlocked then
+				status = SELECT_CFG.STATUS.UNLOCKED
+			end
+
+			-- Применяем цвета и иконку
+			gui.set_color(cell.box, status.BG_COLOR)
+			gui.set_color(cell.text, status.TEXT_COLOR)
+
+			if status.ICON then
+				gui.set_enabled(cell.icon, true)
+				gui.play_flipbook(cell.icon, status.ICON)
+				-- Теперь цвет берется из конфига
+				gui.set_color(cell.icon, status.ICON_COLOR)
+			else
+				gui.set_enabled(cell.icon, false)
+			end
+		end
+	end
+end
+
+local function update_arrows(self)
+	gui.set_enabled(self.btn_left, self.page > 1)
+	gui.set_enabled(self.btn_right, self.page < self.max_page)
+end
+
+local function change_page(self, delta)
+	local new_page = self.page + delta
+	if new_page >= 1 and new_page <= self.max_page then
+		self.page = new_page
+		PlayerData.set("last_page", self.page)
+		PlayerData.save()
+		refresh_grid(self)
+		update_arrows(self)
+	end
+end
+
+local function change_category(self, category)
+	if self.category == category then return end
+
+	self.category = category
+	PlayerData.set("last_category", category)
+	PlayerData.set("last_page", 1)
+	PlayerData.save()
+
+	self.page = 1
+	self.total_levels = Levels.count(self.category)
+	self.max_page = math.max(1, math.ceil(self.total_levels / PER_PAGE))
+
+	refresh_grid(self)
+	update_arrows(self)
+	update_category_highlight(self)
+end
+>>>>>>> Stashed changes
 
 function init(self)
 	msg.post(".", "acquire_input_focus")
 
+<<<<<<< Updated upstream
 	self.buttons = Anim.register_buttons({
 		{ node = "btn_select", anim = CFG.btn_mode, action = function() msg.post("/main", "start_game", { mode = "classic" }) end },
 	})
+=======
+	self.category = PlayerData.get("last_category") or "easy"
+	self.total_levels = Levels.count(self.category)
+	self.max_page = math.max(1, math.ceil(self.total_levels / PER_PAGE))
+	self.page = PlayerData.get("last_page") or 1
+
+	-- Инициализация нод
+	local cx = gui.get_width() / 2
+	local cy = gui.get_height() / 2
+	local grid_w = GRID.COLS * GRID.CELL_SIZE + (GRID.COLS - 1) * GRID.GAP
+	local grid_h = GRID.ROWS * GRID.CELL_SIZE + (GRID.ROWS - 1) * GRID.GAP
+	local start_x = cx - grid_w / 2 + GRID.CELL_SIZE / 2
+	local start_y = cy + grid_h / 2 - GRID.CELL_SIZE / 2
+
+	self.cells = {}
+	for i = 1, PER_PAGE do
+		local col = (i - 1) % GRID.COLS
+		local row = math.floor((i - 1) / GRID.COLS)
+		local x = start_x + col * (GRID.CELL_SIZE + GRID.GAP)
+		local y = start_y - row * (GRID.CELL_SIZE + GRID.GAP)
+
+		-- Основная кнопка
+		local box = gui.new_box_node(vmath.vector3(x, y, 0), vmath.vector3(GRID.CELL_SIZE, GRID.CELL_SIZE, 0))
+		gui.set_pivot(box, gui.PIVOT_CENTER)
+		gui.set_texture(box, SELECT_CFG.ATLAS.NAME)
+		gui.play_flipbook(box, SELECT_CFG.ATLAS.FRAME)
+
+		-- Иконка (дочерняя нода)
+		local icon = gui.new_box_node(vmath.vector3(0, -GRID.CELL_SIZE * 0.2, 0), vmath.vector3(GRID.CELL_SIZE * 0.25, GRID.CELL_SIZE * 0.25, 0))
+		gui.set_parent(icon, box)
+		gui.set_texture(icon, SELECT_CFG.ATLAS.NAME)
+		gui.set_enabled(icon, false)
+
+		-- Текст
+		local text = gui.new_text_node(vmath.vector3(x, y + GRID.CELL_SIZE * 0.15, 0), "")
+		gui.set_pivot(text, gui.PIVOT_CENTER)
+		gui.set_font(text, "nunitoREGULAR")
+
+		gui.set_scale(text, vmath.vector3(1.5, 1.5, 1))
+
+		table.insert(self.cells, { box = box, text = text, icon = icon, level_num = 0 })
+	end
+
+	self.btn_back   = gui.get_node("btn_back")
+	self.btn_left   = gui.get_node("btn_left")
+	self.btn_right  = gui.get_node("btn_right")
+	self.btn_easy   = gui.get_node("btn_easy")
+	self.btn_medium = gui.get_node("btn_medium")
+	self.btn_hard   = gui.get_node("btn_hard")
+
+	self.buttons = Anim.register_buttons({
+		{ node = "btn_back",   anim = CFG.btn_menu, sound = "click", action = function() msg.post("/main", "open_mode_select") end },
+		{ node = "btn_left",   anim = CFG.btn_menu, sound = "click", action = function() change_page(self, -1) end },
+		{ node = "btn_right",  anim = CFG.btn_menu, sound = "click", action = function() change_page(self, 1) end },
+		{ node = "btn_easy",   anim = CFG.btn_mode, sound = "click", action = function() change_category(self, "easy") end },
+		{ node = "btn_medium", anim = CFG.btn_mode, sound = "click", action = function() change_category(self, "medium") end },
+		{ node = "btn_hard",   anim = CFG.btn_mode, sound = "click", action = function() change_category(self, "hard") end },
+	})
+
+	refresh_grid(self)
+	update_arrows(self)
+	update_category_highlight(self)
+>>>>>>> Stashed changes
 end
 
 function on_message(self, message_id, message, sender)
@@ -16,5 +180,44 @@ function on_message(self, message_id, message, sender)
 end
 
 function on_input(self, action_id, action)
+<<<<<<< Updated upstream
 	return Anim.handle_buttons(self.buttons, action_id, action)
+=======
+	if action_id ~= hash("touch") and action_id ~= nil then return false end
+	if not action then return false end
+
+	if Anim.handle_buttons(self.buttons, action_id, action) then
+		return true
+	end
+
+	if action.pressed then
+		for _, cell in ipairs(self.cells) do
+			if gui.is_enabled(cell.box) and gui.pick_node(cell.box, action.x, action.y) then
+				local current_unlocked = PlayerData.get_current_level(self.category)
+				if cell.level_num <= current_unlocked then
+					local selected = cell
+
+					Anim.animate(selected.box, ANIM.PRESSED, function()
+						Anim.animate(selected.box, ANIM.RELEASED)
+
+						PlayerData.set("last_category", self.category)
+						PlayerData.set("last_page", self.page)
+						PlayerData.save()
+
+						print("[ClassicSelect] Start game:", self.category, "level", selected.level_num)
+
+						msg.post("/main", "start_game", {
+							mode = "classic",
+							category = self.category,
+							level = selected.level_num,
+						})
+					end)
+					return true
+				end
+			end
+		end
+	end
+
+	return false
+>>>>>>> Stashed changes
 end

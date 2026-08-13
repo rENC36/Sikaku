@@ -1,0 +1,117 @@
+local Anim       = require("utils.animator")
+local Lang       = require("utils.localization")
+local PlayerData = require("game.player.player_data")
+local CFG        = require("data.config.animations")
+
+local function safe_node(name)
+	local ok, n = pcall(gui.get_node, name)
+	return ok and n or nil
+end
+
+local function fmt_time(sec)
+	local s = math.max(0, math.ceil(sec))
+	return string.format("%02d:%02d", math.floor(s / 60), s % 60)
+end
+
+local function update_hud_nodes(self)
+	if self.nodes.score then
+		gui.set_text(self.nodes.score, tostring(self.hud.score or 0))
+	end
+	if self.nodes.timer then
+		gui.set_text(self.nodes.timer, fmt_time(self.hud.timer or 0))
+	end
+	if self.nodes.size then
+		gui.set_text(self.nodes.size, (self.hud.size or 5) .. "×" .. (self.hud.size or 5))
+	end
+end
+
+local function show_game_over(self)
+	if not self.nodes.go_group then return end
+	local old_best = PlayerData.get("stats.blitz_best") or 0
+	local is_new   = (self.hud.score or 0) > old_best
+
+	if self.nodes.go_score then
+		gui.set_text(self.nodes.go_score,
+		(Lang.get("blitz_game.final_score") or "Score") .. ": " .. (self.hud.score or 0))
+	end
+	if self.nodes.go_best then
+		gui.set_text(self.nodes.go_best,
+		(Lang.get("blitz_game.best_score") or "Best") .. ": " .. math.max(old_best, self.hud.score or 0))
+	end
+	if self.nodes.go_new_best then
+		gui.set_enabled(self.nodes.go_new_best, is_new)
+	end
+	gui.set_enabled(self.nodes.go_group, true)
+	Anim.reset_buttons(self.buttons)
+end
+
+function init(self)
+	msg.post(".", "acquire_input_focus")
+
+	self.nodes = {
+		timer       = safe_node("timer_text"),
+		score       = safe_node("score_text"),
+		size        = safe_node("level_size_text"),
+		go_group    = safe_node("game_over_group"),
+		go_score    = safe_node("go_score"),
+		go_best     = safe_node("go_best"),
+		go_new_best = safe_node("go_new_best"),
+	}
+
+	if self.nodes.go_group then gui.set_enabled(self.nodes.go_group, false) end
+
+	self.hud = { score = 0, timer = 60, size = 5, game_over = false }
+
+	self.buttons = Anim.register_buttons({
+		{ node = "btn_menu",    anim = CFG.btn_menu, sound = "click",
+		action = function() 
+			show_game_over(self)
+			msg.post("/main", "back_to_menu") 
+		end },
+		{ node = "btn_restart", anim = CFG.btn_menu, sound = "click",
+		action = function() msg.post("/main", "start_game", { mode = "blitz" }) end },
+	})
+
+	Lang.apply_to_gui("blitz_game")
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("reset_ui") then
+		Anim.reset_buttons(self.buttons)
+		if self.nodes.go_group then gui.set_enabled(self.nodes.go_group, false) end
+		self.hud.game_over = false
+
+	elseif message_id == hash("update_hud") then
+		self.hud.score = message.score or self.hud.score
+		self.hud.timer = message.timer or self.hud.timer
+		self.hud.size  = message.size or self.hud.size
+		self.hud.game_over = message.game_over or false
+		update_hud_nodes(self)
+		if self.hud.game_over then
+			show_game_over(self)
+		end
+
+	elseif message_id == hash("show_game_over") then
+		self.hud.score = message.score or self.hud.score
+		show_game_over(self)
+	end
+end
+
+function on_input(self, action_id, action)
+	print("[BlitzGUI] on_input", action_id, action and action.x, action and action.y, "game_over:", self.hud.game_over)
+
+	if self.hud.game_over then
+		local r = Anim.handle_buttons(self.buttons, action_id, action)
+		print("[BlitzGUI] game_over, buttons handled:", r)
+		return r
+	end
+
+	if Anim.handle_buttons(self.buttons, action_id, action) then
+		print("[BlitzGUI] button handled")
+		return true
+	end
+
+	print("[BlitzGUI] posting blitz_input")
+	msg.post("/main", "blitz_input", { action_id = action_id, action = action })
+	return true
+end

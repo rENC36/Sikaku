@@ -20,8 +20,14 @@ show_made_with_defold = 0
 
 [project]
 title = Sikaku
-dependencies#0 = https://github.com/defold/extension-poki-sdk/archive/refs/heads/main.zip
 
 [label]
+<<<<<<< Updated upstream
 max_count = 256
+=======
+max_count = 1024
+
+[sprite]
+max_count = 1024
+>>>>>>> Stashed changes
 

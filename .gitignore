@@ -1,5 +1,16 @@
+# Defold internal & build
+/.internal/
+/build/
+
+# Editor
 /.editor_settings
-/.internal
-/build
+
+# OS
 .DS_Store
 Thumbs.db
+
+# Defold temp/cache
+*.tmp
+*.cache
+/.internal
+/build
