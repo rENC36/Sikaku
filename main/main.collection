@@ -82,14 +82,6 @@ embedded_instances {
   ""
 }
 embedded_instances {
-  id: "blitz_prepare"
-  data: "components {\n"
-  "  id: \"blitz_prepare\"\n"
-  "  component: \"/ui/mode_select/blitz_prepare.gui\"\n"
-  "}\n"
-  ""
-}
-embedded_instances {
   id: "blitz_game"
   data: "components {\n"
   "  id: \"blitz_game\"\n"
@@ -102,6 +94,14 @@ embedded_instances {
   data: "components {\n"
   "  id: \"endless_game\"\n"
   "  component: \"/ui/gameplay/endless_game.gui\"\n"
+  "}\n"
+  ""
+}
+embedded_instances {
+  id: "popup"
+  data: "components {\n"
+  "  id: \"popup\"\n"
+  "  component: \"/game/popup/popup.gui\"\n"
   "}\n"
   ""
 }

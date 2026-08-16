@@ -1,0 +1,141 @@
+local Anim = require("utils.animator")
+local CFG  = require("data.config.animations")
+
+local function safe_node(name)
+	local ok, n = pcall(gui.get_node, name)
+	return ok and n or nil
+end
+
+local self_data = {
+	visible = false,
+	callback_url = nil,
+	popup_id = nil,
+	dismissible = true,
+	buttons = {},
+}
+
+local function hide_all()
+	local root = safe_node("popup_root")
+	if root then gui.set_enabled(root, false) end
+	local bg = safe_node("popup_bg")
+	if bg then gui.set_enabled(bg, false) end
+	-- Скрываем стандартные кнопки на всякий случай
+	for _, name in ipairs({ "btn_ok", "btn_cancel", "txt_ok", "txt_cancel" }) do
+		local n = safe_node(name)
+		if n then gui.set_enabled(n, false) end
+	end
+end
+
+local function show_all()
+	local root = safe_node("popup_root")
+	if root then gui.set_enabled(root, true) end
+	local bg = safe_node("popup_bg")
+	if bg then gui.set_enabled(bg, true) end
+end
+
+function init(self)
+	msg.post(".", "acquire_input_focus")
+	hide_all()
+	self_data.visible = false
+	self_data.buttons = {}
+end
+
+local function show_popup(config)
+	self_data.visible = true
+	self_data.callback_url = config.callback_url or "/main"
+	self_data.popup_id = config.popup_id or "default"
+	self_data.dismissible = config.dismissible ~= false
+
+	show_all()
+
+	-- Заголовок
+	local title_node = safe_node("popup_title")
+	if title_node and config.title then
+		gui.set_text(title_node, config.title)
+	end
+
+	-- Текст
+	local text_node = safe_node("popup_text")
+	if text_node and config.text then
+		gui.set_text(text_node, config.text)
+	end
+
+	-- Собираем кнопки
+	self_data.buttons = {}
+	local buttons_config = config.buttons or { { id = "ok", label = "OK", node = "btn_ok" } }
+
+	for _, btn in ipairs(buttons_config) do
+		local n = safe_node(btn.node)
+		if n then
+			gui.set_enabled(n, true)
+
+			-- Текст кнопки (ищем txt_ по аналогии с btn_)
+			local text_name = btn.text_node or btn.node:gsub("btn_", "txt_")
+			local t = safe_node(text_name)
+			if t then
+				gui.set_enabled(t, true)
+				gui.set_text(t, btn.label or "OK")
+			end
+
+			table.insert(self_data.buttons, {
+				node = n,
+				action = function()
+					msg.post(self_data.callback_url, "popup_action", {
+						action_id = btn.id,
+						popup_id = self_data.popup_id,
+					})
+					if btn.keep_open ~= true then
+						hide_all()
+						self_data.visible = false
+						self_data.buttons = {}
+					end
+				end
+			})
+		else
+			print("[POPUP] WARNING: button node not found:", btn.node)
+		end
+	end
+
+	-- Анимация появления
+	local root = safe_node("popup_root")
+	if root and CFG.popup_show then
+		Anim.play(root, CFG.popup_show)
+	end
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("show_popup") then
+		show_popup(message)
+	elseif message_id == hash("hide_popup") then
+		hide_all()
+		self_data.visible = false
+		self_data.buttons = {}
+	end
+end
+
+function on_input(self, action_id, action)
+	if not self_data.visible then return false end
+	if action_id ~= hash("touch") then return false end
+	if not action.pressed then return false end
+
+	-- 1. Проверяем клик по кнопкам
+	for _, btn in ipairs(self_data.buttons) do
+		if gui.pick_node(btn.node, action.x, action.y) then
+			btn.action()
+			return true
+		end
+	end
+
+	-- 2. Проверяем клик вне окна (по popup_root, а не только bg)
+	local root = safe_node("popup_root")
+	if root and not gui.pick_node(root, action.x, action.y) then
+		if self_data.dismissible then
+			hide_all()
+			self_data.visible = false
+			self_data.buttons = {}
+			return true
+		end
+	end
+
+	return false
+end

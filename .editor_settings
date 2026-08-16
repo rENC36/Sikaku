@@ -20,65 +20,21 @@
   :workflow {
     :open-tabs [
       [
+        [
+          "/game.project"
+          :cljfx-form-view
+        ]
+        [
+          "/game/popup/popup.gui_script"
+          :code
+        ]
+        [
+          "/ui/gameplay/game.gui_script"
+          :code
+        ]
       ]
     ]
     :recent-files [
-      [
-        "/main/main.collection"
-        :scene
-      ]
-      [
-        "/game/shikaku/levels.lua"
-        :code
-      ]
-      [
-        "/utils/localization.lua"
-        :code
-      ]
-      [
-        "/game/view/cell_view.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/selection.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/solver.lua"
-        :code
-      ]
-      [
-        "/game/blitz/blitz_game.lua"
-        :code
-      ]
-      [
-        "/ui/menu/menu.gui_script"
-        :code
-      ]
-      [
-        "/ui/mode_select/classic_select.gui_script"
-        :code
-      ]
-      [
-        "/ui/mode_select/mode_select.gui_script"
-        :code
-      ]
-      [
-        "/ui/mode_select/blitz_prepare.gui_script"
-        :code
-      ]
-      [
-        "/data/levels/hard.lua"
-        :code
-      ]
-      [
-        "/ui/gameplay/blitz_game.gui_script"
-        :code
-      ]
-      [
-        "/data/levels/medium.lua"
-        :code
-      ]
       [
         "/data/levels/easy.lua"
         :code
@@ -120,23 +76,11 @@
         :code
       ]
       [
-        "/ui/gameplay/game.gui_script"
-        :code
-      ]
-      [
-        "/ui/gameplay/game.gui"
-        :scene
-      ]
-      [
         "/game/endless/endless_game.lua"
         :code
       ]
       [
         "/game/classic/classic_game.lua"
-        :code
-      ]
-      [
-        "/main/main.script"
         :code
       ]
       [
@@ -149,6 +93,74 @@
       ]
       [
         "/utils/hints_manager.lua"
+        :code
+      ]
+      [
+        "/ui/mode_select/blitz_prepare.gui"
+        :scene
+      ]
+      [
+        "/ui/mode_select/mode_select.gui_script"
+        :code
+      ]
+      [
+        "/ui/mode_select/mode_select.gui"
+        :scene
+      ]
+      [
+        "/builtins/manifests/web/light_theme.css"
+        :code
+      ]
+      [
+        "/builtins/render/default.display_profiles"
+        :cljfx-form-view
+      ]
+      [
+        "/main/main.render_script"
+        :code
+      ]
+      [
+        "/main/main.render"
+        :cljfx-form-view
+      ]
+      [
+        "/ui/gameplay/blitz_game.gui_script"
+        :code
+      ]
+      [
+        "/input/game.project"
+        :cljfx-form-view
+      ]
+      [
+        "/main/main.script"
+        :code
+      ]
+      [
+        "/main/main.collection"
+        :scene
+      ]
+      [
+        "/game/popup/popup_manager.lua"
+        :code
+      ]
+      [
+        "/ui/gameplay/game.gui"
+        :scene
+      ]
+      [
+        "/game/popup/popup.gui"
+        :scene
+      ]
+      [
+        "/game.project"
+        :cljfx-form-view
+      ]
+      [
+        "/ui/gameplay/game.gui_script"
+        :code
+      ]
+      [
+        "/game/popup/popup.gui_script"
         :code
       ]
     ]

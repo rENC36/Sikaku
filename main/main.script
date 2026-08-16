@@ -17,7 +17,6 @@ function init(self)
 	self.screens:register("mode_select",    "/mode_select")
 	self.screens:register("classic_select", "/classic_select")
 	self.screens:register("game",           "/game")
-	self.screens:register("blitz_prepare",  "/blitz_prepare")
 	self.screens:register("blitz_game",     "/blitz_game")
 	self.screens:register("endless_game",   "/endless_game")
 
