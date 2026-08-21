@@ -13,7 +13,7 @@ M.SCORE = {
 M.GRID = {
 	START_SIZE = 5,  
 	MAX_SIZE   = 10, 
-	GROW_EVERY = 125,
+	GROW_EVERY = 125, -- не количество пройденных уровней, а количество очков!!
 }
 
 M.COLORS = {

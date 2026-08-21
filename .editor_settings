@@ -21,11 +21,11 @@
     :open-tabs [
       [
         [
-          "/game/blitz/blitz_game.lua"
+          "/main/main.script"
           :code
         ]
         [
-          "/data/config/blitz_config.lua"
+          "/game/classic/classic_game.lua"
           :code
         ]
       ]
@@ -81,10 +81,6 @@
       ]
       [
         "/game/shikaku/cell.lua"
-        :code
-      ]
-      [
-        "/game/classic/classic_game.lua"
         :code
       ]
       [
@@ -148,7 +144,7 @@
         :code
       ]
       [
-        "/main/main.script"
+        "/data/config/blitz_config.lua"
         :code
       ]
       [
@@ -156,7 +152,11 @@
         :code
       ]
       [
-        "/data/config/blitz_config.lua"
+        "/main/main.script"
+        :code
+      ]
+      [
+        "/game/classic/classic_game.lua"
         :code
       ]
     ]
