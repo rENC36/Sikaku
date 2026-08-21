@@ -20,33 +20,17 @@
   :workflow {
     :open-tabs [
       [
+        [
+          "/game/view/board_view/board_view.lua"
+          :code
+        ]
+        [
+          "/assets/atlas/game.atlas"
+          :scene
+        ]
       ]
     ]
     :recent-files [
-      [
-        "/builtins/manifests/web/light_theme.css"
-        :code
-      ]
-      [
-        "/builtins/render/default.display_profiles"
-        :cljfx-form-view
-      ]
-      [
-        "/main/main.render_script"
-        :code
-      ]
-      [
-        "/main/main.render"
-        :cljfx-form-view
-      ]
-      [
-        "/ui/gameplay/blitz_game.gui_script"
-        :code
-      ]
-      [
-        "/input/game.project"
-        :cljfx-form-view
-      ]
       [
         "/main/main.collection"
         :scene
@@ -112,10 +96,6 @@
         :code
       ]
       [
-        "/game/view/board_view/board_view.lua"
-        :code
-      ]
-      [
         "/game/classic/classic_game.lua"
         :code
       ]
@@ -132,14 +112,6 @@
         :scene
       ]
       [
-        "/ui/mode_select/mode_select.gui"
-        :scene
-      ]
-      [
-        "/ui/mode_select/classic_select.gui"
-        :scene
-      ]
-      [
         "/ui/gameplay/game.gui"
         :scene
       ]
@@ -149,6 +121,42 @@
       ]
       [
         "/ui/gameplay/blitz_game.gui"
+        :scene
+      ]
+      [
+        "/ui/mode_select/mode_select.gui"
+        :scene
+      ]
+      [
+        "/ui/mode_select/classic_select.gui"
+        :scene
+      ]
+      [
+        "/data/config/classic_select_config.lua"
+        :code
+      ]
+      [
+        "/ui/mode_select/classic_select.gui_script"
+        :code
+      ]
+      [
+        "/game/view/board_view/board_view.lua"
+        :code
+      ]
+      [
+        "/game/view/board_view/preview_overlay.lua"
+        :code
+      ]
+      [
+        "/game/view/board_view/rectangle_overlay.lua"
+        :code
+      ]
+      [
+        "/assets/atlas/game.atlas"
+        :scene
+      ]
+      [
+        "/assets/textures/selection_bg.png"
         :scene
       ]
     ]

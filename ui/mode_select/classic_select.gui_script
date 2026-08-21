@@ -6,14 +6,14 @@ local Levels     = require("game.shikaku.levels")
 
 local GRID      = SELECT_CFG.GRID
 local PER_PAGE  = GRID.COLS * GRID.ROWS
-local COLORS    = SELECT_CFG.COLORS
 local ANIM      = SELECT_CFG.ANIM
 
 local function update_category_highlight(self)
 	local map = { easy = self.btn_easy, medium = self.btn_medium, hard = self.btn_hard }
 	for cat, node in pairs(map) do
 		if node then
-			gui.set_color(node, cat == self.category and COLORS.CATEGORY_ACTIVE or COLORS.CATEGORY_INACTIVE)
+			local colors = SELECT_CFG.CATEGORY_COLORS[cat]
+			gui.set_color(node, cat == self.category and colors.active or colors.inactive)
 		end
 	end
 end
@@ -31,25 +31,32 @@ local function refresh_grid(self)
 		if level_num > self.total_levels then
 			gui.set_enabled(cell.box, false)
 			gui.set_enabled(cell.text, false)
+			gui.set_enabled(cell.icon, false)
 		else
 			gui.set_enabled(cell.box, true)
 			gui.set_enabled(cell.text, true)
 			gui.set_text(cell.text, tostring(level_num))
 
 			local completed = PlayerData.is_level_completed(self.category, level_num)
+			local unlocked  = level_num <= current_unlocked
 
+			local status = SELECT_CFG.STATUS.LOCKED
 			if completed then
-				gui.set_color(cell.box, COLORS.COMPLETED_BG)
-				gui.set_color(cell.text, COLORS.COMPLETED_TEXT)
-			elseif level_num <= current_unlocked then
-				gui.set_color(cell.box, COLORS.UNLOCKED_BG)
-				gui.set_color(cell.text, COLORS.UNLOCKED_TEXT)
-			else
-				gui.set_color(cell.box, COLORS.LOCKED_BG)
-				gui.set_color(cell.text, COLORS.LOCKED_TEXT)
+				status = SELECT_CFG.STATUS.COMPLETED
+			elseif unlocked then
+				status = SELECT_CFG.STATUS.UNLOCKED
 			end
 
-			gui.set_scale(cell.box, vmath.vector3(1, 1, 1))
+			gui.set_color(cell.box, status.BG_COLOR)
+			gui.set_color(cell.text, status.TEXT_COLOR)
+
+			if status.ICON then
+				gui.set_enabled(cell.icon, true)
+				gui.play_flipbook(cell.icon, status.ICON)
+				gui.set_color(cell.icon, status.ICON_COLOR)
+			else
+				gui.set_enabled(cell.icon, false)
+			end
 		end
 	end
 end
@@ -84,7 +91,7 @@ local function change_category(self, category)
 
 	refresh_grid(self)
 	update_arrows(self)
-	update_category_highlight(self)
+	update_category_highlight(self) -- ДОБАВЛЕНО
 end
 
 function init(self)
@@ -92,21 +99,11 @@ function init(self)
 
 	self.category = PlayerData.get("last_category") or "easy"
 	self.total_levels = Levels.count(self.category)
-	print("[ClassicSelect] Total levels:", self.total_levels)
-
-	if self.total_levels == 0 then
-		print("[ClassicSelect] WARNING: No levels found! Check levels.lua")
-	end
-
 	self.max_page = math.max(1, math.ceil(self.total_levels / PER_PAGE))
-
 	self.page = PlayerData.get("last_page") or 1
-	if self.page > self.max_page then self.page = self.max_page end
-	if self.page < 1 then self.page = 1 end
 
 	local cx = gui.get_width() / 2
 	local cy = gui.get_height() / 2
-
 	local grid_w = GRID.COLS * GRID.CELL_SIZE + (GRID.COLS - 1) * GRID.GAP
 	local grid_h = GRID.ROWS * GRID.CELL_SIZE + (GRID.ROWS - 1) * GRID.GAP
 	local start_x = cx - grid_w / 2 + GRID.CELL_SIZE / 2
@@ -124,11 +121,18 @@ function init(self)
 		gui.set_texture(box, SELECT_CFG.ATLAS.NAME)
 		gui.play_flipbook(box, SELECT_CFG.ATLAS.FRAME)
 
-		local text = gui.new_text_node(vmath.vector3(x, y, 0), "")
+		local icon = gui.new_box_node(vmath.vector3(0, -GRID.CELL_SIZE * 0.2, 0), vmath.vector3(GRID.CELL_SIZE * 0.25, GRID.CELL_SIZE * 0.25, 0))
+		gui.set_parent(icon, box)
+		gui.set_texture(icon, SELECT_CFG.ATLAS.NAME)
+		gui.set_enabled(icon, false)
+
+		local text = gui.new_text_node(vmath.vector3(x, y + GRID.CELL_SIZE * 0.15, 0), "")
 		gui.set_pivot(text, gui.PIVOT_CENTER)
 		gui.set_font(text, "nunitoREGULAR")
 
-		table.insert(self.cells, { box = box, text = text, level_num = 0 })
+		gui.set_scale(text, vmath.vector3(1.5, 1.5, 1))
+
+		table.insert(self.cells, { box = box, text = text, icon = icon, level_num = 0 })
 	end
 
 	self.btn_back   = gui.get_node("btn_back")
@@ -149,7 +153,7 @@ function init(self)
 
 	refresh_grid(self)
 	update_arrows(self)
-	update_category_highlight(self)
+	update_category_highlight(self) 
 end
 
 function on_message(self, message_id, message, sender)
@@ -157,7 +161,7 @@ function on_message(self, message_id, message, sender)
 		Anim.reset_buttons(self.buttons)
 		refresh_grid(self)
 		update_arrows(self)
-		update_category_highlight(self)
+		update_category_highlight(self) 
 	end
 end
 
