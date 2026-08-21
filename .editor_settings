@@ -21,20 +21,16 @@
     :open-tabs [
       [
         [
-          "/main/main.script"
+          "/game/blitz/blitz_game.lua"
+          :code
+        ]
+        [
+          "/data/config/blitz_config.lua"
           :code
         ]
       ]
     ]
     :recent-files [
-      [
-        "/main/main.collection"
-        :scene
-      ]
-      [
-        "/ui/gameplay/game.gui_script"
-        :code
-      ]
       [
         "/game/popup/popup.gui_script"
         :code
@@ -96,10 +92,6 @@
         :code
       ]
       [
-        "/game/blitz/blitz_game.lua"
-        :code
-      ]
-      [
         "/ui/menu/menu.gui"
         :scene
       ]
@@ -122,10 +114,6 @@
       [
         "/ui/mode_select/classic_select.gui"
         :scene
-      ]
-      [
-        "/data/config/classic_select_config.lua"
-        :code
       ]
       [
         "/ui/mode_select/classic_select.gui_script"
@@ -152,7 +140,23 @@
         :code
       ]
       [
+        "/data/config/classic_select_config.lua"
+        :code
+      ]
+      [
+        "/data/config/board_view_config.lua"
+        :code
+      ]
+      [
         "/main/main.script"
+        :code
+      ]
+      [
+        "/game/blitz/blitz_game.lua"
+        :code
+      ]
+      [
+        "/data/config/blitz_config.lua"
         :code
       ]
     ]
