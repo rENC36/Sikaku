@@ -7,6 +7,8 @@ local EndlessGame   = require("game.endless.endless_game")
 local HintsManager  = require("utils.hints_manager")
 local PlayerData    = require("game.player.player_data")
 
+local yagames = require("yagames.yagames")
+
 function init(self)
 	Audio.init()
 	Audio.SOUNDS = SoundCFG.SOUNDS or {}
@@ -26,6 +28,9 @@ function init(self)
 
 	self.screens:open("menu")
 	Audio.play_music_id("menu")
+
+	yagames.init()
+	yagames.ysdk_ready()
 end
 
 local function start_blitz(self)

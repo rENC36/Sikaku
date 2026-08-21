@@ -21,12 +21,8 @@
     :open-tabs [
       [
         [
-          "/game/view/board_view/board_view.lua"
+          "/main/main.script"
           :code
-        ]
-        [
-          "/assets/atlas/game.atlas"
-          :scene
         ]
       ]
     ]
@@ -73,10 +69,6 @@
       ]
       [
         "/game/shikaku/selection.lua"
-        :code
-      ]
-      [
-        "/main/main.script"
         :code
       ]
       [
@@ -140,10 +132,6 @@
         :code
       ]
       [
-        "/game/view/board_view/board_view.lua"
-        :code
-      ]
-      [
         "/game/view/board_view/preview_overlay.lua"
         :code
       ]
@@ -152,12 +140,20 @@
         :code
       ]
       [
+        "/assets/textures/selection_bg.png"
+        :scene
+      ]
+      [
         "/assets/atlas/game.atlas"
         :scene
       ]
       [
-        "/assets/textures/selection_bg.png"
-        :scene
+        "/game/view/board_view/board_view.lua"
+        :code
+      ]
+      [
+        "/main/main.script"
+        :code
       ]
     ]
   }
