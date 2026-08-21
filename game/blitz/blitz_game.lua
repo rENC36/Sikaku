@@ -174,7 +174,9 @@ end
 function BlitzGame:solve_round()
 	self.score     = self.score + SCORE_BONUS
 	self.timer     = math.min(TIME_CAP, self.timer + TIME_BONUS)
-	self.grid_size = self.grid_size + 1
+	if self.score % 5 == 0 and self.grid_size < 10 then
+		self.grid_size = self.grid_size + 1
+	end
 	self:start_round()
 end
 

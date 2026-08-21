@@ -20,93 +20,9 @@
   :workflow {
     :open-tabs [
       [
-        [
-          "/game.project"
-          :cljfx-form-view
-        ]
-        [
-          "/game/popup/popup.gui_script"
-          :code
-        ]
-        [
-          "/ui/gameplay/game.gui_script"
-          :code
-        ]
       ]
     ]
     :recent-files [
-      [
-        "/data/levels/easy.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/cell.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/board.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/rectangle.lua"
-        :code
-      ]
-      [
-        "/ui/menu/menu.gui"
-        :scene
-      ]
-      [
-        "/data/localization/en_lang.lua"
-        :code
-      ]
-      [
-        "/data/localization/ru_lang.lua"
-        :code
-      ]
-      [
-        "/game/player/player_data.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/generator.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/solver_backtrack.lua"
-        :code
-      ]
-      [
-        "/game/endless/endless_game.lua"
-        :code
-      ]
-      [
-        "/game/classic/classic_game.lua"
-        :code
-      ]
-      [
-        "/ui/gameplay/endless_game.gui_script"
-        :code
-      ]
-      [
-        "/ui/gameplay/endless_game.gui"
-        :scene
-      ]
-      [
-        "/utils/hints_manager.lua"
-        :code
-      ]
-      [
-        "/ui/mode_select/blitz_prepare.gui"
-        :scene
-      ]
-      [
-        "/ui/mode_select/mode_select.gui_script"
-        :code
-      ]
-      [
-        "/ui/mode_select/mode_select.gui"
-        :scene
-      ]
       [
         "/builtins/manifests/web/light_theme.css"
         :code
@@ -132,36 +48,108 @@
         :cljfx-form-view
       ]
       [
-        "/main/main.script"
-        :code
-      ]
-      [
         "/main/main.collection"
         :scene
       ]
       [
-        "/game/popup/popup_manager.lua"
+        "/ui/gameplay/game.gui_script"
         :code
-      ]
-      [
-        "/ui/gameplay/game.gui"
-        :scene
-      ]
-      [
-        "/game/popup/popup.gui"
-        :scene
-      ]
-      [
-        "/game.project"
-        :cljfx-form-view
       ]
       [
         "/game/popup/popup.gui_script"
         :code
       ]
       [
-        "/ui/gameplay/game.gui_script"
+        "/game/popup/popup_manager.lua"
         :code
+      ]
+      [
+        "/game/popup/popup.gui"
+        :scene
+      ]
+      [
+        "/yagames/ext.properties"
+        :code
+      ]
+      [
+        "/yagames/ext.manifest"
+        :code
+      ]
+      [
+        "/yagames/yagames.lua"
+        :code
+      ]
+      [
+        "/game/shikaku/rectangle.lua"
+        :code
+      ]
+      [
+        "/game/shikaku/input.lua"
+        :code
+      ]
+      [
+        "/game/shikaku/selection.lua"
+        :code
+      ]
+      [
+        "/main/main.script"
+        :code
+      ]
+      [
+        "/game/shikaku/board.lua"
+        :code
+      ]
+      [
+        "/game.project"
+        :cljfx-form-view
+      ]
+      [
+        "/input/game.input_binding"
+        :cljfx-form-view
+      ]
+      [
+        "/game/shikaku/cell.lua"
+        :code
+      ]
+      [
+        "/game/view/board_view/board_view.lua"
+        :code
+      ]
+      [
+        "/game/classic/classic_game.lua"
+        :code
+      ]
+      [
+        "/game/endless/endless_game.lua"
+        :code
+      ]
+      [
+        "/game/blitz/blitz_game.lua"
+        :code
+      ]
+      [
+        "/ui/menu/menu.gui"
+        :scene
+      ]
+      [
+        "/ui/mode_select/mode_select.gui"
+        :scene
+      ]
+      [
+        "/ui/mode_select/classic_select.gui"
+        :scene
+      ]
+      [
+        "/ui/gameplay/game.gui"
+        :scene
+      ]
+      [
+        "/ui/gameplay/endless_game.gui"
+        :scene
+      ]
+      [
+        "/ui/gameplay/blitz_game.gui"
+        :scene
       ]
     ]
   }
