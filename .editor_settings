@@ -156,11 +156,11 @@
         :cljfx-form-view
       ]
       [
-        "/ui/gameplay/game.gui_script"
+        "/game/popup/popup.gui_script"
         :code
       ]
       [
-        "/game/popup/popup.gui_script"
+        "/ui/gameplay/game.gui_script"
         :code
       ]
     ]
