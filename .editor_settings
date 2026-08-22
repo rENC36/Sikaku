@@ -20,127 +20,11 @@
   :workflow {
     :open-tabs [
       [
-        [
-          "/ui/gameplay/blitz_game.gui_script"
-          :code
-        ]
       ]
     ]
     :recent-files [
       [
-        "/game/popup/popup.gui"
-        :scene
-      ]
-      [
-        "/yagames/ext.properties"
-        :code
-      ]
-      [
-        "/yagames/ext.manifest"
-        :code
-      ]
-      [
-        "/yagames/yagames.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/rectangle.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/input.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/selection.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/board.lua"
-        :code
-      ]
-      [
-        "/game.project"
-        :cljfx-form-view
-      ]
-      [
-        "/input/game.input_binding"
-        :cljfx-form-view
-      ]
-      [
-        "/game/shikaku/cell.lua"
-        :code
-      ]
-      [
-        "/ui/menu/menu.gui"
-        :scene
-      ]
-      [
-        "/ui/gameplay/game.gui"
-        :scene
-      ]
-      [
         "/ui/mode_select/mode_select.gui"
-        :scene
-      ]
-      [
-        "/ui/mode_select/classic_select.gui"
-        :scene
-      ]
-      [
-        "/ui/mode_select/classic_select.gui_script"
-        :code
-      ]
-      [
-        "/game/view/board_view/preview_overlay.lua"
-        :code
-      ]
-      [
-        "/game/view/board_view/rectangle_overlay.lua"
-        :code
-      ]
-      [
-        "/assets/textures/selection_bg.png"
-        :scene
-      ]
-      [
-        "/assets/atlas/game.atlas"
-        :scene
-      ]
-      [
-        "/game/view/board_view/board_view.lua"
-        :code
-      ]
-      [
-        "/data/config/classic_select_config.lua"
-        :code
-      ]
-      [
-        "/data/config/board_view_config.lua"
-        :code
-      ]
-      [
-        "/data/config/blitz_config.lua"
-        :code
-      ]
-      [
-        "/ui/gameplay/endless_game.gui"
-        :scene
-      ]
-      [
-        "/game/classic/classic_game.lua"
-        :code
-      ]
-      [
-        "/game/endless/endless_game.lua"
-        :code
-      ]
-      [
-        "/ui/gameplay/endless_game.gui_script"
-        :code
-      ]
-      [
-        "/ui/gameplay/blitz_game.gui"
         :scene
       ]
       [
@@ -148,11 +32,7 @@
         :code
       ]
       [
-        "/game/blitz/blitz_game.lua"
-        :code
-      ]
-      [
-        "/ui/gameplay/blitz_game.gui_script"
+        "/yagames/yagames.lua"
         :code
       ]
     ]
