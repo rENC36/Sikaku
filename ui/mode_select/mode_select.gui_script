@@ -7,7 +7,7 @@ function init(self)
 
 	self.buttons = Anim.register_buttons({
 		{ node = "btn_classic", anim = CFG.btn_mode, sound = "click", action = function() msg.post("/main", "open_classic_levels") end },
-		{ node = "btn_blitz",   anim = CFG.btn_mode, sound = "click", action = function() msg.post("/main", "open_blitz_prepare") end },
+		{ node = "btn_blitz",   anim = CFG.btn_mode, sound = "click", action = function() msg.post("/main", "start_game", { mode = "blitz" }) end },
 		{ node = "btn_endless", anim = CFG.btn_mode, sound = "click", action = function() msg.post("/main", "start_game", { mode = "endless" }) end },
 		{ node = "btn_back",    anim = CFG.btn_menu, sound = "click", action = function() msg.post("/main", "back_to_menu") end },
 	})

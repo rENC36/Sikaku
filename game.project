@@ -8,6 +8,7 @@ shared_state = 1
 width = 1920
 height = 1080
 high_dpi = 1
+display_profiles = /builtins/render/default.display_profilesc
 
 [android]
 input_method = HiddenInputField
@@ -17,17 +18,19 @@ scale_mode = stretch
 wasm_streaming = 1
 show_fullscreen_button = 0
 show_made_with_defold = 0
+cssfile = /builtins/manifests/web/light_theme.css
 
 [project]
 title = Sikaku
 
 [label]
-<<<<<<< Updated upstream
-max_count = 256
-=======
 max_count = 1024
 
 [sprite]
 max_count = 1024
->>>>>>> Stashed changes
+
+[render]
+clear_color_blue = 1.0
+clear_color_green = 0.973
+clear_color_red = 0.969
 

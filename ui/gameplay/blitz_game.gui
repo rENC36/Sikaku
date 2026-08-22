@@ -12,6 +12,11 @@ nodes {
     x: 200.0
     y: 100.0
   }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
   type: TYPE_TEXT
   text: "<text>"
   font: "nunitoREGULAR"
@@ -26,6 +31,11 @@ nodes {
   size {
     x: 200.0
     y: 100.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
   }
   type: TYPE_TEXT
   text: "<text>"
@@ -42,6 +52,11 @@ nodes {
     x: 200.0
     y: 100.0
   }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
   type: TYPE_TEXT
   text: "<text>"
   font: "nunitoREGULAR"
@@ -56,6 +71,11 @@ nodes {
   size {
     x: 200.0
     y: 100.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
   }
   type: TYPE_TEXT
   text: "<text>"
@@ -72,6 +92,11 @@ nodes {
     x: 200.0
     y: 100.0
   }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
   type: TYPE_TEXT
   text: "<text>"
   font: "nunitoREGULAR"
@@ -87,6 +112,11 @@ nodes {
     x: 200.0
     y: 100.0
   }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
   type: TYPE_TEXT
   text: "<text>"
   font: "nunitoREGULAR"
@@ -95,12 +125,16 @@ nodes {
 }
 nodes {
   position {
-    x: 487.0
-    y: 101.0
+    x: 1860.0
+    y: 1037.0
   }
   size {
-    x: 200.0
-    y: 100.0
+    x: 50.0
+    y: 50.0
+  }
+  color {
+    y: 0.0
+    z: 0.0
   }
   type: TYPE_BOX
   id: "btn_menu"
@@ -116,6 +150,11 @@ nodes {
     x: 200.0
     y: 100.0
   }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
   type: TYPE_BOX
   id: "btn_restart"
   inherit_alpha: true
@@ -129,6 +168,11 @@ nodes {
   size {
     x: 200.0
     y: 100.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
   }
   type: TYPE_BOX
   id: "game_over_group"

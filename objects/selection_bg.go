@@ -1,7 +1,7 @@
 embedded_components {
   id: "sprite"
   type: "sprite"
-  data: "default_animation: \"test2_selection_bg\"\n"
+  data: "default_animation: \"selection_bg\"\n"
   "material: \"/builtins/materials/sprite.material\"\n"
   "slice9 {\n"
   "  x: 16.0\n"

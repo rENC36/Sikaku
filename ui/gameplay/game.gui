@@ -1,14 +1,4 @@
 script: "/ui/gameplay/game.gui_script"
-<<<<<<< Updated upstream
-nodes {
-  position {
-    x: 1860.0
-    y: 1031.0
-  }
-  scale {
-    x: 0.415261
-    y: 0.675842
-=======
 fonts {
   name: "nunitoREGULAR"
   font: "/assets/fonts/nunitoREGULAR.font"
@@ -21,11 +11,10 @@ nodes {
   position {
     x: 88.0
     y: 983.0
->>>>>>> Stashed changes
   }
   size {
-    x: 200.0
-    y: 100.0
+    x: 50.0
+    y: 50.0
   }
   color {
     y: 0.0
@@ -39,8 +28,8 @@ nodes {
 }
 nodes {
   position {
-    x: 1000.0
-    y: 580.0
+    x: 1006.0
+    y: 492.0
   }
   size {
     x: 200.0
@@ -62,6 +51,11 @@ nodes {
     x: 200.0
     y: 100.0
   }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
   type: TYPE_BOX
   id: "btn_hint"
   inherit_alpha: true
@@ -74,6 +68,11 @@ nodes {
   size {
     x: 200.0
     y: 100.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
   }
   type: TYPE_TEXT
   text: "3"

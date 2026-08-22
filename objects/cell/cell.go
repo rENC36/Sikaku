@@ -21,15 +21,16 @@ embedded_components {
 embedded_components {
   id: "sprite"
   type: "sprite"
-  data: "default_animation: \"cell\"\n"
+  data: "default_animation: \"cell_tile\"\n"
   "material: \"/builtins/materials/sprite.material\"\n"
+  "size {\n"
+  "  x: 64.0\n"
+  "  y: 64.0\n"
+  "}\n"
+  "size_mode: SIZE_MODE_MANUAL\n"
   "textures {\n"
   "  sampler: \"texture_sampler\"\n"
   "  texture: \"/assets/atlas/game.atlas\"\n"
   "}\n"
   ""
-  scale {
-    x: 0.5
-    y: 0.5
-  }
 }

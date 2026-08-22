@@ -111,25 +111,36 @@ end
 function ClassicGame:check_solved()
 	if not self.board or not self.board:IsFull() then return false end
 	local rectangles = self.board:GetAllRectangles()
-	if Solver.Check(self.board, rectangles) then
-		print("[ClassicGame] SOLVED!")
-		PlayerData.complete_level(self.category, self.level)
-
-		self.level = self.level + 1
-		if self.level > Levels.count(self.category) then
-			self.category = get_next_category(self.category)
-			self.level = 1
-			PlayerData.set("last_category", self.category)
-			PlayerData.set("last_page", 1)
-			PlayerData.save()
-		end
-		Levels.set_level(self.category, self.level)
-		self:load_level()
-		return true
-	else
+	if not Solver.Check(self.board, rectangles) then
 		print("[ClassicGame] WRONG")
 		return false
 	end
+
+	print("[ClassicGame] SOLVED!")
+	PlayerData.complete_level(self.category, self.level)
+
+	self.level = self.level + 1
+	
+	if self.level > Levels.count(self.category) then
+		if self.category == "hard" then
+			print("[ClassicGame] ALL LEVELS COMPLETED!")
+			PlayerData.set("game_completed", true)
+			PlayerData.save()
+			
+			msg.post("/main", "open_classic_levels")
+			return true
+		end
+		
+		self.category = get_next_category(self.category)
+		self.level = 1
+		PlayerData.set("last_category", self.category)
+		PlayerData.set("last_page", 1)
+		PlayerData.save()
+	end
+
+	Levels.set_level(self.category, self.level)
+	self:load_level()
+	return true
 end
 
 function ClassicGame:use_hint()

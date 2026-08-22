@@ -1,7 +1,3 @@
-<<<<<<< Updated upstream
-local Anim = require("utils.animator")
-local CFG = require("data.config.animations")
-=======
 local Anim       = require("utils.animator")
 local CFG        = require("data.config.animations")
 local PD         = require("game.player.player_data")
@@ -38,17 +34,10 @@ local function refresh_stats(self)
 	gui.set_text(self.stat, completed .. "/" .. total)
 	print("[Menu] Total progress:", completed .. "/" .. total)
 end
->>>>>>> Stashed changes
 
 function init(self)
 	msg.post(".", "acquire_input_focus")
 
-<<<<<<< Updated upstream
-	self.buttons = Anim.register_buttons({
-		{ node = "btn_start",       anim = CFG.btn_start,       action = function() msg.post("/main", "open_mode_select") end },
-		{ node = "btn_leaderboard", anim = CFG.btn_leaderboard, action = function() msg.post("/main", "open_leaderboard") end },
-	})
-=======
 	Audio.init()
 	Lang.init()
 
@@ -89,19 +78,15 @@ function init(self)
 
 	Lang.apply_to_gui("menu")
 	refresh_stats(self)
->>>>>>> Stashed changes
 end
 
 function on_message(self, message_id, message, sender)
 	if message_id == hash("reset_ui") then
 		Anim.reset_buttons(self.buttons)
-<<<<<<< Updated upstream
-=======
 		set_switch_state(self.switch_on, self.switcher_on, Audio.is_music_enabled(), false)
 		set_switch_state(self.switch_off, self.switcher_off, Audio.is_sound_enabled(), false)
 		Lang.apply_to_gui("menu")
 		refresh_stats(self)
->>>>>>> Stashed changes
 	end
 end
 

@@ -8,7 +8,7 @@ images {
   image: "/assets/textures/btn_play.png"
 }
 images {
-  image: "/assets/textures/gameplay_background.jpg"
+  image: "/assets/textures/gameplay_bg.jpg"
 }
 images {
   image: "/assets/textures/language_board.png"
@@ -29,7 +29,7 @@ images {
   image: "/assets/textures/switcher.png"
 }
 images {
-  image: "/assets/textures/cell.png"
+  image: "/assets/textures/cell_tile.png"
 }
 images {
   image: "/assets/textures/background_main.jpg"
@@ -42,9 +42,6 @@ images {
 }
 images {
   image: "/assets/textures/blitz_2.png"
-}
-images {
-  image: "/assets/textures/infinity_2.png"
 }
 images {
   image: "/assets/textures/arrow_next_page_3.png"
@@ -67,8 +64,6 @@ images {
 images {
   image: "/assets/textures/lvl_done_3.png"
 }
-<<<<<<< Updated upstream
-=======
 images {
   image: "/assets/textures/badge_circle.png"
 }
@@ -76,7 +71,15 @@ images {
   image: "/assets/textures/grid_bg.png"
 }
 images {
-  image: "/assets/textures/test2_selection_bg.png"
+  image: "/assets/textures/selection_bg.png"
 }
->>>>>>> Stashed changes
+images {
+  image: "/assets/textures/btn_rules.png"
+}
+images {
+  image: "/assets/textures/endless_2.png"
+}
+images {
+  image: "/assets/textures/line_category.png"
+}
 extrude_borders: 2

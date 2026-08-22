@@ -3,20 +3,6 @@ local CFG = require("data.config.input_config")
 local Input = {}
 Input.__index = Input
 
-<<<<<<< Updated upstream
-local COLOR_DEFAULT = vmath.vector4(1, 1, 1, 1)
-
-local PALETTE = {
-	vmath.vector4(0.20, 0.80, 0.20, 1), -- зелёный
-	vmath.vector4(0.90, 0.30, 0.30, 1), -- красный
-	vmath.vector4(0.30, 0.55, 0.95, 1), -- синий
-	vmath.vector4(0.95, 0.80, 0.20, 1), -- жёлтый
-	vmath.vector4(0.75, 0.35, 0.95, 1), -- фиолетовый
-	vmath.vector4(0.25, 0.85, 0.85, 1), -- голубой
-	vmath.vector4(0.95, 0.55, 0.15, 1), -- оранжевый
-	vmath.vector4(0.95, 0.45, 0.75, 1), -- розовый
-}
-=======
 local function hsv_to_rgb(h, s, v)
 	local r, g, b
 	local i = math.floor(h * 6)
@@ -34,22 +20,13 @@ local function hsv_to_rgb(h, s, v)
 	end
 	return vmath.vector4(r, g, b, 1)
 end
->>>>>>> Stashed changes
 
 function Input.new(selection, board_view)
 	local self = setmetatable({}, Input)
 	self.selection = selection
-	self.board = selection.board 
+	self.board = selection.board
 	self.board_view = board_view
 	self.dragging = false
-<<<<<<< Updated upstream
-	self.highlighted = {} 
-	self.pending_color = nil 
-	self.placed_count = 0   
-	return self
-end
-
-=======
 	self.highlighted = {}
 	self.pending_color = nil
 	self.placed_count = 0
@@ -105,7 +82,6 @@ function Input:GetSelectionInfo(rectangle)
 	}
 end
 
->>>>>>> Stashed changes
 function Input:GetCellDisplayColor(x, y)
 	local board_cell = self.board:GetCell(x, y)
 	if board_cell then
@@ -114,19 +90,6 @@ function Input:GetCellDisplayColor(x, y)
 			return rectangle.color
 		end
 	end
-<<<<<<< Updated upstream
-	return COLOR_DEFAULT
-end
-
-function Input:RepaintPreview(rectangle)
-	local new_highlighted = {}
-
-	if rectangle then
-		for yy = rectangle.y, rectangle.y + rectangle.height - 1 do
-			for xx = rectangle.x, rectangle.x + rectangle.width - 1 do
-				local key = xx .. ":" .. yy
-				new_highlighted[key] = { x = xx, y = yy }
-=======
 	return CFG.COLOR_DEFAULT
 end
 
@@ -150,24 +113,15 @@ function Input:GenerateColor()
 			if dist < gen.similarity_threshold then
 				too_similar = true
 				break
->>>>>>> Stashed changes
 			end
 		end
-	end
 
-	for key, pos in pairs(self.highlighted) do
-		if not new_highlighted[key] then
-			self.board_view:SetCellColor(pos.x, pos.y, self:GetCellDisplayColor(pos.x, pos.y))
+		if not too_similar then
+			table.insert(self.used_colors, color)
+			return color
 		end
 	end
 
-<<<<<<< Updated upstream
-	for _, pos in pairs(new_highlighted) do
-		self.board_view:SetCellColor(pos.x, pos.y, self.pending_color)
-	end
-
-	self.highlighted = new_highlighted
-=======
 	local h = (math.random() + 0.5) % 1
 	local color = hsv_to_rgb(h, gen.fallback_s, gen.fallback_v)
 	table.insert(self.used_colors, color)
@@ -183,41 +137,25 @@ end
 
 function Input:RepaintPreview(rectangle, info)
 	self.highlighted = {}
->>>>>>> Stashed changes
 end
 
 function Input:MousePressed(x, y)
 	local cell = self.board_view:GetCellFromPosition(x, y)
-<<<<<<< Updated upstream
-	if not cell then
-		return
-	end
-=======
 	if not cell then return false end
->>>>>>> Stashed changes
 
 	self.dragging = true
-	self.pending_color = PALETTE[(self.placed_count % #PALETTE) + 1]
+	self.pending_color = self:GenerateColor()
 
 	self.selection:Start(cell.x, cell.y)
 	self.selection:Update(cell.x, cell.y)
 
-	self:RepaintPreview(self.selection:GetRectangle())
+	local rect = self.selection:GetRectangle()
+	local info = self:GetSelectionInfo(rect)
+
+	self:RepaintPreview(rect, info)
+	self.board_view:UpdatePreviewBg(rect, self.pending_color, info)
 
 	print("START", cell.x, cell.y)
-<<<<<<< Updated upstream
-end
-
-function Input:MouseMoved(x, y)
-	if not self.dragging then
-		return
-	end
-
-	local cell = self.board_view:GetCellFromPosition(x, y)
-	if not cell then
-		return
-	end
-=======
 	return true
 end
 
@@ -226,10 +164,16 @@ function Input:MouseMoved(x, y)
 
 	local cell = self.board_view:GetCellFromPosition(x, y)
 	if not cell then return false end
->>>>>>> Stashed changes
 
 	self.selection:Update(cell.x, cell.y)
-	self:RepaintPreview(self.selection:GetRectangle())
+
+	local rect = self.selection:GetRectangle()
+	local info = self:GetSelectionInfo(rect)
+
+	self:RepaintPreview(rect, info)
+	self.board_view:UpdatePreviewBg(rect, self.pending_color, info)
+
+	return true
 end
 
 function Input:RepaintCells(cells)
@@ -239,40 +183,6 @@ function Input:RepaintCells(cells)
 end
 
 function Input:MouseReleased(x, y)
-<<<<<<< Updated upstream
-	if not self.dragging then
-		return
-	end
-
-	self.dragging = false
-
-	local rectangle = self.selection:GetRectangle()
-	if rectangle then
-		local overlapping = self.board:GetOverlappingRectangles(rectangle)
-		local cells_to_repaint = {}
-		
-		for old_rectangle in pairs(overlapping) do
-			self.board:RemoveRectangle(old_rectangle)
-			for _, pos in ipairs(old_rectangle:GetCells()) do
-				table.insert(cells_to_repaint, pos)
-			end
-			print("REMOVED", old_rectangle.x, old_rectangle.y, old_rectangle.width, old_rectangle.height)
-		end
-		
-		rectangle.color = self.pending_color
-		self.board:Place(rectangle)
-		self.placed_count = self.placed_count + 1
-		for _, pos in ipairs(rectangle:GetCells()) do
-			table.insert(cells_to_repaint, pos)
-		end
-
-		self:RepaintCells(cells_to_repaint)
-		print("PLACED", rectangle.x, rectangle.y, rectangle.width, rectangle.height)
-	end
-
-	self.highlighted = {}
-	self.selection:Clear()
-=======
 	if not self.dragging then return false end
 	self.dragging = false
 
@@ -348,7 +258,6 @@ function Input:RightClick(x, y)
 
 	print("REMOVED by right click", rect.x, rect.y, rect.width, rect.height)
 	return true
->>>>>>> Stashed changes
 end
 
 function Input:Reset()
@@ -356,11 +265,8 @@ function Input:Reset()
 	self.highlighted = {}
 	self.pending_color = nil
 	self.placed_count = 0
-<<<<<<< Updated upstream
-=======
 	self.used_colors = {}
 	self.board_view:ClearPreviewBg()
->>>>>>> Stashed changes
 	self.selection:Clear()
 end
 

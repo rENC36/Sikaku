@@ -122,7 +122,7 @@ if action_id == hash("touch") or action_id == nil then
 	end
 end
 
-if action_id == hash("mouse_button_right") and action.pressed then
+if action_id == hash("mouse_right") and action.pressed then
 	self.input:RightClick(action.x, action.y)
 	return true
 end
@@ -131,8 +131,10 @@ return false
 end
 
 function EndlessGame:solve_round()
-	self.score     = self.score + 1
-	self.grid_size = self.grid_size + 1
+	self.score = self.score + 1
+	if self.score % 5 == 0 and self.grid_size < 10 then
+		self.grid_size = self.grid_size + 1
+	end
 	self:start_round()
 end
 

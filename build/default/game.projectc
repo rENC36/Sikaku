@@ -96,6 +96,7 @@ wasm_streaming = 1
 
 [input]
 game_binding = /input/game.input_bindingc
+gamepad_deadzone = 0.2
 gamepads = /builtins/input/default.gamepadsc
 repeat_delay = 0.5
 repeat_interval = 0.2
@@ -111,11 +112,7 @@ pre_renderered_icons = 0
 privacymanifest = /builtins/manifests/ios/PrivacyInfo.xcprivacy
 
 [label]
-<<<<<<< Updated upstream
-max_count = 256
-=======
 max_count = 1024
->>>>>>> Stashed changes
 subpixels = 1
 
 [light]
@@ -187,6 +184,7 @@ track_detailed_memory = 0
 
 [project]
 compress_archive = 1
+dependencies_metadata = 0
 minimum_log_level = 1
 title = Sikaku
 version = 1.0
@@ -195,9 +193,9 @@ write_log_file = 0
 
 [render]
 clear_color_alpha = 1.0
-clear_color_blue = 0.0
-clear_color_green = 0.0
-clear_color_red = 0.0
+clear_color_blue = 1.0
+clear_color_green = 0.973
+clear_color_red = 0.969
 
 [resource]
 http_cache = 0
@@ -228,10 +226,13 @@ use_linear_gain = 1
 use_thread = 1
 
 [sprite]
-max_count = 128
+max_count = 1024
 subpixels = 1
 
 [tilemap]
 max_count = 16
 max_tile_count = 2048
+
+[yagames]
+sdk_url = /sdk.js
 
