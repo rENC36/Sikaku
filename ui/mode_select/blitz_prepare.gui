@@ -1,0 +1,98 @@
+script: "/ui/mode_select/blitz_prepare.gui_script"
+fonts {
+  name: "nunitoREGULAR"
+  font: "/assets/fonts/nunitoREGULAR.font"
+}
+nodes {
+  position {
+    x: 950.0
+    y: 1000.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "<text>"
+  font: "nunitoREGULAR"
+  id: "best_score_value"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 349.0
+    y: 487.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "<text>"
+  font: "nunitoREGULAR"
+  id: "rules_text"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 344.0
+    y: 333.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "<text>"
+  font: "nunitoREGULAR"
+  id: "detailed_rules"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 956.0
+    y: 598.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "btn_start"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 1804.0
+    y: 1001.0
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  color {
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_BOX
+  id: "btn_back"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 349.0
+    y: 624.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "btn_rules"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT

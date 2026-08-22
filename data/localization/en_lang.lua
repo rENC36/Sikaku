@@ -3,16 +3,21 @@ return {
 		blitz_stats = "Points",
 		play_text    = "Play",
 		leader_text  = "Leaderboard",
+		text_rules = "Rules",
 		en_text      = "EN",
 		ru_text      = "RU",
 		settings_title = "Settings",
 		sfx_text = "Sound",
 		music_text = "Music",
 		language_text = "Language",
-		statistic_text = "Your statistic",
+		statistic_text = "Your statistics\nby mode",
 		endless_text = "Endless", 
 		blitz_text = "Blitz",
 		classic_text = "Classic",
+
+		classic_text_1 = "Levels completed",
+		endless_text_1 = "Highest level reached",
+		blitz_text_1 = "Best score",
 	},
 
 	mode_select = {

@@ -1,0 +1,50 @@
+local Anim       = require("utils.animator")
+local CFG        = require("data.config.animations")
+local PlayerData = require("game.player.player_data")
+local Lang       = require("utils.localization")
+
+local function safe_node(name)
+	local ok, n = pcall(gui.get_node, name)
+	return ok and n or nil
+end
+
+function init(self)
+	msg.post(".", "acquire_input_focus")
+
+	local best = PlayerData.get("stats.blitz_best") or 0
+
+	self.best_value     = safe_node("best_score_value")
+	self.rules_text     = safe_node("rules_text")
+	self.detailed_rules = safe_node("detailed_rules")
+
+	if self.best_value then gui.set_text(self.best_value, tostring(best)) end
+	if self.detailed_rules then gui.set_enabled(self.detailed_rules, false) end
+
+	Lang.apply_to_gui("blitz_prepare")
+
+	self.buttons = Anim.register_buttons({
+		{ node = "btn_start", anim = CFG.btn_start, sound = "click",
+		action = function() msg.post("/main", "start_game", { mode = "blitz" }) end },
+		{ node = "btn_back",  anim = CFG.btn_menu,  sound = "click",
+		action = function() msg.post("/main", "back_to_mode_select") end },
+		{ node = "btn_rules", anim = CFG.btn_menu,  sound = "click",
+		action = function()
+			if self.detailed_rules then
+				gui.set_enabled(self.detailed_rules, not gui.is_enabled(self.detailed_rules))
+			end
+		end },
+	})
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("reset_ui") then
+		Anim.reset_buttons(self.buttons)
+		local best = PlayerData.get("stats.blitz_best") or 0
+		if self.best_value then gui.set_text(self.best_value, tostring(best)) end
+		if self.detailed_rules then gui.set_enabled(self.detailed_rules, false) end
+	end
+end
+
+function on_input(self, action_id, action)
+	return Anim.handle_buttons(self.buttons, action_id, action)
+end
