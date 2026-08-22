@@ -21,24 +21,12 @@
     :open-tabs [
       [
         [
-          "/main/main.script"
-          :code
-        ]
-        [
-          "/game/classic/classic_game.lua"
+          "/ui/gameplay/blitz_game.gui_script"
           :code
         ]
       ]
     ]
     :recent-files [
-      [
-        "/game/popup/popup.gui_script"
-        :code
-      ]
-      [
-        "/game/popup/popup_manager.lua"
-        :code
-      ]
       [
         "/game/popup/popup.gui"
         :scene
@@ -84,23 +72,11 @@
         :code
       ]
       [
-        "/game/endless/endless_game.lua"
-        :code
-      ]
-      [
         "/ui/menu/menu.gui"
         :scene
       ]
       [
         "/ui/gameplay/game.gui"
-        :scene
-      ]
-      [
-        "/ui/gameplay/endless_game.gui"
-        :scene
-      ]
-      [
-        "/ui/gameplay/blitz_game.gui"
         :scene
       ]
       [
@@ -148,15 +124,35 @@
         :code
       ]
       [
-        "/game/blitz/blitz_game.lua"
+        "/ui/gameplay/endless_game.gui"
+        :scene
+      ]
+      [
+        "/game/classic/classic_game.lua"
         :code
+      ]
+      [
+        "/game/endless/endless_game.lua"
+        :code
+      ]
+      [
+        "/ui/gameplay/endless_game.gui_script"
+        :code
+      ]
+      [
+        "/ui/gameplay/blitz_game.gui"
+        :scene
       ]
       [
         "/main/main.script"
         :code
       ]
       [
-        "/game/classic/classic_game.lua"
+        "/game/blitz/blitz_game.lua"
+        :code
+      ]
+      [
+        "/ui/gameplay/blitz_game.gui_script"
         :code
       ]
     ]

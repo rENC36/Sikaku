@@ -162,8 +162,8 @@ nodes {
 }
 nodes {
   position {
-    x: 1672.0
-    y: 583.0
+    x: 136.0
+    y: 914.0
   }
   size {
     x: 200.0
@@ -178,6 +178,45 @@ nodes {
   id: "game_over_group"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 1796.0
+    y: 571.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_BOX
+  id: "btn_hint"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -160.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "3"
+  font: "nunitoREGULAR"
+  id: "hint_text"
+  parent: "btn_hint"
+  inherit_alpha: true
 }
 material: "/builtins/materials/gui.material"
 adjust_reference: ADJUST_REFERENCE_PARENT
