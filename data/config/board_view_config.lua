@@ -26,7 +26,7 @@ M.Z = {
 }
 
 M.BOARD_BG = {
-	padding_ratio = 1.1,
+	padding_ratio = 0.30,
 	base_size     = 1024,
 }
 

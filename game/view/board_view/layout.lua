@@ -3,12 +3,24 @@ Layout.__index = Layout
 
 function Layout.new(settings)
 	local self = setmetatable({}, Layout)
+
 	self.settings = settings or {}
-	self.settings.cell_size = self.settings.cell_size or 64
-	self.settings.spacing   = self.settings.spacing   or 0
-	self.settings.start_position = self.settings.start_position or vmath.vector3(0, 0, 0)
-	self.base_cell_size = self.settings.cell_size
+
+	self.settings.cell_size =
+	self.settings.cell_size or 64
+
+	self.settings.spacing =
+	self.settings.spacing or 0
+
+	self.settings.start_position =
+	self.settings.start_position
+	or vmath.vector3(0, 0, 0)
+
+	self.base_cell_size =
+	self.settings.base_cell_size or 64
+
 	self:reset()
+
 	return self
 end
 
