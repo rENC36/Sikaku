@@ -60,6 +60,18 @@ M.types = {
 		no_event = nil,
 		pause_input = true,
 	},
+
+	reward_hints = {
+		title = "popup_reward_title",
+		text = "popup_reward_text",
+		yes_label = "popup_get",
+		no_label = nil,
+		show_yes = true,
+		show_no = true,
+		yes_event = "show_reward_ad",
+		no_event = "reward_dismissed",
+		pause_input = true,
+	},
 }
 
 return M

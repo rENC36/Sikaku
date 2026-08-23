@@ -56,4 +56,7 @@ return {
 	popup_ok = "OK",
 	popup_use = "Use",
 	popup_cancel = "Cancel",
+	popup_reward_title = "Reward!",
+	popup_reward_text = "5 levels completed!\nGet 5 hints.",
+	popup_get = "Get",
 }

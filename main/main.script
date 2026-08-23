@@ -33,8 +33,10 @@ function init(self)
 	self.screens:open("menu")
 	Audio.play_music_id("menu")
 
-	yagames.init()
-	yagames.ysdk_ready()
+	pcall(function() yagames.init() end)
+	
+	self.total_levels = PlayerData.get("hints.total_levels") or 0
+	self.last_reward_shown = PlayerData.get("hints.last_reward_shown") or 0
 end
 
 local function start_blitz(self)
@@ -104,24 +106,41 @@ function on_message(self, message_id, message, sender)
 		else
 			self.popup:open("hint_confirm", { balance = balance })
 		end
-		
-	elseif message_id == hash("open_popup_hint_endless") then
-		local balance = HintsManager.GetBalance()
-		if balance <= 0 then
-			self.popup:open("no_hints")
-		else
-			self.popup:open("hint_confirm_endless", { balance = balance })
+
+	elseif message_id == hash("level_completed") then
+		self.total_levels = self.total_levels + 1
+		PlayerData.set("hints.total_levels", self.total_levels)
+		PlayerData.save()
+
+		if self.total_levels % 5 == 0 and self.total_levels > self.last_reward_shown then
+			self.popup:open("reward_hints")
 		end
 
-	elseif message_id == hash("open_popup_hint_blitz") then
-		local balance = HintsManager.GetBalance()
-		if balance <= 0 then
-			self.popup:open("no_hints")
-		else
-			self.popup:open("hint_confirm_blitz", { balance = balance })
+	elseif message_id == hash("show_reward_ad") then
+		local ad_ok = pcall(function()
+			yagames.adv_show_rewarded_video(function(result)
+				if result and result.value then
+					HintsManager.AddHints(5)
+					self.last_reward_shown = self.total_levels
+					PlayerData.set("hints.last_reward_shown", self.last_reward_shown)
+					PlayerData.save()
+					msg.post("/game", "update_hint_balance", { balance = HintsManager.GetBalance() })
+				end
+			end)
+		end)
+		if not ad_ok then
+			HintsManager.AddHints(5)
+			self.last_reward_shown = self.total_levels
+			PlayerData.set("hints.last_reward_shown", self.last_reward_shown)
+			PlayerData.save()
+			msg.post("/game", "update_hint_balance", { balance = HintsManager.GetBalance() })
 		end
 
-		
+	elseif message_id == hash("reward_dismissed") then
+		self.last_reward_shown = self.total_levels
+		PlayerData.set("hints.last_reward_shown", self.last_reward_shown)
+		PlayerData.save()
+
 	elseif message_id == hash("open_mode_select") then
 		self.screens:open("mode_select")
 

@@ -91,8 +91,11 @@ function ClassicGame:on_input(action_id, action)
 			self.input:MousePressed(action.x, action.y)
 		elseif action.released then
 			local placed = self.input:MouseReleased(action.x, action.y)
+			print("[ClassicGame] MouseReleased placed:", tostring(placed))
 			if placed then
-				return self:check_solved()
+				local solved = self:check_solved()
+				print("[ClassicGame] check_solved returned:", tostring(solved))
+				return solved
 			end
 		else
 			self.input:MouseMoved(action.x, action.y)
@@ -109,28 +112,34 @@ function ClassicGame:on_input(action_id, action)
 end
 
 function ClassicGame:check_solved()
-	if not self.board or not self.board:IsFull() then return false end
+	print("[ClassicGame] check_solved called")
+	if not self.board or not self.board:IsFull() then
+		print("[ClassicGame] board not full")
+		return false
+	end
 	local rectangles = self.board:GetAllRectangles()
+	print("[ClassicGame] rectangles count:", #rectangles)
 	if not Solver.Check(self.board, rectangles) then
 		print("[ClassicGame] WRONG")
 		return false
 	end
 
-	print("[ClassicGame] SOLVED!")
+	print("[ClassicGame] SOLVED! Sending level_completed to /main")
 	PlayerData.complete_level(self.category, self.level)
+	msg.post("/main", "level_completed")
 
 	self.level = self.level + 1
-	
+
 	if self.level > Levels.count(self.category) then
 		if self.category == "hard" then
 			print("[ClassicGame] ALL LEVELS COMPLETED!")
 			PlayerData.set("game_completed", true)
 			PlayerData.save()
-			
+
 			msg.post("/main", "open_classic_levels")
 			return true
 		end
-		
+
 		self.category = get_next_category(self.category)
 		self.level = 1
 		PlayerData.set("last_category", self.category)
