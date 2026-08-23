@@ -80,11 +80,41 @@ function HintsManager:ApplyHint()
 		if not all_occupied then
 			local color = self.input:GenerateColor()
 			solution_rect.color = color
-			self.board:Place(solution_rect)
+
+			-- Находим число внутри прямоугольника (Board:Place требует number)
+			local rect_number = nil
+			for ry = solution_rect.y, solution_rect.y + solution_rect.height - 1 do
+				for rx = solution_rect.x, solution_rect.x + solution_rect.width - 1 do
+					local cell = self.board:GetCell(rx, ry)
+					if cell and cell.number and cell.number > 0 then
+						rect_number = cell.number
+						break
+					end
+				end
+				if rect_number then break end
+			end
+
+			if not rect_number then
+				print("[HintsManager ERROR] No number in rect at", solution_rect.x, solution_rect.y, solution_rect.width, solution_rect.height)
+				HintsManager.AddHints(1)
+				return false, "no_number"
+			end
+
+			solution_rect.number = rect_number
+
+			local ok, err = pcall(function()
+				self.board:Place(solution_rect)
+			end)
+			if not ok then
+				print("[HintsManager ERROR] Place failed:", err)
+				HintsManager.AddHints(1)
+				return false, "place_failed"
+			end
+
 			self.input.placed_count = self.input.placed_count + 1
 			self.board_view:CreateRectangleBg(solution_rect, color)
 
-			print("[HintsManager] Hint applied:", solution_rect.x, solution_rect.y, solution_rect.width, solution_rect.height)
+			print("[HintsManager] Hint applied:", solution_rect.x, solution_rect.y, solution_rect.width, solution_rect.height, "number:", rect_number)
 			return true, "ok"
 		end
 	end

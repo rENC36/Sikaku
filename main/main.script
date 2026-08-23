@@ -6,6 +6,7 @@ local BlitzGame     = require("game.blitz.blitz_game")
 local EndlessGame   = require("game.endless.endless_game")
 local HintsManager  = require("utils.hints_manager")
 local PlayerData    = require("game.player.player_data")
+local PopupSystem   = require("utils.popup_system")
 
 local yagames = require("yagames.yagames")
 
@@ -25,6 +26,9 @@ function init(self)
 	self.classic = ClassicGame.new()
 	self.blitz   = BlitzGame.new()
 	self.endless = EndlessGame.new()
+
+	self.popup = PopupSystem.new()
+	self.popup:register_gui("/popup#popup")
 
 	self.screens:open("menu")
 	Audio.play_music_id("menu")
@@ -80,7 +84,45 @@ local function update_endless_hud(self)
 end
 
 function on_message(self, message_id, message, sender)
-	if message_id == hash("open_mode_select") then
+	if message_id == hash("popup_yes") then
+		self.popup:on_button("yes")
+		return
+	elseif message_id == hash("popup_no") then
+		self.popup:on_button("no")
+		return
+
+	elseif message_id == hash("open_popup") then
+		self.popup:open(message.popup_type, message.params)
+
+	elseif message_id == hash("open_popup_exit") then
+		self.popup:open("exit_confirm")
+
+	elseif message_id == hash("open_popup_hint") then
+		local balance = HintsManager.GetBalance()
+		if balance <= 0 then
+			self.popup:open("no_hints")
+		else
+			self.popup:open("hint_confirm", { balance = balance })
+		end
+		
+	elseif message_id == hash("open_popup_hint_endless") then
+		local balance = HintsManager.GetBalance()
+		if balance <= 0 then
+			self.popup:open("no_hints")
+		else
+			self.popup:open("hint_confirm_endless", { balance = balance })
+		end
+
+	elseif message_id == hash("open_popup_hint_blitz") then
+		local balance = HintsManager.GetBalance()
+		if balance <= 0 then
+			self.popup:open("no_hints")
+		else
+			self.popup:open("hint_confirm_blitz", { balance = balance })
+		end
+
+		
+	elseif message_id == hash("open_mode_select") then
 		self.screens:open("mode_select")
 
 	elseif message_id == hash("open_classic_levels") then
@@ -119,11 +161,13 @@ function on_message(self, message_id, message, sender)
 		print("[Main] Leaderboard (TODO)")
 
 	elseif message_id == hash("game_input") then
+		if self.popup:pauses_input() then return end
 		if self.classic then
 			self.classic:on_input(message.action_id, message.action)
 		end
 
 	elseif message_id == hash("blitz_input") then
+		if self.popup:pauses_input() then return end
 		if self.blitz then
 			local handled = self.blitz:on_input(message.action_id, message.action)
 			if handled then
@@ -140,6 +184,7 @@ function on_message(self, message_id, message, sender)
 		end
 
 	elseif message_id == hash("endless_input") then
+		if self.popup:pauses_input() then return end
 		if self.endless then
 			local handled = self.endless:on_input(message.action_id, message.action)
 			if handled then
@@ -158,7 +203,6 @@ function on_message(self, message_id, message, sender)
 		end
 		msg.post("/endless_game", "update_hint_balance", { balance = HintsManager.GetBalance(), ok = ok, reason = reason })
 
-
 	elseif message_id == hash("use_hint_blitz") then
 		local ok, reason = self.blitz:use_hint()
 		if ok then
@@ -174,7 +218,7 @@ function on_message(self, message_id, message, sender)
 			ok = ok,
 			reason = reason,
 		})
-		
+
 	elseif message_id == hash("get_hint_balance") then
 		msg.post(sender, "update_hint_balance", { balance = HintsManager.GetBalance() })
 	end

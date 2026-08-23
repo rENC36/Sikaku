@@ -23,9 +23,9 @@ function init(self)
 
 	self.buttons = Anim.register_buttons({
 		{ node = "btn_menu", anim = CFG.btn_menu, sound = "click",
-		action = function() msg.post("/main", "back_to_menu") end },
+		action = function() msg.post("/main", "open_popup_exit") end },
 		{ node = "btn_hint", anim = CFG.btn_menu, sound = "click",
-		action = function() msg.post("/main", "use_hint_endless") end },
+		action = function() msg.post("/main", "open_popup_hint_endless") end },
 	})
 end
 
@@ -50,5 +50,5 @@ function on_input(self, action_id, action)
 		return true
 	end
 	msg.post("/main", "endless_input", { action_id = action_id, action = action })
-	return true
+	return false
 end

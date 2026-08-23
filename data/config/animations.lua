@@ -1,6 +1,26 @@
 local V3 = vmath.vector3
 
 return {
+	popup_show = {
+		scale    = V3(1, 1, 1),
+		duration = 0.35,
+		easing   = gui.EASING_OUTBACK,
+	},
+
+	popup_hide = {
+		scale    = V3(0.9, 0.9, 1),
+		duration = 0.2,
+		easing   = gui.EASING_INQUAD,
+	},
+
+	btn_popup = {
+		default   = { scale = V3(1, 1, 1) },
+		hover     = { scale = V3(1.06, 1.06, 1), duration = 0.12, easing = gui.EASING_OUTQUAD, cancel = true },
+		hover_off = { scale = V3(1, 1, 1),       duration = 0.12, easing = gui.EASING_OUTQUAD, cancel = true },
+		pressed   = { scale = V3(0.92, 0.92, 1), duration = 0.05, easing = gui.EASING_OUTQUAD, cancel = true },
+		released  = { scale = V3(1, 1, 1),       duration = 0.2,  easing = gui.EASING_OUTBACK, cancel = true },
+	},
+	
 	btn_start = {
 		default   = { scale = V3(1, 1, 1) },
 		hover     = { scale = V3(1.06, 1.06, 1), duration = 0.02, easing = gui.EASING_OUTQUAD, cancel = true },

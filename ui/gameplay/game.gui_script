@@ -1,7 +1,6 @@
 local Anim = require("utils.animator")
 local CFG  = require("data.config.animations")
 local HintsManager = require("utils.hints_manager")
-local Popup = require("game.popup.popup_manager")
 
 local function safe_node(name)
 	local ok, n = pcall(gui.get_node, name)
@@ -18,41 +17,15 @@ function init(self)
 	msg.post(".", "acquire_input_focus")
 
 	self.hint_balance = safe_node("hint_balance")
-	self.hint_icon = safe_node("btn_hint")
 	update_hint_display(self)
 
 	self.buttons = Anim.register_buttons({
 		{ node = "btn_menu", anim = CFG.btn_menu, sound = "click", action = function() 
-			msg.post("/main", "back_to_menu") 
+			msg.post("/main", "open_popup_exit")
 		end },
 
 		{ node = "btn_hint", anim = CFG.btn_menu, sound = "click", action = function()
-			local balance = HintsManager.GetBalance()
-
-			if balance <= 0 then
-				-- Нет подсказок — показываем информацию, а не подтверждение
-				Popup.show({
-					title = "Подсказки закончились",
-					text = "У вас не осталось подсказок. Купите их в магазине или пройдите уровень без помощи.",
-					buttons = {
-						{ id = "ok", label = "OK", node = "btn_ok" },
-					},
-					callback_url = msg.url(),
-					popup_id = "no_hints",
-				})
-			else
-				-- Есть подсказки — спрашиваем подтверждение
-				Popup.show({
-					title = "Подсказка",
-					text = "Использовать подсказку? Осталось: " .. balance,
-					buttons = {
-						{ id = "use",    label = "Использовать", node = "btn_ok" },
-						{ id = "cancel", label = "Отмена",       node = "btn_cancel" },
-					},
-					callback_url = msg.url(),
-					popup_id = "hint_confirm",
-				})
-			end
+			msg.post("/main", "open_popup_hint")
 		end },
 	})
 end
@@ -63,11 +36,6 @@ function on_message(self, message_id, message, sender)
 		update_hint_display(self)
 	elseif message_id == hash("update_hint_balance") then
 		update_hint_display(self)
-	elseif message_id == hash("popup_action") then
-		if message.popup_id == "hint_confirm" and message.action_id == "use" then
-			msg.post("/main", "use_hint")
-		end
-		-- "no_hints" тут ничего не делает, просто закрылся
 	end
 end
 
@@ -76,5 +44,5 @@ function on_input(self, action_id, action)
 		return true
 	end
 	msg.post("/main", "game_input", { action_id = action_id, action = action })
-	return true
+	return false
 end
