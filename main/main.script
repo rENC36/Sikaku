@@ -158,6 +158,23 @@ function on_message(self, message_id, message, sender)
 		end
 		msg.post("/endless_game", "update_hint_balance", { balance = HintsManager.GetBalance(), ok = ok, reason = reason })
 
+
+	elseif message_id == hash("use_hint_blitz") then
+		local ok, reason = self.blitz:use_hint()
+		if ok then
+			msg.post("/blitz_game", "update_hud", {
+				timer = self.blitz.timer,
+				score = self.blitz.score,
+				size  = self.blitz.grid_size,
+				game_over = self.blitz.is_game_over,
+			})
+		end
+		msg.post("/blitz_game", "update_hint_balance", {
+			balance = HintsManager.GetBalance(),
+			ok = ok,
+			reason = reason,
+		})
+		
 	elseif message_id == hash("get_hint_balance") then
 		msg.post(sender, "update_hint_balance", { balance = HintsManager.GetBalance() })
 	end

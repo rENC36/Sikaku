@@ -4,21 +4,19 @@ local SELECT_CFG = require("data.config.classic_select_config")
 local PlayerData = require("game.player.player_data")
 local Levels     = require("game.shikaku.levels")
 
-
-local GRID     = SELECT_CFG.GRID
-local PER_PAGE = GRID.COLS * GRID.ROWS
-local ANIM     = SELECT_CFG.ANIM
-
+local GRID      = SELECT_CFG.GRID
+local PER_PAGE  = GRID.COLS * GRID.ROWS
+local ANIM      = SELECT_CFG.ANIM
 
 local function update_category_highlight(self, instant)
-	local category_buttons = {
+	local map = {
 		easy = self.btn_easy,
 		medium = self.btn_medium,
 		hard = self.btn_hard,
 	}
 
 	-- Обновляем цвета кнопок
-	for category, button in pairs(category_buttons) do
+	for category, button in pairs(map) do
 		if button then
 			local colors = SELECT_CFG.CATEGORY_COLORS[category]
 
@@ -30,19 +28,25 @@ local function update_category_highlight(self, instant)
 		end
 	end
 
-	local selected_button = category_buttons[self.category]
+	local selected_button = map[self.category]
 
 	if not selected_button or not self.category_line then
+		print("[ClassicSelect] Category line or selected button is missing")
 		return
 	end
 
+	-- Позиция кнопки в системе координат её родителя
 	local button_position = gui.get_position(selected_button)
 	local button_size = gui.get_size(selected_button)
 
-	local line_width = button_size.x * 0.88
-	local line_height = SELECT_CFG.CATEGORY_LINE_HEIGHT or 6
-	local line_gap = SELECT_CFG.CATEGORY_LINE_GAP or 13
-	local duration = SELECT_CFG.CATEGORY_LINE_ANIMATION_TIME or 0.25
+	local line_height =
+	SELECT_CFG.CATEGORY_LINE_HEIGHT or 6
+
+	local line_gap =
+	SELECT_CFG.CATEGORY_LINE_GAP or 16
+
+	local duration =
+	SELECT_CFG.CATEGORY_LINE_ANIMATION_TIME or 0.25
 
 	local target_position = vmath.vector3(
 	button_position.x,
@@ -50,18 +54,25 @@ local function update_category_highlight(self, instant)
 	- button_size.y / 2
 	- line_gap
 	- line_height / 2,
-	button_position.z
+
+	-- Линия чуть выше кнопок по Z
+	button_position.z + 1
 )
 
 local target_size = vmath.vector3(
-line_width,
+button_size.x * 0.88,
 line_height,
 0
 )
 
 local target_color =
 SELECT_CFG.CATEGORY_LINE_COLORS[self.category]
-or SELECT_CFG.CATEGORY_COLORS[self.category].active
+
+if not target_color then
+target_color = vmath.vector4(1, 1, 1, 1)
+end
+
+gui.set_enabled(self.category_line, true)
 
 if instant then
 gui.set_position(
@@ -103,158 +114,94 @@ gui.EASING_OUTQUAD,
 duration
 )
 end
-
-gui.set_enabled(
-self.category_line,
-true
-)
 end
-
 
 local function refresh_grid(self)
-gui.set_text(
-gui.get_node("page_count_text"),
-self.page .. "/" .. self.max_page
-)
+	gui.set_text(gui.get_node("page_count_text"), self.page .. "/" .. self.max_page)
 
-local start_level = (self.page - 1) * PER_PAGE + 1
-local current_unlocked = PlayerData.get_current_level(self.category)
+	local start_level = (self.page - 1) * PER_PAGE + 1
+	local current_unlocked = PlayerData.get_current_level(self.category)
 
-for i, cell in ipairs(self.cells) do
-local level_num = start_level + (i - 1)
+	for i, cell in ipairs(self.cells) do
+		local level_num = start_level + (i - 1)
+		cell.level_num = level_num
 
-cell.level_num = level_num
+		if level_num > self.total_levels then
+			gui.set_enabled(cell.box, false)
+			gui.set_enabled(cell.text, false)
+			gui.set_enabled(cell.icon, false)
+		else
+			gui.set_enabled(cell.box, true)
+			gui.set_enabled(cell.text, true)
+			gui.set_text(cell.text, tostring(level_num))
 
--- Если уровень выходит за пределы существующих уровней
-if level_num > self.total_levels then
-gui.set_enabled(cell.box, false)
-gui.set_enabled(cell.text, false)
-gui.set_enabled(cell.icon, false)
-else
-gui.set_enabled(cell.box, true)
-gui.set_enabled(cell.text, true)
+			local completed = PlayerData.is_level_completed(self.category, level_num)
+			local unlocked  = level_num <= current_unlocked
 
-gui.set_text(
-cell.text,
-tostring(level_num)
-)
+			local status = SELECT_CFG.STATUS.LOCKED
+			if completed then
+				status = SELECT_CFG.STATUS.COMPLETED
+			elseif unlocked then
+				status = SELECT_CFG.STATUS.UNLOCKED
+			end
 
-local completed = PlayerData.is_level_completed(
-self.category,
-level_num
-)
+			gui.set_color(cell.box, status.BG_COLOR)
+			gui.set_color(cell.text, status.TEXT_COLOR)
 
-local unlocked = level_num <= current_unlocked
-
-local status = SELECT_CFG.STATUS.LOCKED
-
-if completed then
-status = SELECT_CFG.STATUS.COMPLETED
-elseif unlocked then
-status = SELECT_CFG.STATUS.UNLOCKED
+			if status.ICON then
+				gui.set_enabled(cell.icon, true)
+				gui.play_flipbook(cell.icon, status.ICON)
+				gui.set_color(cell.icon, status.ICON_COLOR)
+			else
+				gui.set_enabled(cell.icon, false)
+			end
+		end
+	end
 end
-
--- Цвет фона клетки
-gui.set_color(
-cell.box,
-status.BG_COLOR
-)
-
--- Цвет номера уровня
-gui.set_color(
-cell.text,
-status.TEXT_COLOR
-)
-
--- Иконка замка или галочки
-if status.ICON then
-gui.set_enabled(cell.icon, true)
-
-gui.play_flipbook(
-cell.icon,
-status.ICON
-)
-
-gui.set_color(
-cell.icon,
-status.ICON_COLOR
-)
-else
-gui.set_enabled(cell.icon, false)
-end
-end
-end
-end
-
 
 local function update_arrows(self)
-gui.set_enabled(
-self.btn_left,
-self.page > 1
-)
-
-gui.set_enabled(
-self.btn_right,
-self.page < self.max_page
-)
+	gui.set_enabled(self.btn_left, self.page > 1)
+	gui.set_enabled(self.btn_right, self.page < self.max_page)
 end
-
 
 local function change_page(self, delta)
-local new_page = self.page + delta
-
-if new_page >= 1 and new_page <= self.max_page then
-self.page = new_page
-
-PlayerData.set(
-"last_page",
-self.page
-)
-
-PlayerData.save()
-
-refresh_grid(self)
-update_arrows(self)
+	local new_page = self.page + delta
+	if new_page >= 1 and new_page <= self.max_page then
+		self.page = new_page
+		PlayerData.set("last_page", self.page)
+		PlayerData.save()
+		refresh_grid(self)
+		update_arrows(self)
+	end
 end
-end
-
 
 local function change_category(self, category)
-	if self.category == category then
-		return
-	end
+	if self.category == category then return end
 
 	self.category = category
-
 	PlayerData.set("last_category", category)
 	PlayerData.set("last_page", 1)
 	PlayerData.save()
 
 	self.page = 1
 	self.total_levels = Levels.count(self.category)
-	self.max_page = math.max(
-	1,
-	math.ceil(self.total_levels / PER_PAGE)
-)
+	self.max_page = math.max(1, math.ceil(self.total_levels / PER_PAGE))
 
-refresh_grid(self)
-update_arrows(self)
-
--- Линия плавно переезжает к новой кнопке
-update_category_highlight(self, false)
+	refresh_grid(self)
+	update_arrows(self)
+	update_category_highlight(self, false) -- ДОБАВЛЕНО
 end
 
-
 local function create_category_line(self)
-	local line_frame = hash("line_category")
+	local line_height =
+	SELECT_CFG.CATEGORY_LINE_HEIGHT or 6
 
-	if SELECT_CFG.ATLAS.LINE_CATEGORY then
-		line_frame = SELECT_CFG.ATLAS.LINE_CATEGORY
-	end
+	local line_frame =
+	SELECT_CFG.ATLAS.LINE_CATEGORY or "line_category"
 
 	self.category_line = gui.new_box_node(
-	vmath.vector3(0, 0, 0),
-	vmath.vector3(100, 6, 0)
+	vmath.vector3(0, 0, 1),
+	vmath.vector3(100, line_height, 0)
 )
 
 gui.set_pivot(
@@ -272,336 +219,137 @@ self.category_line,
 line_frame
 )
 
+gui.set_color(
+self.category_line,
+vmath.vector4(1, 1, 1, 1)
+)
+
+-- Кнопки должны быть уже получены до вызова этой функции
+local buttons_parent = gui.get_parent(self.btn_easy)
+
+if buttons_parent then
+gui.set_parent(
+self.category_line,
+buttons_parent
+)
+end
+
 gui.set_enabled(
 self.category_line,
 false
 )
-end
 
+print("[ClassicSelect] Category line created")
+end
 
 function init(self)
-msg.post(".", "acquire_input_focus")
+	msg.post(".", "acquire_input_focus")
 
--- Загружаем последнюю выбранную категорию
-self.category = PlayerData.get("last_category") or "easy"
+	self.category = PlayerData.get("last_category") or "easy"
+	self.total_levels = Levels.count(self.category)
+	self.max_page = math.max(1, math.ceil(self.total_levels / PER_PAGE))
+	self.page = PlayerData.get("last_page") or 1
 
-self.total_levels = Levels.count(
-self.category
-)
+	local cx = gui.get_width() / 2
+	local cy = gui.get_height() / 2
+	local grid_w = GRID.COLS * GRID.CELL_SIZE + (GRID.COLS - 1) * GRID.GAP
+	local grid_h = GRID.ROWS * GRID.CELL_SIZE + (GRID.ROWS - 1) * GRID.GAP
+	local start_x = cx - grid_w / 2 + GRID.CELL_SIZE / 2
+	local start_y = cy + grid_h / 2 - GRID.CELL_SIZE / 2
 
-self.max_page = math.max(
-1,
-math.ceil(self.total_levels / PER_PAGE)
-)
+	self.cells = {}
+	for i = 1, PER_PAGE do
+		local col = (i - 1) % GRID.COLS
+		local row = math.floor((i - 1) / GRID.COLS)
+		local x = start_x + col * (GRID.CELL_SIZE + GRID.GAP)
+		local y = start_y - row * (GRID.CELL_SIZE + GRID.GAP)
 
-self.page = PlayerData.get("last_page") or 1
+		local box = gui.new_box_node(vmath.vector3(x, y, 0), vmath.vector3(GRID.CELL_SIZE, GRID.CELL_SIZE, 0))
+		gui.set_pivot(box, gui.PIVOT_CENTER)
+		gui.set_texture(box, SELECT_CFG.ATLAS.NAME)
+		gui.play_flipbook(box, SELECT_CFG.ATLAS.FRAME)
 
--- Центр экрана
-local cx = gui.get_width() / 2
-local cy = gui.get_height() / 2
+		local icon = gui.new_box_node(vmath.vector3(0, -GRID.CELL_SIZE * 0.2, 0), vmath.vector3(GRID.CELL_SIZE * 0.25, GRID.CELL_SIZE * 0.25, 0))
+		gui.set_parent(icon, box)
+		gui.set_texture(icon, SELECT_CFG.ATLAS.NAME)
+		gui.set_enabled(icon, false)
 
--- Размер всей сетки
-local grid_w =
-GRID.COLS * GRID.CELL_SIZE
-+ (GRID.COLS - 1) * GRID.GAP
+		local text = gui.new_text_node(vmath.vector3(x, y + GRID.CELL_SIZE * 0.15, 0), "")
+		gui.set_pivot(text, gui.PIVOT_CENTER)
+		gui.set_font(text, "nunitoREGULAR")
 
-local grid_h =
-GRID.ROWS * GRID.CELL_SIZE
-+ (GRID.ROWS - 1) * GRID.GAP
+		gui.set_scale(text, vmath.vector3(1.5, 1.5, 1))
 
--- Начальная позиция первой клетки
-local start_x =
-cx
-- grid_w / 2
-+ GRID.CELL_SIZE / 2
+		table.insert(self.cells, { box = box, text = text, icon = icon, level_num = 0 })
+	end
 
-local start_y =
-cy
-+ grid_h / 2
-- GRID.CELL_SIZE / 2
+	self.btn_back   = gui.get_node("btn_back")
+	self.btn_left   = gui.get_node("btn_left")
+	self.btn_right  = gui.get_node("btn_right")
+	self.btn_easy   = gui.get_node("btn_easy")
+	self.btn_medium = gui.get_node("btn_medium")
+	self.btn_hard   = gui.get_node("btn_hard")
 
-self.cells = {}
+	create_category_line(self)
 
--- Создаём клетки уровней
-for i = 1, PER_PAGE do
-local col = (i - 1) % GRID.COLS
-local row = math.floor((i - 1) / GRID.COLS)
+	self.buttons = Anim.register_buttons({
+		{ node = "btn_back",   anim = CFG.btn_menu, sound = "click", action = function() msg.post("/main", "open_mode_select") end },
+		{ node = "btn_left",   anim = CFG.btn_menu, sound = "click", action = function() change_page(self, -1) end },
+		{ node = "btn_right",  anim = CFG.btn_menu, sound = "click", action = function() change_page(self, 1) end },
+		{ node = "btn_easy",   anim = CFG.btn_mode, sound = "click", action = function() change_category(self, "easy") end },
+		{ node = "btn_medium", anim = CFG.btn_mode, sound = "click", action = function() change_category(self, "medium") end },
+		{ node = "btn_hard",   anim = CFG.btn_mode, sound = "click", action = function() change_category(self, "hard") end },
+	})
 
-local x =
-start_x
-+ col * (GRID.CELL_SIZE + GRID.GAP)
-
-local y =
-start_y
-- row * (GRID.CELL_SIZE + GRID.GAP)
-
--- Фон клетки
-local box = gui.new_box_node(
-vmath.vector3(x, y, 0),
-vmath.vector3(
-GRID.CELL_SIZE,
-GRID.CELL_SIZE,
-0
-)
-)
-
-gui.set_pivot(
-box,
-gui.PIVOT_CENTER
-)
-
-gui.set_texture(
-box,
-SELECT_CFG.ATLAS.NAME
-)
-
-gui.play_flipbook(
-box,
-SELECT_CFG.ATLAS.FRAME
-)
-
--- Иконка замка или галочки
-local icon = gui.new_box_node(
-vmath.vector3(
-0,
--GRID.CELL_SIZE * 0.2,
-0
-),
-vmath.vector3(
-GRID.CELL_SIZE * 0.25,
-GRID.CELL_SIZE * 0.25,
-0
-)
-)
-
-gui.set_parent(
-icon,
-box
-)
-
-gui.set_texture(
-icon,
-SELECT_CFG.ATLAS.NAME
-)
-
-gui.set_enabled(
-icon,
-false
-)
-
--- Номер уровня
-local text = gui.new_text_node(
-vmath.vector3(
-x,
-y + GRID.CELL_SIZE * 0.15,
-0
-),
-""
-)
-
-gui.set_pivot(
-text,
-gui.PIVOT_CENTER
-)
-
-gui.set_font(
-text,
-"nunitoREGULAR"
-)
-
-gui.set_scale(
-text,
-vmath.vector3(1.5, 1.5, 1)
-)
-
-table.insert(
-self.cells,
-{
-box = box,
-text = text,
-icon = icon,
-level_num = 0,
-}
-)
+	refresh_grid(self)
+	update_arrows(self)
+	update_category_highlight(self, true) 
 end
-
--- Получаем кнопки интерфейса
-self.btn_back = gui.get_node("btn_back")
-self.btn_left = gui.get_node("btn_left")
-self.btn_right = gui.get_node("btn_right")
-
-self.btn_easy = gui.get_node("btn_easy")
-self.btn_medium = gui.get_node("btn_medium")
-self.btn_hard = gui.get_node("btn_hard")
-
--- Создаём линию под активной категорией
-create_category_line(self)
-
--- Регистрируем кнопки
-self.buttons = Anim.register_buttons({
-{
-node = "btn_back",
-anim = CFG.btn_menu,
-sound = "click",
-
-action = function()
-msg.post(
-"/main",
-"open_mode_select"
-)
-end,
-},
-
-{
-node = "btn_left",
-anim = CFG.btn_menu,
-sound = "click",
-
-action = function()
-change_page(self, -1)
-end,
-},
-
-{
-node = "btn_right",
-anim = CFG.btn_menu,
-sound = "click",
-
-action = function()
-change_page(self, 1)
-end,
-},
-
-{
-node = "btn_easy",
-anim = CFG.btn_mode,
-sound = "click",
-
-action = function()
-change_category(self, "easy")
-end,
-},
-
-{
-node = "btn_medium",
-anim = CFG.btn_mode,
-sound = "click",
-
-action = function()
-change_category(self, "medium")
-end,
-},
-
-{
-node = "btn_hard",
-anim = CFG.btn_mode,
-sound = "click",
-
-action = function()
-change_category(self, "hard")
-end,
-},
-})
-
--- Первоначальное обновление экрана
-refresh_grid(self)
-update_arrows(self)
-update_category_highlight(self, true)
-end
-
 
 function on_message(self, message_id, message, sender)
 	if message_id == hash("reset_ui") then
 		Anim.reset_buttons(self.buttons)
-
 		refresh_grid(self)
 		update_arrows(self)
-		update_category_highlight(self, true)
+		update_category_highlight(self, true) 
 	end
 end
 
-
 function on_input(self, action_id, action)
-if action_id ~= hash("touch") and action_id ~= nil then
-return false
-end
+	if action_id ~= hash("touch") and action_id ~= nil then return false end
+	if not action then return false end
 
-if not action then
-return false
-end
+	if Anim.handle_buttons(self.buttons, action_id, action) then
+		return true
+	end
 
--- Обрабатываем нажатия на кнопки интерфейса
-if Anim.handle_buttons(
-self.buttons,
-action_id,
-action
-) then
-return true
-end
+	if action.pressed then
+		for _, cell in ipairs(self.cells) do
+			if gui.is_enabled(cell.box) and gui.pick_node(cell.box, action.x, action.y) then
+				local current_unlocked = PlayerData.get_current_level(self.category)
+				if cell.level_num <= current_unlocked then
+					local selected = cell
 
--- Обрабатываем нажатия на клетки уровней
-if action.pressed then
-for _, cell in ipairs(self.cells) do
-if gui.is_enabled(cell.box)
-and gui.pick_node(
-cell.box,
-action.x,
-action.y
-)
-then
-local current_unlocked =
-PlayerData.get_current_level(
-self.category
-)
+					Anim.animate(selected.box, ANIM.PRESSED, function()
+						Anim.animate(selected.box, ANIM.RELEASED)
 
-if cell.level_num <= current_unlocked then
-local selected = cell
+						PlayerData.set("last_category", self.category)
+						PlayerData.set("last_page", self.page)
+						PlayerData.save()
 
-Anim.animate(
-selected.box,
-ANIM.PRESSED,
-function()
-Anim.animate(
-selected.box,
-ANIM.RELEASED
-)
+						print("[ClassicSelect] Start game:", self.category, "level", selected.level_num)
 
-PlayerData.set(
-"last_category",
-self.category
-)
+						msg.post("/main", "start_game", {
+							mode = "classic",
+							category = self.category,
+							level = selected.level_num,
+						})
+					end)
+					return true
+				end
+			end
+		end
+	end
 
-PlayerData.set(
-"last_page",
-self.page
-)
-
-PlayerData.save()
-
-print(
-"[ClassicSelect] Start game:",
-self.category,
-"level",
-selected.level_num
-)
-
-msg.post(
-"/main",
-"start_game",
-{
-mode = "classic",
-category = self.category,
-level = selected.level_num,
-}
-)
-end
-)
-
-return true
-end
-end
-end
-end
-
-return false
+	return false
 end

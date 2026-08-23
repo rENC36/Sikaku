@@ -205,12 +205,8 @@ nodes {
 }
 nodes {
   position {
-    x: 887.0
-    y: 58.0
-  }
-  scale {
-    x: 1.4
-    y: 1.4
+    x: 860.0
+    y: 470.0
   }
   size {
     x: 200.0
@@ -227,6 +223,7 @@ nodes {
   id: "page_count_text"
   parent: "bg_classic_select"
   inherit_alpha: true
+  alpha: 0.7
 }
 nodes {
   position {
@@ -241,6 +238,28 @@ nodes {
   parent: "bg_classic_select"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 740.0
+    y: 470.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  color {
+    x: 0.23921569
+    y: 0.2901961
+    z: 0.41960785
+  }
+  type: TYPE_TEXT
+  text: "\320\241\321\202\321\200\320\260\320\275\320\270\321\206\320\260"
+  font: "nunitoREGULAR"
+  id: "title_text"
+  parent: "bg_classic_select"
+  inherit_alpha: true
+  alpha: 0.7
 }
 material: "/builtins/materials/gui.material"
 adjust_reference: ADJUST_REFERENCE_PARENT

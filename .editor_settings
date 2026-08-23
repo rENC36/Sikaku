@@ -21,23 +21,7 @@
     :open-tabs [
       [
         [
-          "/ui/menu/menu.gui"
-          :scene
-        ]
-        [
-          "/ui/mode_select/mode_select.gui"
-          :scene
-        ]
-        [
-          "/assets/atlas/game.atlas"
-          :scene
-        ]
-        [
           "/ui/mode_select/classic_select.gui"
-          :scene
-        ]
-        [
-          "/ui/gameplay/game.gui"
           :scene
         ]
         [
@@ -48,15 +32,15 @@
           "/data/config/classic_select_config.lua"
           :code
         ]
+        [
+          "/assets/atlas/game.atlas"
+          :scene
+        ]
       ]
     ]
     :recent-files [
       [
-        "/yagames/ext.properties"
-        :code
-      ]
-      [
-        "/yagames/ext.manifest"
+        "/main/main.script"
         :code
       ]
       [
@@ -64,120 +48,28 @@
         :code
       ]
       [
-        "/game/shikaku/rectangle.lua"
+        "/data/config/input_config.lua"
         :code
-      ]
-      [
-        "/game/shikaku/input.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/selection.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/board.lua"
-        :code
-      ]
-      [
-        "/game.project"
-        :cljfx-form-view
-      ]
-      [
-        "/input/game.input_binding"
-        :cljfx-form-view
-      ]
-      [
-        "/game/shikaku/cell.lua"
-        :code
-      ]
-      [
-        "/game/endless/endless_game.lua"
-        :code
-      ]
-      [
-        "/ui/gameplay/endless_game.gui"
-        :scene
-      ]
-      [
-        "/ui/gameplay/blitz_game.gui"
-        :scene
-      ]
-      [
-        "/game/view/board_view/preview_overlay.lua"
-        :code
-      ]
-      [
-        "/game/view/board_view/rectangle_overlay.lua"
-        :code
-      ]
-      [
-        "/assets/textures/selection_bg.png"
-        :scene
-      ]
-      [
-        "/game/view/board_view/board_view.lua"
-        :code
-      ]
-      [
-        "/data/config/board_view_config.lua"
-        :code
-      ]
-      [
-        "/data/config/blitz_config.lua"
-        :code
-      ]
-      [
-        "/game/blitz/blitz_game.lua"
-        :code
-      ]
-      [
-        "/main/main.script"
-        :code
-      ]
-      [
-        "/game/classic/classic_game.lua"
-        :code
-      ]
-      [
-        "/data/localization/ru_lang.lua"
-        :code
-      ]
-      [
-        "/data/localization/en_lang.lua"
-        :code
-      ]
-      [
-        "/utils/localization.lua"
-        :code
-      ]
-      [
-        "/ui/menu/menu.gui"
-        :scene
-      ]
-      [
-        "/ui/mode_select/mode_select.gui"
-        :scene
-      ]
-      [
-        "/ui/gameplay/game.gui"
-        :scene
-      ]
-      [
-        "/ui/mode_select/classic_select.gui"
-        :scene
       ]
       [
         "/assets/atlas/game.atlas"
         :scene
       ]
       [
+        "/ui/mode_select/classic_select.gui_script"
+        :code
+      ]
+      [
         "/data/config/classic_select_config.lua"
         :code
       ]
       [
-        "/ui/mode_select/classic_select.gui_script"
-        :code
+        "/ui/mode_select/classic_select.gui"
+        :scene
+      ]
+      [
+        "/ui/mode_select/mode_select.gui"
+        :scene
       ]
     ]
   }

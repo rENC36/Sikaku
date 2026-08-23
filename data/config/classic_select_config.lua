@@ -8,8 +8,9 @@ M.GRID = {
 }
 
 M.ATLAS = {
-	NAME  = "game",
-	FRAME = "btn_lvl_3",
+	NAME          = "game",
+	FRAME         = "btn_lvl_3",
+	LINE_CATEGORY = "line_category",
 }
 
 M.STATUS = {
@@ -34,35 +35,24 @@ M.STATUS = {
 }
 
 M.CATEGORY_COLORS = {
-	easy = {
-		-- Пастельный зелёный
-		active = vmath.vector4(0.78, 0.92, 0.83, 1.0),
-
-		-- Серо-голубой для неактивной кнопки
-		inactive = vmath.vector4(0.78, 0.81, 0.87, 0.4),
+	easy   = { 
+		active   = vmath.vector4(0.85, 0.98, 0.85, 1), 
+		inactive = vmath.vector4(0.7, 0.7, 0.7, 0.4) 
 	},
-
-	medium = {
-		-- Пастельный жёлтый
-		active = vmath.vector4(0.98, 0.91, 0.70, 1.0),
-
-		-- Серо-голубой для неактивной кнопки
-		inactive = vmath.vector4(0.78, 0.81, 0.87, 0.4),
+	medium = { 
+		active   = vmath.vector4(0.98, 0.98, 0.80, 1), 
+		inactive = vmath.vector4(0.7, 0.7, 0.7, 0.4) 
 	},
-
-	hard = {
-		-- Пастельный розово-коралловый
-		active = vmath.vector4(0.96, 0.78, 0.80, 1.0),
-
-		-- Серо-голубой для неактивной кнопки
-		inactive = vmath.vector4(0.78, 0.81, 0.87, 0.4),
+	hard   = { 
+		active   = vmath.vector4(0.98, 0.85, 0.85, 1), 
+		inactive = vmath.vector4(0.7, 0.7, 0.7, 0.4) 
 	},
 }
 
 M.CATEGORY_LINE_COLORS = {
-	easy = vmath.vector4(0.62, 0.87, 0.70, 0.80),
-	medium = vmath.vector4(0.98, 0.88, 0.55, 0.80),
-	hard = vmath.vector4(0.95, 0.72, 0.75, 0.80),
+	easy   = vmath.vector4(0.62, 0.87, 0.70, 0.8),
+	medium = vmath.vector4(0.98, 0.88, 0.55, 1),
+	hard   = vmath.vector4(0.95, 0.72, 0.75, 1),
 }
 
 M.CATEGORY_LINE_HEIGHT = 6

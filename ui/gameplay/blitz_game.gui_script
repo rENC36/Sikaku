@@ -2,6 +2,7 @@ local Anim       = require("utils.animator")
 local Lang       = require("utils.localization")
 local PlayerData = require("game.player.player_data")
 local CFG        = require("data.config.animations")
+local HintsManager = require("utils.hints_manager")
 
 local function safe_node(name)
 	local ok, n = pcall(gui.get_node, name)
@@ -11,6 +12,12 @@ end
 local function fmt_time(sec)
 	local s = math.max(0, math.ceil(sec))
 	return string.format("%02d:%02d", math.floor(s / 60), s % 60)
+end
+
+local function update_hint_display(self, balance)
+	if self.hint_balance then
+		gui.set_text(self.hint_balance, tostring(balance))
+	end
 end
 
 local function update_hud_nodes(self)
@@ -48,6 +55,7 @@ end
 function init(self)
 	msg.post(".", "acquire_input_focus")
 
+	self.hint_balance = safe_node("hint_text")
 	self.nodes = {
 		timer       = safe_node("timer_text"),
 		score       = safe_node("score_text"),
@@ -70,7 +78,13 @@ function init(self)
 		end },
 		{ node = "btn_restart", anim = CFG.btn_menu, sound = "click",
 		action = function() msg.post("/main", "start_game", { mode = "blitz" }) end },
+
+		{ node = "btn_hint", anim = CFG.btn_menu, sound = "click", action = function() 
+			msg.post("/main", "use_hint_blitz") 
+		end },
 	})
+
+	update_hint_display(self, HintsManager.GetBalance())
 
 	Lang.apply_to_gui("blitz_game")
 end
@@ -94,6 +108,8 @@ function on_message(self, message_id, message, sender)
 	elseif message_id == hash("show_game_over") then
 		self.hud.score = message.score or self.hud.score
 		show_game_over(self)
+	elseif message_id == hash("update_hint_balance") then
+		update_hint_display(self, message.balance)
 	end
 end
 
