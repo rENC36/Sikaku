@@ -66,6 +66,8 @@ function ClassicGame:load_level(category, level)
 	self.board_view = BoardView.new(fac.cell, {
 		cell_size      = bv.cell_size,
 		spacing        = bv.spacing,
+		base_cell_size = bv.base_cell_size,
+		label_offset_y = bv.label_offset_y,
 		start_position = vmath.vector3(ww / 2, wh / 2, 0)
 	}, {
 		preview_factory_url  = fac.preview_bg,

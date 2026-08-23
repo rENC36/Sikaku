@@ -21,38 +21,34 @@
     :open-tabs [
       [
         [
-          "/ui/mode_select/classic_select.gui"
+          "/assets/atlas/game.atlas"
           :scene
         ]
         [
-          "/ui/mode_select/classic_select.gui_script"
-          :code
+          "/objects/cell/cell.go"
+          :scene
         ]
         [
-          "/data/config/classic_select_config.lua"
-          :code
+          "/ui/gameplay/game.gui"
+          :scene
         ]
         [
-          "/assets/atlas/game.atlas"
+          "/ui/gameplay/endless_game.gui"
+          :scene
+        ]
+        [
+          "/ui/gameplay/blitz_game.gui"
           :scene
         ]
       ]
     ]
     :recent-files [
       [
-        "/main/main.script"
-        :code
-      ]
-      [
-        "/yagames/yagames.lua"
-        :code
-      ]
-      [
         "/data/config/input_config.lua"
         :code
       ]
       [
-        "/assets/atlas/game.atlas"
+        "/ui/mode_select/mode_select.gui"
         :scene
       ]
       [
@@ -64,11 +60,115 @@
         :code
       ]
       [
+        "/objects/selection_bg.go"
+        :scene
+      ]
+      [
+        "/objects/grid_bg.go"
+        :scene
+      ]
+      [
+        "/objects/badge.go"
+        :scene
+      ]
+      [
+        "/utils/screen_manager.lua"
+        :code
+      ]
+      [
+        "/factories/grid_bg_factory.factory"
+        :cljfx-form-view
+      ]
+      [
+        "/factories/cell.factory"
+        :cljfx-form-view
+      ]
+      [
+        "/game/view/board_view/preview_overlay.lua"
+        :code
+      ]
+      [
+        "/game/view/board_view/rectangle_overlay.lua"
+        :code
+      ]
+      [
+        "/game/view/cell_view.lua"
+        :code
+      ]
+      [
+        "/game/view/board_view/board_bg.lua"
+        :code
+      ]
+      [
+        "/game/view/board_view/board_view.lua"
+        :code
+      ]
+      [
+        "/data/config/board_view_config.lua"
+        :code
+      ]
+      [
+        "/game/view/board_view/layout.lua"
+        :code
+      ]
+      [
+        "/objects/cell/label_go.go"
+        :scene
+      ]
+      [
+        "/assets/fonts/nunitoREGULAR.font"
+        :scene
+      ]
+      [
+        "/objects/cell/cell.go"
+        :scene
+      ]
+      [
+        "/objects/cell/cell.script"
+        :code
+      ]
+      [
+        "/ui/gameplay/game.gui_script"
+        :code
+      ]
+      [
+        "/game/classic/classic_game.lua"
+        :code
+      ]
+      [
+        "/main/main.script"
+        :code
+      ]
+      [
+        "/data/config/game_config.lua"
+        :code
+      ]
+      [
+        "/game/view/board_view/cell_factory.lua"
+        :code
+      ]
+      [
         "/ui/mode_select/classic_select.gui"
         :scene
       ]
       [
-        "/ui/mode_select/mode_select.gui"
+        "/assets/atlas/game.atlas"
+        :scene
+      ]
+      [
+        "/game/popup/popup.gui"
+        :scene
+      ]
+      [
+        "/ui/gameplay/game.gui"
+        :scene
+      ]
+      [
+        "/ui/gameplay/endless_game.gui"
+        :scene
+      ]
+      [
+        "/ui/gameplay/blitz_game.gui"
         :scene
       ]
     ]

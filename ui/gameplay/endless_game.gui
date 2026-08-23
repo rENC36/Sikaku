@@ -3,20 +3,21 @@ fonts {
   name: "nunitoREGULAR"
   font: "/assets/fonts/nunitoREGULAR.font"
 }
+fonts {
+  name: "nunitoBOLD"
+  font: "/assets/fonts/nunitoBOLD.font"
+}
+textures {
+  name: "game"
+  texture: "/assets/atlas/game.atlas"
+}
 nodes {
   position {
-    x: 1857.0
-    y: 1017.0
-  }
-  size {
-    x: 100.0
-    y: 100.0
-  }
-  color {
-    y: 0.0
-    z: 0.0
+    x: 70.0
+    y: 1010.0
   }
   type: TYPE_BOX
+  texture: "game/arrow_back"
   id: "btn_menu"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
@@ -63,40 +64,91 @@ nodes {
 }
 nodes {
   position {
-    x: 1799.0
-    y: 578.0
+    x: 1650.0
+    y: 570.0
   }
   size {
-    x: 200.0
-    y: 100.0
-  }
-  color {
-    x: 0.0
-    y: 0.0
-    z: 0.0
+    x: 360.0
+    y: 150.0
   }
   type: TYPE_BOX
+  texture: "game/btn_hint"
   id: "btn_hint"
   inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
 }
 nodes {
   position {
-    x: -144.0
+    x: 70.0
+    y: -80.0
   }
   size {
     x: 200.0
     y: 100.0
   }
   color {
-    x: 0.0
-    y: 0.0
-    z: 0.0
+    x: 0.23921569
+    y: 0.2901961
+    z: 0.41960785
   }
   type: TYPE_TEXT
   text: "3"
   font: "nunitoREGULAR"
   id: "hint_balance"
+  parent: "btn_hint"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 115.0
+  }
+  size {
+    x: 50.0
+    y: 50.0
+  }
+  type: TYPE_BOX
+  texture: "game/img_hint"
+  id: "img_hint"
+  parent: "btn_hint"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -30.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  color {
+    x: 0.23921569
+    y: 0.2901961
+    z: 0.41960785
+  }
+  type: TYPE_TEXT
+  text: "\320\237\320\276\320\264\321\201\320\272\320\260\320\267\320\272\320\260"
+  font: "nunitoBOLD"
+  id: "hint_text"
+  parent: "btn_hint"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -20.0
+    y: -80.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  color {
+    x: 0.23921569
+    y: 0.2901961
+    z: 0.41960785
+  }
+  type: TYPE_TEXT
+  text: "\320\236\321\201\321\202\320\260\320\273\320\276\321\201\321\214:"
+  font: "nunitoREGULAR"
+  id: "text_ost"
   parent: "btn_hint"
   inherit_alpha: true
 }

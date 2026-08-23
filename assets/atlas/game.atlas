@@ -82,4 +82,16 @@ images {
 images {
   image: "/assets/textures/line_category.png"
 }
+images {
+  image: "/assets/textures/btn_hint.png"
+}
+images {
+  image: "/assets/textures/img_hint.png"
+}
+images {
+  image: "/assets/textures/popup_bg.png"
+}
+images {
+  image: "/assets/textures/btn_popup.png"
+}
 extrude_borders: 2
