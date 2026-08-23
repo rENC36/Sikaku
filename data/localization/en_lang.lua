@@ -44,4 +44,16 @@ return {
 		restart_text = "RESTART",
 		menu_text    = "MENU",
 	},
+
+	popup_exit_title = "Exit",
+	popup_exit_text = "Return to main menu?\nLevel progress will not be saved.",
+	popup_hint_title = "Hint",
+	popup_hint_text = "Use hint?\nRemaining: {balance}",
+	popup_no_hints_title = "No hints left",
+	popup_no_hints_text = "You have no hints left.",
+	popup_yes = "Yes",
+	popup_no = "No",
+	popup_ok = "OK",
+	popup_use = "Use",
+	popup_cancel = "Cancel",
 }

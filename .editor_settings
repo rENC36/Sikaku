@@ -20,6 +20,18 @@
   :workflow {
     :open-tabs [
       [
+        [
+          "/data/localization/en_lang.lua"
+          :code
+        ]
+        [
+          "/data/localization/ru_lang.lua"
+          :code
+        ]
+        [
+          "/utils/popup_system.lua"
+          :code
+        ]
       ]
     ]
     :recent-files [
@@ -48,10 +60,6 @@
         :code
       ]
       [
-        "/utils/popup_system.lua"
-        :code
-      ]
-      [
         "/utils/animator.lua"
         :code
       ]
@@ -62,10 +70,6 @@
       [
         "/game/popup/popup.gui"
         :scene
-      ]
-      [
-        "/data/config/popup_config.lua"
-        :code
       ]
       [
         "/ui/gameplay/blitz_game.gui_script"
@@ -85,6 +89,26 @@
       ]
       [
         "/main/main.script"
+        :code
+      ]
+      [
+        "/utils/localization.lua"
+        :code
+      ]
+      [
+        "/data/config/popup_config.lua"
+        :code
+      ]
+      [
+        "/data/localization/en_lang.lua"
+        :code
+      ]
+      [
+        "/data/localization/ru_lang.lua"
+        :code
+      ]
+      [
+        "/utils/popup_system.lua"
         :code
       ]
     ]

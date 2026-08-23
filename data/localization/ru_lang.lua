@@ -14,7 +14,7 @@ return {
 		endless_text = "Бесконечный", 
 		blitz_text = "Блиц",
 		classic_text = "Классика",
-		
+
 		classic_text_1 = "Пройдено уровней",
 		endless_text_1 = "Максимально достигнутый\nуровень",
 		blitz_text_1 = "Рекорд",
@@ -44,4 +44,16 @@ return {
 		restart_text = "ЗАНОВО",
 		menu_text    = "МЕНЮ",
 	},
+
+	popup_exit_title = "Выход",
+	popup_exit_text = "Выйти в главное меню?\nПрогресс уровня не сохранится.",
+	popup_hint_title = "Подсказка",
+	popup_hint_text = "Использовать подсказку?\nОсталось: {balance}",
+	popup_no_hints_title = "Подсказки закончились",
+	popup_no_hints_text = "У вас не осталось подсказок.",
+	popup_yes = "Да",
+	popup_no = "Нет",
+	popup_ok = "OK",
+	popup_use = "Использовать",
+	popup_cancel = "Отмена",
 }

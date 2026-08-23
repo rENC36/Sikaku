@@ -1,4 +1,5 @@
 local PopupCFG = require("data.config.popup_config")
+local Localization = require("utils.localization")
 
 local PopupSystem = {}
 PopupSystem.__index = PopupSystem
@@ -12,28 +13,31 @@ function PopupSystem.new()
 	return self
 end
 
---- Зарегистрировать GUI попапа (можно менять динамически)
 function PopupSystem:register_gui(gui_url)
 	self.gui_url = gui_url
 end
 
---- Открыть попап по типу
--- @param popup_type ключ из PopupCFG.types
--- @param params таблица подстановок для текста, например { balance = 5 }
--- @return true если открылся
+local function loc(value, params)
+	if not value then return nil end
+	local text = Localization.get(value) or value
+	if params then
+		for k, v in pairs(params) do
+			text = text:gsub("{" .. k .. "}", tostring(v))
+		end
+	end
+	return text
+end
+
 function PopupSystem:open(popup_type, params)
 	if not self.can_work then
-		print("[PopupSystem] Blocked: can_work is false")
 		return false
 	end
 	if self.is_open then
-		print("[PopupSystem] Blocked: already open")
 		return false
 	end
 
 	local config = PopupCFG.types[popup_type]
 	if not config then
-		print("[PopupSystem] Unknown type:", popup_type)
 		return false
 	end
 
@@ -44,17 +48,11 @@ function PopupSystem:open(popup_type, params)
 		params = params or {},
 	}
 
-	-- Подстановка {ключ} в текст
-	local text = config.text
-	for k, v in pairs(params or {}) do
-		text = text:gsub("{" .. k .. "}", tostring(v))
-	end
-
 	msg.post(self.gui_url, "show_popup", {
-		title = config.title,
-		text = text,
-		yes_label = config.yes_label,
-		no_label = config.no_label,
+		title = loc(config.title, params),
+		text = loc(config.text, params),
+		yes_label = loc(config.yes_label),
+		no_label = loc(config.no_label),
 		show_yes = config.show_yes,
 		show_no = config.show_no,
 	})
@@ -62,7 +60,6 @@ function PopupSystem:open(popup_type, params)
 	return true
 end
 
---- Закрыть принудительно
 function PopupSystem:close()
 	self.is_open = false
 	self.current = nil
@@ -71,7 +68,6 @@ function PopupSystem:close()
 	end
 end
 
---- Нажата кнопка (вызывается из main.script)
 function PopupSystem:on_button(button)
 	if not self.current then return end
 	local config = self.current.config
@@ -85,7 +81,6 @@ function PopupSystem:on_button(button)
 	self:close()
 end
 
---- Блокирует ли текущий попап игровой input
 function PopupSystem:pauses_input()
 	if not self.current then return false end
 	return self.current.config.pause_input == true

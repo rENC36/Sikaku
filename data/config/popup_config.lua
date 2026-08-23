@@ -2,10 +2,10 @@ local M = {}
 
 M.types = {
 	hint_confirm_endless = {
-		title = "Подсказка",
-		text = "Использовать подсказку?\nОсталось: {balance}",
-		yes_label = "Использовать",
-		no_label = "Отмена",
+		title = "popup_hint_title",
+		text = "popup_hint_text",
+		yes_label = "popup_use",
+		no_label = "popup_cancel",
 		show_yes = true,
 		show_no = true,
 		yes_event = "use_hint_endless",
@@ -14,45 +14,45 @@ M.types = {
 	},
 
 	hint_confirm_blitz = {
-		title = "Подсказка",
-		text = "Использовать подсказку?\nОсталось: {balance}",
-		yes_label = "Использовать",
-		no_label = "Отмена",
+		title = "popup_hint_title",
+		text = "popup_hint_text",
+		yes_label = "popup_use",
+		no_label = "popup_cancel",
 		show_yes = true,
 		show_no = true,
 		yes_event = "use_hint_blitz",
 		no_event = nil,
 		pause_input = true,
 	},
-	
+
 	exit_confirm = {
-		title = "Выход",
-		text = "Выйти в главное меню?\nПрогресс уровня не сохранится.",
-		yes_label = "Да",
-		no_label = "Нет",
+		title = "popup_exit_title",
+		text = "popup_exit_text",
+		yes_label = "popup_yes",
+		no_label = "popup_no",
 		show_yes = true,
 		show_no = true,
 		yes_event = "back_to_menu",
 		no_event = nil,
 		pause_input = true,
 	},
-	
+
 	hint_confirm = {
-		title = "Подсказка",
-		text = "Использовать подсказку?\nОсталось: {balance}",
-		yes_label = "Использовать",
-		no_label = "Отмена",
+		title = "popup_hint_title",
+		text = "popup_hint_text",
+		yes_label = "popup_use",
+		no_label = "popup_cancel",
 		show_yes = true,
 		show_no = true,
 		yes_event = "use_hint",
 		no_event = nil,
 		pause_input = true,
 	},
-	
+
 	no_hints = {
-		title = "Подсказки закончились",
-		text = "У вас не осталось подсказок.",
-		yes_label = "OK",
+		title = "popup_no_hints_title",
+		text = "popup_no_hints_text",
+		yes_label = "popup_ok",
 		no_label = nil,
 		show_yes = true,
 		show_no = true,
