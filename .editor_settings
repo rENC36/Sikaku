@@ -12,7 +12,7 @@
       :with_symbols true
     }
     :last-bundle-command :project.bundle-html5
-    :output-directory "C:\\Users\\ushak\\OneDrive\\Documents\\sikaku"
+    :output-directory "C:\\Users\\ushak\\OneDrive\\Documents\\sikaku\\wasm-web"
   }
   :code {
     :breakpoints [
@@ -36,7 +36,7 @@
     :open-tabs [
       [
         [
-          "/data/levels/easy.lua"
+          "/data/levels/medium.lua"
           :code
         ]
       ]
@@ -119,11 +119,23 @@
         :code
       ]
       [
-        "/main/main.script"
+        "/yagames/yagames.lua"
         :code
       ]
       [
-        "/yagames/yagames.lua"
+        "/yagames/helpers/mock.lua"
+        :code
+      ]
+      [
+        "/data/levels/easy.lua"
+        :code
+      ]
+      [
+        "/data/levels/hard.lua"
+        :code
+      ]
+      [
+        "/main/main.script"
         :code
       ]
       [
@@ -131,19 +143,7 @@
         :cljfx-form-view
       ]
       [
-        "/yagames/helpers/mock.lua"
-        :code
-      ]
-      [
-        "/ui/mode_select/classic_select.gui_script"
-        :code
-      ]
-      [
-        "/data/config/classic_select_config.lua"
-        :code
-      ]
-      [
-        "/data/levels/easy.lua"
+        "/data/levels/medium.lua"
         :code
       ]
     ]
