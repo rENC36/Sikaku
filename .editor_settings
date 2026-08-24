@@ -36,7 +36,7 @@
     :open-tabs [
       [
         [
-          "/data/levels/medium.lua"
+          "/data/levels/hard.lua"
           :code
         ]
       ]
@@ -131,10 +131,6 @@
         :code
       ]
       [
-        "/data/levels/hard.lua"
-        :code
-      ]
-      [
         "/main/main.script"
         :code
       ]
@@ -144,6 +140,10 @@
       ]
       [
         "/data/levels/medium.lua"
+        :code
+      ]
+      [
+        "/data/levels/hard.lua"
         :code
       ]
     ]
