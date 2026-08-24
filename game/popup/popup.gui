@@ -1,0 +1,196 @@
+script: "/game/popup/popup.gui_script"
+fonts {
+  name: "nunitoREGULAR"
+  font: "/assets/fonts/nunitoREGULAR.font"
+}
+textures {
+  name: "game"
+  texture: "/assets/atlas/game.atlas"
+}
+nodes {
+  position {
+    x: 960.0
+    y: 550.0
+  }
+  type: TYPE_BOX
+  texture: "game/popup_bg"
+  id: "popup_root"
+  layer: "main"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: 187.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  color {
+    x: 0.23921569
+    y: 0.2901961
+    z: 0.41960785
+  }
+  type: TYPE_TEXT
+  text: "<text>"
+  font: "nunitoREGULAR"
+  id: "popup_title"
+  parent: "popup_root"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: 99.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  color {
+    x: 0.23921569
+    y: 0.2901961
+    z: 0.41960785
+  }
+  type: TYPE_TEXT
+  text: "<text>"
+  font: "nunitoREGULAR"
+  id: "popup_text"
+  parent: "popup_root"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -151.0
+    y: -107.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  color {
+    x: 0.23921569
+    y: 0.2901961
+    z: 0.41960785
+  }
+  type: TYPE_TEXT
+  text: "yes text"
+  font: "nunitoREGULAR"
+  id: "txt_ok"
+  parent: "popup_root"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 143.0
+    y: -107.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  color {
+    x: 0.23921569
+    y: 0.2901961
+    z: 0.41960785
+  }
+  type: TYPE_TEXT
+  text: "no text"
+  font: "nunitoREGULAR"
+  id: "txt_cancel"
+  parent: "popup_root"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -160.0
+    y: -190.0
+  }
+  size {
+    x: 300.0
+    y: 110.0
+  }
+  type: TYPE_BOX
+  texture: "game/btn_popup"
+  id: "btn_ok"
+  parent: "popup_root"
+  inherit_alpha: true
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  color {
+    x: 0.23921569
+    y: 0.2901961
+    z: 0.41960785
+  }
+  type: TYPE_TEXT
+  text: "yes"
+  font: "nunitoREGULAR"
+  id: "text_ok"
+  parent: "btn_ok"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 160.0
+    y: -190.0
+  }
+  size {
+    x: 300.0
+    y: 110.0
+  }
+  type: TYPE_BOX
+  texture: "game/btn_popup"
+  id: "btn_cancel"
+  parent: "popup_root"
+  inherit_alpha: true
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  color {
+    x: 0.23921569
+    y: 0.2901961
+    z: 0.41960785
+  }
+  type: TYPE_TEXT
+  text: "no"
+  font: "nunitoREGULAR"
+  id: "text_cancel"
+  parent: "btn_cancel"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 960.0
+    y: 543.0
+  }
+  size {
+    x: 2000.0
+    y: 1104.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_BOX
+  id: "popup_bg"
+  layer: "bg"
+  inherit_alpha: true
+  alpha: 0.5
+  size_mode: SIZE_MODE_AUTO
+}
+layers {
+  name: "bg"
+}
+layers {
+  name: "main"
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT

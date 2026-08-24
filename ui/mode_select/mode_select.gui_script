@@ -1,20 +1,24 @@
 local Anim = require("utils.animator")
-local CFG = require("data.config.animations")
+local CFG  = require("data.config.animations")
+local Lang = require("utils.localization")
 
 function init(self)
 	msg.post(".", "acquire_input_focus")
 
 	self.buttons = Anim.register_buttons({
-		{ node = "btn_classic", anim = CFG.btn_mode, action = function() msg.post("/main", "open_classic_levels") end },
-		{ node = "btn_blitz",   anim = CFG.btn_mode, action = function() msg.post("/main", "start_game", { mode = "blitz" }) end },
-		{ node = "btn_endless", anim = CFG.btn_mode, action = function() msg.post("/main", "start_game", { mode = "endless" }) end },
-		{ node = "btn_back",    anim = CFG.btn_menu, action = function() msg.post("/main", "back_to_menu") end },
+		{ node = "btn_classic", anim = CFG.btn_mode, sound = "click", action = function() msg.post("/main", "open_classic_levels") end },
+		{ node = "btn_blitz",   anim = CFG.btn_mode, sound = "click", action = function() msg.post("/main", "start_game", { mode = "blitz" }) end },
+		{ node = "btn_endless", anim = CFG.btn_mode, sound = "click", action = function() msg.post("/main", "start_game", { mode = "endless" }) end },
+		{ node = "btn_back",    anim = CFG.btn_menu, sound = "click", action = function() msg.post("/main", "back_to_menu") end },
 	})
+
+	Lang.apply_to_gui("mode_select")
 end
 
 function on_message(self, message_id, message, sender)
 	if message_id == hash("reset_ui") then
 		Anim.reset_buttons(self.buttons)
+		Lang.apply_to_gui("mode_select")
 	end
 end
 

@@ -1,4 +1,19 @@
 {
+  :bundle {
+    :html5 {
+      :architectures #{
+        "wasm-web"
+      }
+      :build_report false
+      :contentless false
+      :liveupdate false
+      :texture_compression "enabled"
+      :variant "debug"
+      :with_symbols true
+    }
+    :last-bundle-command :project.bundle-html5
+    :output-directory "C:\\Users\\ushak\\OneDrive\\Documents\\sikaku"
+  }
   :code {
     :breakpoints [
       {
@@ -6,14 +21,10 @@
         :proj-path "/game/view/cell_view.lua"
         :row 0
       }
-      {
-        :enabled true
-        :proj-path "/main/main.script"
-        :row 63
-      }
     ]
     :find {
-      :term "--"
+      :term ""
+      :wrap false
     }
   }
   :scene {
@@ -25,90 +36,26 @@
     :open-tabs [
       [
         [
-          "/game.project"
-          :cljfx-form-view
-        ]
-        [
-          "/.gitignore"
+          "/data/levels/easy.lua"
           :code
         ]
       ]
     ]
     :recent-files [
       [
-        "/objects/classic_cell/classic_cell.go"
-        :scene
-      ]
-      [
-        "/factories/levelfactory.factory"
-        :cljfx-form-view
-      ]
-      [
-        "/main/main.collection"
-        :scene
-      ]
-      [
-        "/assets/atlas/game.atlas"
-        :scene
-      ]
-      [
-        "/ui/menu/menu.gui"
-        :scene
-      ]
-      [
-        "/ui/menu/menu.gui_script"
-        :code
-      ]
-      [
         "/ui/mode_select/mode_select.gui"
         :scene
       ]
       [
-        "/ui/mode_select/mode_select.gui_script"
+        "/game/popup/popup_manager.lua"
         :code
       ]
       [
-        "/game/player/player_data.lua"
+        "/utils/hints_manager.lua"
         :code
       ]
       [
-        "/ui/mode_select/classic_select.gui_script"
-        :code
-      ]
-      [
-        "/ui/mode_select/classic_select.gui"
-        :scene
-      ]
-      [
-        "/ui/gameplay/game.gui"
-        :scene
-      ]
-      [
-        "/game/shikaku/levels/hard.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/levels/medium.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/rectangle.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/generator.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/cell.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/levels/easy.lua"
-        :code
-      ]
-      [
-        "/game/shikaku/board.lua"
+        "/data/config/popup_congif.lua"
         :code
       ]
       [
@@ -116,31 +63,59 @@
         :code
       ]
       [
-        "/ui/gameplay/game.gui_script"
-        :code
-      ]
-      [
         "/data/config/animations.lua"
         :code
       ]
       [
-        "/game/view/cell_view.lua"
+        "/game/popup/popup.gui"
+        :scene
+      ]
+      [
+        "/ui/gameplay/blitz_game.gui_script"
         :code
       ]
       [
-        "/game/shikaku/selection.lua"
+        "/ui/gameplay/game.gui_script"
         :code
       ]
       [
-        "/game/shikaku/solver.lua"
+        "/ui/gameplay/endless_game.gui_script"
         :code
       ]
       [
-        "/game/shikaku/levels/levels.lua"
+        "/utils/localization.lua"
         :code
       ]
       [
-        "/game/shikaku/input.lua"
+        "/utils/popup_system.lua"
+        :code
+      ]
+      [
+        "/data/localization/en_lang.lua"
+        :code
+      ]
+      [
+        "/data/localization/ru_lang.lua"
+        :code
+      ]
+      [
+        "/game/classic/classic_game.lua"
+        :code
+      ]
+      [
+        "/data/config/popup_config.lua"
+        :code
+      ]
+      [
+        "/game/popup/popup.gui_script"
+        :code
+      ]
+      [
+        "/yagames/ext.manifest"
+        :code
+      ]
+      [
+        "/utils/screen_manager.lua"
         :code
       ]
       [
@@ -148,11 +123,7 @@
         :code
       ]
       [
-        "/input/game.input_binding"
-        :cljfx-form-view
-      ]
-      [
-        "/game/view/board_view.lua"
+        "/yagames/yagames.lua"
         :code
       ]
       [
@@ -160,7 +131,19 @@
         :cljfx-form-view
       ]
       [
-        "/.gitignore"
+        "/yagames/helpers/mock.lua"
+        :code
+      ]
+      [
+        "/ui/mode_select/classic_select.gui_script"
+        :code
+      ]
+      [
+        "/data/config/classic_select_config.lua"
+        :code
+      ]
+      [
+        "/data/levels/easy.lua"
         :code
       ]
     ]

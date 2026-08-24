@@ -24,11 +24,12 @@ function Generator:Generate(width, height, seed)
 	end
 
 	local board = Board.new(width, height)
-	local success = self:GenerateRectangles(board)
+	local success, rectangles = self:GenerateRectangles(board)
 	if not success then
 		return self:Generate(width, height, nil)
 	end
 
+	board._solution = rectangles
 	return board
 end
 
@@ -40,7 +41,7 @@ function Generator:GenerateRectangles(board)
 	while not self:IsFull(board, used) do
 		attempts = attempts + 1
 		if attempts > 1000 then
-			return false
+			return false, nil
 		end
 
 		local x, y = self:GetFreeCell(board, used)
@@ -56,7 +57,7 @@ function Generator:GenerateRectangles(board)
 		cell:SetNumber(area)
 	end
 
-	return true
+	return true, rectangles
 end
 
 function Generator:GetFreeCell(board, used)

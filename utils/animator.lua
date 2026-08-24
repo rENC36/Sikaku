@@ -26,13 +26,8 @@ function M.animate(node, preset, callback)
 	local easing   = preset.easing   or gui.EASING_OUTQUAD
 	local delay    = preset.delay    or 0
 
-	if preset.cancel then
-		gui.cancel_animation(node, hash("position"))
-		gui.cancel_animation(node, hash("rotation"))
-		gui.cancel_animation(node, hash("scale"))
-		gui.cancel_animation(node, hash("color"))
-		gui.cancel_animation(node, hash("size"))
-	end
+	-- Блок с gui.cancel_animation был удален, так как он не нужен
+	-- и вызывает ошибку. Новые анимации автоматически перекрывают старые.
 
 	local total = 0
 	local done  = 0
@@ -96,6 +91,7 @@ function M.register_buttons(list)
 				node    = node,
 				anim    = cfg.anim,
 				action  = cfg.action,
+				sound   = cfg.sound,
 				pressed = false,
 				hovered = false,
 			})
@@ -156,6 +152,10 @@ function M.handle_buttons(buttons, action_id, action)
 		if action.pressed and over then
 			btn.pressed = true
 			M.animate(btn.node, btn.anim.pressed)
+			if btn.sound then
+				local ok, Audio = pcall(require, "utils.audio_manager")
+				if ok and Audio then Audio.play_sound_id(btn.sound) end
+			end
 			return true
 		end
 

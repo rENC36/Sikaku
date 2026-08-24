@@ -1,7 +1,7 @@
+local CFG = require("data.config.input_config")
+
 local Input = {}
 Input.__index = Input
-
-local COLOR_DEFAULT = vmath.vector4(1, 1, 1, 1)
 
 local function hsv_to_rgb(h, s, v)
 	local r, g, b
@@ -11,7 +11,7 @@ local function hsv_to_rgb(h, s, v)
 	local q = v * (1 - f * s)
 	local t = v * (1 - (1 - f) * s)
 	i = i % 6
-	if i == 0 then r, g, b = v, t, p
+	if i == 0 then     r, g, b = v, t, p
 	elseif i == 1 then r, g, b = q, v, p
 	elseif i == 2 then r, g, b = p, v, t
 	elseif i == 3 then r, g, b = p, q, v
@@ -24,14 +24,62 @@ end
 function Input.new(selection, board_view)
 	local self = setmetatable({}, Input)
 	self.selection = selection
-	self.board = selection.board 
+	self.board = selection.board
 	self.board_view = board_view
 	self.dragging = false
-	self.highlighted = {} 
-	self.pending_color = nil 
+	self.highlighted = {}
+	self.pending_color = nil
 	self.placed_count = 0
 	self.used_colors = {}
 	return self
+end
+
+function Input:GetSelectionInfo(rectangle)
+	if not rectangle then
+		return { area = 0, numbers_count = 0, target_area = nil, overlapping = false, overlapping_rect = nil, valid = false, reason = "empty" }
+	end
+
+	local area = tonumber(rectangle:GetArea()) or 0
+	local numbers_count = 0
+	local target_area = nil
+
+	for _, pos in ipairs(rectangle:GetCells()) do
+		local cell = self.board:GetCell(pos.x, pos.y)
+		if cell and cell:GetNumber() then
+			numbers_count = numbers_count + 1
+			target_area = tonumber(cell:GetNumber())
+		end
+	end
+
+	local overlapping = false
+	local overlapping_rect = nil
+	for old_rectangle in pairs(self.board:GetOverlappingRectangles(rectangle)) do
+		overlapping = true
+		overlapping_rect = old_rectangle
+		break
+	end
+
+	local valid = numbers_count == 1 and area == target_area and not overlapping
+	local reason = "ok"
+	if overlapping then
+		reason = "overlap"
+	elseif numbers_count == 0 then
+		reason = "no_number"
+	elseif numbers_count > 1 then
+		reason = "many_numbers"
+	elseif area ~= target_area then
+		reason = "area"
+	end
+
+	return {
+		area = area,
+		numbers_count = numbers_count,
+		target_area = target_area,
+		overlapping = overlapping,
+		overlapping_rect = overlapping_rect,
+		valid = valid,
+		reason = reason
+	}
 end
 
 function Input:GetCellDisplayColor(x, y)
@@ -42,27 +90,27 @@ function Input:GetCellDisplayColor(x, y)
 			return rectangle.color
 		end
 	end
-	return COLOR_DEFAULT
+	return CFG.COLOR_DEFAULT
 end
 
 function Input:GenerateColor()
+	local gen = CFG.GENERATOR
 	if #self.used_colors == 0 then
-		local color = hsv_to_rgb(math.random(), 0.75, 0.9)
+		local color = hsv_to_rgb(math.random(), gen.first_s, gen.first_v)
 		table.insert(self.used_colors, color)
 		return color
 	end
 
-	local attempts = 0
-	while attempts < 30 do
+	for _ = 1, gen.max_attempts do
 		local h = math.random()
-		local s = 0.65 + math.random() * 0.25
-		local v = 0.75 + math.random() * 0.2
+		local s = gen.loop_s_min + math.random() * (gen.loop_s_max - gen.loop_s_min)
+		local v = gen.loop_v_min + math.random() * (gen.loop_v_max - gen.loop_v_min)
 		local color = hsv_to_rgb(h, s, v)
 
 		local too_similar = false
 		for _, old in ipairs(self.used_colors) do
 			local dist = math.abs(color.x - old.x) + math.abs(color.y - old.y) + math.abs(color.z - old.z)
-			if dist < 0.5 then
+			if dist < gen.similarity_threshold then
 				too_similar = true
 				break
 			end
@@ -72,46 +120,28 @@ function Input:GenerateColor()
 			table.insert(self.used_colors, color)
 			return color
 		end
-		attempts = attempts + 1
 	end
 
-	local last = self.used_colors[#self.used_colors]
 	local h = (math.random() + 0.5) % 1
-	local color = hsv_to_rgb(h, 0.8, 0.85)
+	local color = hsv_to_rgb(h, gen.fallback_s, gen.fallback_v)
 	table.insert(self.used_colors, color)
 	return color
 end
 
-function Input:RepaintPreview(rectangle)
-	local new_highlighted = {}
-
-	if rectangle then
-		for yy = rectangle.y, rectangle.y + rectangle.height - 1 do
-			for xx = rectangle.x, rectangle.x + rectangle.width - 1 do
-				local key = xx .. ":" .. yy
-				new_highlighted[key] = { x = xx, y = yy }
-			end
-		end
+function Input:RestoreHighlightedCells()
+	for _, pos in pairs(self.highlighted) do
+		self.board_view:SetCellColor(pos.x, pos.y, self:GetCellDisplayColor(pos.x, pos.y))
 	end
+	self.highlighted = {}
+end
 
-	for key, pos in pairs(self.highlighted) do
-		if not new_highlighted[key] then
-			self.board_view:SetCellColor(pos.x, pos.y, self:GetCellDisplayColor(pos.x, pos.y))
-		end
-	end
-
-	for _, pos in pairs(new_highlighted) do
-		self.board_view:SetCellColor(pos.x, pos.y, self.pending_color)
-	end
-
-	self.highlighted = new_highlighted
+function Input:RepaintPreview(rectangle, info)
+	self.highlighted = {}
 end
 
 function Input:MousePressed(x, y)
 	local cell = self.board_view:GetCellFromPosition(x, y)
-	if not cell then
-		return
-	end
+	if not cell then return false end
 
 	self.dragging = true
 	self.pending_color = self:GenerateColor()
@@ -120,27 +150,30 @@ function Input:MousePressed(x, y)
 	self.selection:Update(cell.x, cell.y)
 
 	local rect = self.selection:GetRectangle()
-	self:RepaintPreview(rect)
-	self.board_view:UpdatePreviewBg(rect, self.pending_color)
+	local info = self:GetSelectionInfo(rect)
+
+	self:RepaintPreview(rect, info)
+	self.board_view:UpdatePreviewBg(rect, self.pending_color, info)
 
 	print("START", cell.x, cell.y)
+	return true
 end
 
 function Input:MouseMoved(x, y)
-	if not self.dragging then
-		return
-	end
+	if not self.dragging then return false end
 
 	local cell = self.board_view:GetCellFromPosition(x, y)
-	if not cell then
-		return
-	end
+	if not cell then return false end
 
 	self.selection:Update(cell.x, cell.y)
 
 	local rect = self.selection:GetRectangle()
-	self:RepaintPreview(rect)
-	self.board_view:UpdatePreviewBg(rect, self.pending_color)
+	local info = self:GetSelectionInfo(rect)
+
+	self:RepaintPreview(rect, info)
+	self.board_view:UpdatePreviewBg(rect, self.pending_color, info)
+
+	return true
 end
 
 function Input:RepaintCells(cells)
@@ -150,112 +183,81 @@ function Input:RepaintCells(cells)
 end
 
 function Input:MouseReleased(x, y)
-	if not self.dragging then
-		return
-	end
-
+	if not self.dragging then return false end
 	self.dragging = false
-	self.board_view:ClearPreviewBg()
 
 	local rectangle = self.selection:GetRectangle()
 	if not rectangle then
-		for key, pos in pairs(self.highlighted) do
-			self.board_view:SetCellColor(pos.x, pos.y, self:GetCellDisplayColor(pos.x, pos.y))
-		end
-		self.highlighted = {}
+		self.board_view:ClearPreviewBg()
+		self:RestoreHighlightedCells()
 		self.selection:Clear()
-		return
-	end
-	
-	local numbers_count = 0
-	local target_area = nil
-	for _, pos in ipairs(rectangle:GetCells()) do
-		local cell = self.board:GetCell(pos.x, pos.y)
-		if cell and cell:GetNumber() then
-			numbers_count = numbers_count + 1
-			target_area = cell:GetNumber()
-		end
+		self.pending_color = nil
+		return false
 	end
 
-	if numbers_count ~= 1 then
-		print("INVALID: must contain exactly 1 number, got", numbers_count)
-		for key, pos in pairs(self.highlighted) do
-			self.board_view:SetCellColor(pos.x, pos.y, self:GetCellDisplayColor(pos.x, pos.y))
-		end
-		self.highlighted = {}
-		self.selection:Clear()
-		return
-	end
-	
-	if rectangle:GetArea() ~= target_area then
-		print("INVALID: area", rectangle:GetArea(), "!= number", target_area)
-		for key, pos in pairs(self.highlighted) do
-			self.board_view:SetCellColor(pos.x, pos.y, self:GetCellDisplayColor(pos.x, pos.y))
-		end
-		self.highlighted = {}
-		self.selection:Clear()
-		return
-	end
-	
-	local overlapping = self.board:GetOverlappingRectangles(rectangle)
-	local cells_to_repaint = {}
+	local info = self:GetSelectionInfo(rectangle)
 
-	for old_rectangle in pairs(overlapping) do
-		self.board:RemoveRectangle(old_rectangle)
-		self.board_view:RemoveRectangleBg(old_rectangle)
-		for _, pos in ipairs(old_rectangle:GetCells()) do
-			table.insert(cells_to_repaint, pos)
+	if not info.valid then
+		if info.reason == "area" then
+			print("INVALID: area", info.area, "!= number", info.target_area)
+		elseif info.reason == "overlap" then
+			print("INVALID: overlaps another rectangle")
+			if info.overlapping_rect then
+				print("Overlaps with:", info.overlapping_rect.x, info.overlapping_rect.y, info.overlapping_rect.width, info.overlapping_rect.height)
+			end
+		else
+			print("INVALID:", info.reason)
 		end
-		print("REMOVED", old_rectangle.x, old_rectangle.y, old_rectangle.width, old_rectangle.height)
+
+		self.board_view:ClearPreviewBg()
+		self:RestoreHighlightedCells()
+		self.selection:Clear()
+		self.pending_color = nil
+		return false
 	end
 
-	rectangle.color = self.pending_color
+	local placed_color = self.pending_color or CFG.COLOR_DEFAULT
+
+	self.board_view:ClearPreviewBg()
+	self:RestoreHighlightedCells()
+	self.selection:Clear()
+	self.pending_color = nil
+
+	rectangle.color = placed_color
 	self.board:Place(rectangle)
 	self.placed_count = self.placed_count + 1
-	for _, pos in ipairs(rectangle:GetCells()) do
-		table.insert(cells_to_repaint, pos)
-	end
 
-	self:RepaintCells(cells_to_repaint)
 	self.board_view:CreateRectangleBg(rectangle, rectangle.color)
-	print("PLACED", rectangle.x, rectangle.y, rectangle.width, rectangle.height)
 
-	self.highlighted = {}
-	self.selection:Clear()
+	print("PLACED", rectangle.x, rectangle.y, rectangle.width, rectangle.height)
+	return true
 end
 
 function Input:RightClick(x, y)
 	if self.dragging then
 		self.dragging = false
 		self.board_view:ClearPreviewBg()
-		for key, pos in pairs(self.highlighted) do
-			self.board_view:SetCellColor(pos.x, pos.y, self:GetCellDisplayColor(pos.x, pos.y))
-		end
-		self.highlighted = {}
+		self:RestoreHighlightedCells()
 		self.selection:Clear()
 		print("CANCELLED drag")
-		return
+		return true
 	end
-	
+
 	local cell = self.board_view:GetCellFromPosition(x, y)
-	if not cell then return end
+	if not cell then return false end
 
 	local board_cell = self.board:GetCell(cell.x, cell.y)
-	if not board_cell then return end
+	if not board_cell then return false end
 
 	local rect = board_cell:GetRectangle()
-	if not rect then return end
+	if not rect then return false end
 
 	self.board:RemoveRectangle(rect)
 	self.board_view:RemoveRectangleBg(rect)
-
-	local cells_to_repaint = {}
-	for _, pos in ipairs(rect:GetCells()) do
-		table.insert(cells_to_repaint, pos)
-	end
-	self:RepaintCells(cells_to_repaint)
+	self:RepaintCells(rect:GetCells())
 
 	print("REMOVED by right click", rect.x, rect.y, rect.width, rect.height)
+	return true
 end
 
 function Input:Reset()

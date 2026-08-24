@@ -1,36 +1,91 @@
-local Anim = require("utils.animator")
-local CFG = require("data.config.animations")
-local PD = require("game.player.player_data")
-local Levels = require("game.shikaku.levels.levels")
+local Anim       = require("utils.animator")
+local CFG        = require("data.config.animations")
+local PD         = require("game.player.player_data")
+local Levels     = require("game.shikaku.levels")
+local Audio      = require("utils.audio_manager")
+local Lang       = require("utils.localization")
+
+local SWITCH = {
+	pos = { on = -17, off = -53 },
+	tex = { on = "switch_on", off = "switch_off" },
+	duration = 0.15,
+}
+
+local function set_switch_state(switch_node, switcher_node, enabled, animate)
+	gui.play_flipbook(switch_node, enabled and SWITCH.tex.on or SWITCH.tex.off)
+	local pos = gui.get_position(switcher_node)
+	pos.x = enabled and SWITCH.pos.on or SWITCH.pos.off
+	if animate then
+		gui.animate(switcher_node, hash("position"), pos, gui.EASING_OUTQUAD, SWITCH.duration)
+	else
+		gui.set_position(switcher_node, pos)
+	end
+end
+
+local function refresh_stats(self)
+	local completed = PD.get_completed_count("easy") + PD.get_completed_count("medium") + PD.get_completed_count("hard")
+	local total = Levels.count("easy") + Levels.count("medium") + Levels.count("hard")
+
+	local setlang = gui.get_text(gui.get_node("blitz_stats"))
+	gui.set_text(self.blitz_stats, PD.get("stats.blitz_best") .. " " .. setlang)
+
+	gui.set_text(self.endless_stats, PD.get("stats.endless_best") or 0)
+	
+	gui.set_text(self.stat, completed .. "/" .. total)
+	print("[Menu] Total progress:", completed .. "/" .. total)
+end
 
 function init(self)
 	msg.post(".", "acquire_input_focus")
 
-	self.buttons = Anim.register_buttons({
-		{ node = "btn_start",       anim = CFG.btn_menu, action = function() msg.post("/main", "open_mode_select") end },
-		{ node = "btn_leaderboard", anim = CFG.btn_menu, action = function() msg.post("/main", "open_leaderboard") end },
-	})
+	Audio.init()
+	Lang.init()
 
 	self.stat = gui.get_node("classic_stats")
+	self.blitz_stats = gui.get_node("blitz_stats")
+	self.endless_stats = gui.get_node("endless_stats")
+
+	self.switch_on    = gui.get_node("switch_on")
+	self.switch_off   = gui.get_node("switch_off")
+	self.switcher_on  = gui.get_node("switcher_on")
+	self.switcher_off = gui.get_node("switcher_off")
+
+	set_switch_state(self.switch_on, self.switcher_on, Audio.is_music_enabled(), false)
+	set_switch_state(self.switch_off, self.switcher_off, Audio.is_sound_enabled(), false)
+
+	self.buttons = Anim.register_buttons({
+		{ node = "btn_start",       anim = CFG.btn_menu, sound = "click", action = function() msg.post("/main", "open_mode_select") end },
+		{ node = "btn_leaderboard", anim = CFG.btn_menu, sound = "click", action = function() msg.post("/main", "open_leaderboard") end },
+		{ node = "switch_on",        anim = CFG.btn_menu, sound = "click", action = function()
+			Audio.toggle_music()
+			set_switch_state(self.switch_on, self.switcher_on, Audio.is_music_enabled(), true)
+		end },
+		{ node = "switch_off",       anim = CFG.btn_menu, sound = "click", action = function()
+			Audio.toggle_sound()
+			set_switch_state(self.switch_off, self.switcher_off, Audio.is_sound_enabled(), true)
+		end },
+		{ node = "en_box",           anim = CFG.btn_menu, sound = "click", action = function()
+			Lang.load("en")
+			Lang.apply_to_gui("menu")
+			refresh_stats(self)
+		end },
+		{ node = "ru_box",          anim = CFG.btn_menu, sound = "click", action = function()
+			Lang.load("ru")
+			Lang.apply_to_gui("menu")
+			refresh_stats(self)
+		end },
+	})
+
+	Lang.apply_to_gui("menu")
 	refresh_stats(self)
-end
-
-function refresh_stats(self)
-	local completed = PD.get_completed_count("easy") 
-	+ PD.get_completed_count("medium") 
-	+ PD.get_completed_count("hard")
-
-	local total = Levels.count("easy") 
-	+ Levels.count("medium") 
-	+ Levels.count("hard")
-
-	gui.set_text(self.stat, completed .. "/" .. total)
-	print("[Menu] Total progress:", completed .. "/" .. total)
 end
 
 function on_message(self, message_id, message, sender)
 	if message_id == hash("reset_ui") then
 		Anim.reset_buttons(self.buttons)
+		set_switch_state(self.switch_on, self.switcher_on, Audio.is_music_enabled(), false)
+		set_switch_state(self.switch_off, self.switcher_off, Audio.is_sound_enabled(), false)
+		Lang.apply_to_gui("menu")
 		refresh_stats(self)
 	end
 end

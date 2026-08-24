@@ -32,7 +32,6 @@ nodes {
   id: "btn_back"
   parent: "bg_modes"
   inherit_alpha: true
-  alpha: 0.7
   size_mode: SIZE_MODE_AUTO
 }
 nodes {
@@ -44,14 +43,14 @@ nodes {
     y: 600.0
   }
   type: TYPE_BOX
-  texture: "game/infinity_2"
+  texture: "game/endless_2"
   id: "btn_endless"
   parent: "bg_modes"
   inherit_alpha: true
 }
 nodes {
   position {
-    y: 170.0
+    y: 200.0
   }
   scale {
     x: 1.2
@@ -62,10 +61,24 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "\320\221\320\225\320\241\320\232\320\236\320\235\320\225\320\247\320\235\320\253\320\231\n"
-  "\320\240\320\225\320\226\320\230\320\234"
+  text: "\320\221\320\225\320\241\320\232\320\236\320\235\320\225\320\247\320\235\320\253\320\231"
   font: "nunitoBOLD"
-  id: "classic_text2"
+  id: "endless_text"
+  parent: "btn_endless"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: -200.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "\320\230\320\263\321\200\320\260\320\271\321\202\320\265 \320\261\320\265\320\267 \320\276\320\263\321\200\320\260\320\275\320\270\321\207\320\265\320\275\320\270\320\271"
+  font: "nunitoREGULAR"
+  id: "endless_text_1"
   parent: "btn_endless"
   inherit_alpha: true
 }
@@ -98,7 +111,22 @@ nodes {
   type: TYPE_TEXT
   text: "\320\221\320\233\320\230\320\246"
   font: "nunitoBOLD"
-  id: "classic_text1"
+  id: "blitz_text"
+  parent: "btn_blitz"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: -200.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "\320\235\320\260\320\261\320\270\321\200\320\260\320\271\321\202\320\265 \320\276\321\207\320\272\320\270 \320\267\320\260 \320\262\321\200\320\265\320\274\321\217"
+  font: "nunitoREGULAR"
+  id: "blitz_text_1"
   parent: "btn_blitz"
   inherit_alpha: true
 }
@@ -129,6 +157,21 @@ nodes {
   text: "\320\232\320\233\320\220\320\241\320\241\320\230\320\232\320\220"
   font: "nunitoBOLD"
   id: "classic_text"
+  parent: "btn_classic"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: -200.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "\320\240\320\265\321\210\320\260\320\271\321\202\320\265 \320\263\320\276\321\202\320\276\320\262\321\213\320\265 \321\203\321\200\320\276\320\262\320\275\320\270"
+  font: "nunitoREGULAR"
+  id: "classic_text_1"
   parent: "btn_classic"
   inherit_alpha: true
 }

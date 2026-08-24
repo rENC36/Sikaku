@@ -1,0 +1,169 @@
+local Anim  = require("utils.animator")
+local CFG   = require("data.config.animations")
+local Audio = require("utils.audio_manager")
+
+local V3 = vmath.vector3
+
+local function safe_node(name)
+	local ok, n = pcall(gui.get_node, name)
+	return ok and n or nil
+end
+
+local self_data = {
+	visible = false,
+	busy    = false,
+}
+
+local function hide_all()
+	local nodes = {
+		"popup_root", "popup_bg",
+		"popup_title", "popup_text",
+		"btn_ok", "btn_cancel",
+		"txt_ok", "txt_cancel",
+		"btn_yes", "btn_no",
+		"txt_yes", "txt_no",
+	}
+	for _, name in ipairs(nodes) do
+		local n = safe_node(name)
+		if n then gui.set_enabled(n, false) end
+	end
+end
+
+local function show_all()
+	local root = safe_node("popup_root")
+	if root then gui.set_enabled(root, true) end
+	local bg = safe_node("popup_bg")
+	if bg then gui.set_enabled(bg, true) end
+end
+
+local function find_buttons()
+	local yes_btn = safe_node("btn_ok") or safe_node("btn_yes")
+	local no_btn  = safe_node("btn_cancel") or safe_node("btn_no")
+	local yes_txt = safe_node("txt_ok") or safe_node("txt_yes")
+	local no_txt  = safe_node("txt_cancel") or safe_node("txt_no")
+	return yes_btn, no_btn, yes_txt, no_txt
+end
+
+local function do_close()
+	hide_all()
+	self_data.visible = false
+	self_data.busy    = false
+	msg.post("/main", "popup_closed")
+end
+
+local function close_popup()
+	if self_data.busy then return end
+	self_data.busy = true
+
+	local root = safe_node("popup_root")
+	if root and CFG.popup_hide then
+		Anim.animate(root, CFG.popup_hide, do_close)
+	else
+		do_close()
+	end
+end
+
+function init(self)
+	msg.post(".", "acquire_input_focus")
+	hide_all()
+	self_data.visible = false
+	self_data.busy    = false
+end
+
+local function show_popup(config)
+	self_data.visible = true
+	self_data.busy    = false
+	show_all()
+
+	local title = safe_node("popup_title")
+	if title then
+		gui.set_enabled(title, true)
+		gui.set_text(title, config.title or "")
+	end
+
+	local text = safe_node("popup_text")
+	if text then
+		gui.set_enabled(text, true)
+		gui.set_text(text, config.text or "")
+	end
+
+	local yes_btn, no_btn, yes_txt, no_txt = find_buttons()
+
+	if yes_btn then
+		gui.set_enabled(yes_btn, config.show_yes == true)
+		if yes_txt then
+			gui.set_enabled(yes_txt, config.show_yes == true)
+			if config.show_yes then
+				gui.set_text(yes_txt, config.yes_label or "OK")
+			end
+		end
+	end
+
+	if no_btn then
+		gui.set_enabled(no_btn, config.show_no == true)
+		if no_txt then
+			gui.set_enabled(no_txt, config.show_no == true)
+			if config.show_no then
+				gui.set_text(no_txt, config.no_label or "Отмена")
+			end
+		end
+	end
+	
+	local root = safe_node("popup_root")
+	if root and CFG.popup_show then
+		gui.set_scale(root, V3(0.8, 0.8, 1))
+		Anim.animate(root, CFG.popup_show)
+	end
+
+	msg.post("/main", "popup_opened")
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("show_popup") then
+		show_popup(message)
+	elseif message_id == hash("hide_popup") then
+		close_popup()
+	end
+end
+
+local function click_button(btn_node, msg_name)
+	if self_data.busy then return true end
+	self_data.busy = true
+	
+	pcall(function() Audio.play_sound_id("click") end)
+	
+	Anim.animate(btn_node, CFG.btn_popup.pressed, function()
+		Anim.animate(btn_node, CFG.btn_popup.released, function()
+			msg.post("/main", msg_name)
+			do_close()
+		end)
+	end)
+
+	return true
+end
+
+function on_input(self, action_id, action)
+	if not self_data.visible then return false end
+	if self_data.busy    then return true  end
+	if action_id ~= hash("touch") then return false end
+	if not action.released then return false end
+
+	local yes_btn = safe_node("btn_ok") or safe_node("btn_yes")
+	local no_btn  = safe_node("btn_cancel") or safe_node("btn_no")
+
+	if yes_btn and gui.is_enabled(yes_btn) and gui.pick_node(yes_btn, action.x, action.y) then
+		return click_button(yes_btn, "popup_yes")
+	end
+
+	if no_btn and gui.is_enabled(no_btn) and gui.pick_node(no_btn, action.x, action.y) then
+		return click_button(no_btn, "popup_no")
+	end
+
+	local root = safe_node("popup_root")
+	if root and not gui.pick_node(root, action.x, action.y) then
+		close_popup()
+		return true
+	end
+
+	return false
+end

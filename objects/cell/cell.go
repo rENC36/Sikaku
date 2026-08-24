@@ -3,33 +3,37 @@ components {
   component: "/objects/cell/cell.script"
 }
 embedded_components {
-  id: "label"
-  type: "label"
-  data: "size {\n"
-  "  x: 128.0\n"
-  "  y: 32.0\n"
-  "}\n"
-  "color {\n"
-  "  x: 0.0\n"
-  "  y: 0.0\n"
-  "  z: 0.0\n"
-  "}\n"
-  "font: \"/builtins/fonts/default.font\"\n"
-  "material: \"/builtins/fonts/label-df.material\"\n"
-  ""
-}
-embedded_components {
   id: "sprite"
   type: "sprite"
-  data: "default_animation: \"cell\"\n"
+  data: "default_animation: \"cell_tile\"\n"
   "material: \"/builtins/materials/sprite.material\"\n"
+  "size {\n"
+  "  x: 64.0\n"
+  "  y: 64.0\n"
+  "}\n"
+  "size_mode: SIZE_MODE_MANUAL\n"
   "textures {\n"
   "  sampler: \"texture_sampler\"\n"
   "  texture: \"/assets/atlas/game.atlas\"\n"
   "}\n"
   ""
-  scale {
-    x: 0.5
-    y: 0.5
+}
+embedded_components {
+  id: "label"
+  type: "label"
+  data: "size {\n"
+  "  x: 64.0\n"
+  "  y: 64.0\n"
+  "}\n"
+  "color {\n"
+  "  x: 0.23921569\n"
+  "  y: 0.2901961\n"
+  "  z: 0.41960785\n"
+  "}\n"
+  "font: \"/assets/fonts/nunitoBOLD.font\"\n"
+  "material: \"/builtins/fonts/font.material\"\n"
+  ""
+  position {
+    z: 1.0
   }
 }

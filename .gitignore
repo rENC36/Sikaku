@@ -1,6 +1,21 @@
+# Defold internal & build
+/.internal/
+/build/
+
+# Editor
 /.editor_settings
-/.internal
-/build
+
+# OS
 .DS_Store
 Thumbs.db
-.internal/cache/engine-archives/.buildcache
+
+# Defold temp/cache
+*.tmp
+*.cache
+/.internal
+/build
+.editor_settings
+shikaku_player_data
+.editor_settings
+.editor_settings
+shikaku_player_data

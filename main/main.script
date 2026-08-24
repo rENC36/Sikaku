@@ -1,158 +1,244 @@
-local BoardView = require("game.view.board_view")
-local Selection = require("game.shikaku.selection")
-local Input = require("game.shikaku.input")
-local Solver = require("game.shikaku.solver")
-local Board = require("game.shikaku.board")
-local Levels = require("game.shikaku.levels.levels")
-local PlayerData = require("game.player.player_data")
+local ScreenManager = require("utils.screen_manager")
+local Audio         = require("utils.audio_manager")
+local SoundCFG      = require("data.config.sounds")
+local ClassicGame   = require("game.classic.classic_game")
+local BlitzGame     = require("game.blitz.blitz_game")
+local EndlessGame   = require("game.endless.endless_game")
+local HintsManager  = require("utils.hints_manager")
+local PlayerData    = require("game.player.player_data")
+local PopupSystem   = require("utils.popup_system")
+
+local yagames = require("yagames.yagames")
 
 function init(self)
-	msg.post(".", "acquire_input_focus")
+	Audio.init()
+	Audio.SOUNDS = SoundCFG.SOUNDS or {}
+	Audio.MUSICS = SoundCFG.MUSICS or {}
 
-	self.screens = {
-		menu           = "/menu",
-		mode_select    = "/mode_select",
-		game           = "/game",
-		classic_select = "/classic_select"
-	}
+	self.screens = ScreenManager.new()
+	self.screens:register("menu",           "/menu")
+	self.screens:register("mode_select",    "/mode_select")
+	self.screens:register("classic_select", "/classic_select")
+	self.screens:register("game",           "/game")
+	self.screens:register("blitz_game",     "/blitz_game")
+	self.screens:register("endless_game",   "/endless_game")
 
-	open_screen(self, "menu")
-	self.game_active = false
-	self.current_mode = nil
-	self.current_level = 1
-	self.current_category = "easy"
+	self.classic = ClassicGame.new()
+	self.blitz   = BlitzGame.new()
+	self.endless = EndlessGame.new()
+
+	self.popup = PopupSystem.new()
+	self.popup:register_gui("/popup#popup")
+
+	self.screens:open("menu")
+	Audio.play_music_id("menu")
+
+	pcall(function() yagames.init() end)
+	
+	self.total_levels = PlayerData.get("hints.total_levels") or 0
+	self.last_reward_shown = PlayerData.get("hints.last_reward_shown") or 0
+end
+
+local function start_blitz(self)
+	self.blitz:cleanup()
+	self.blitz:restart()
+	self.blitz:start_timer(function(t, game_over)
+		msg.post("/blitz_game", "update_hud", {
+			timer = t,
+			score = self.blitz.score,
+			size  = self.blitz.grid_size,
+			game_over = game_over,
+		})
+		if game_over then
+			msg.post("/blitz_game", "show_game_over", { score = self.blitz.score })
+		end
+	end)
+	msg.post("/blitz_game", "update_hud", {
+		timer = self.blitz.timer,
+		score = self.blitz.score,
+		size  = self.blitz.grid_size,
+		game_over = false,
+	})
+end
+
+local function start_endless(self)
+	self.endless:cleanup()
+	self.endless:start()
+	local best = PlayerData.get("stats.endless_best") or 0
+	msg.post("/endless_game", "set_endless_best", {
+		best = best,
+		score_now = self.endless.score,
+	})
+end
+
+local function update_endless_hud(self)
+	if not self.endless then return end
+	local best = PlayerData.get("stats.endless_best") or 0
+	if self.endless.score > best then
+		PlayerData.set("stats.endless_best", self.endless.score)
+		PlayerData.save()
+		best = self.endless.score
+	end
+	msg.post("/endless_game", "set_endless_best", {
+		best = best,
+		score_now = self.endless.score,
+	})
 end
 
 function on_message(self, message_id, message, sender)
-	if message_id == hash("open_mode_select") then
-		open_screen(self, "mode_select")
+	if message_id == hash("popup_yes") then
+		self.popup:on_button("yes")
+		return
+	elseif message_id == hash("popup_no") then
+		self.popup:on_button("no")
+		return
+
+	elseif message_id == hash("open_popup") then
+		self.popup:open(message.popup_type, message.params)
+
+	elseif message_id == hash("open_popup_exit") then
+		self.popup:open("exit_confirm")
+
+	elseif message_id == hash("open_popup_hint") then
+		local balance = HintsManager.GetBalance()
+		if balance <= 0 then
+			self.popup:open("no_hints")
+		else
+			self.popup:open("hint_confirm", { balance = balance })
+		end
+
+	elseif message_id == hash("level_completed") then
+		self.total_levels = self.total_levels + 1
+		PlayerData.set("hints.total_levels", self.total_levels)
+		PlayerData.save()
+
+		if self.total_levels % 5 == 0 and self.total_levels > self.last_reward_shown then
+			self.popup:open("reward_hints")
+		end
+
+	elseif message_id == hash("show_reward_ad") then
+		local ad_ok = pcall(function()
+			yagames.adv_show_rewarded_video(function(result)
+				if result and result.value then
+					HintsManager.AddHints(5)
+					self.last_reward_shown = self.total_levels
+					PlayerData.set("hints.last_reward_shown", self.last_reward_shown)
+					PlayerData.save()
+					msg.post("/game", "update_hint_balance", { balance = HintsManager.GetBalance() })
+				end
+			end)
+		end)
+		if not ad_ok then
+			HintsManager.AddHints(5)
+			self.last_reward_shown = self.total_levels
+			PlayerData.set("hints.last_reward_shown", self.last_reward_shown)
+			PlayerData.save()
+			msg.post("/game", "update_hint_balance", { balance = HintsManager.GetBalance() })
+		end
+
+	elseif message_id == hash("reward_dismissed") then
+		self.last_reward_shown = self.total_levels
+		PlayerData.set("hints.last_reward_shown", self.last_reward_shown)
+		PlayerData.save()
+
+	elseif message_id == hash("open_mode_select") then
+		self.screens:open("mode_select")
+
+	elseif message_id == hash("open_classic_levels") then
+		self.screens:open("classic_select")
+
+	elseif message_id == hash("open_blitz_prepare") then
+		self.screens:open("blitz_prepare")
+
+	elseif message_id == hash("back_to_mode_select") then
+		self.screens:open("mode_select")
 
 	elseif message_id == hash("start_game") then
-		self.current_mode = message.mode or "classic"
-		self.current_level = message.level or 1
-		self.current_category = message.category or "easy"
-
-		Levels.set_level(message.category, self.current_level)
-
-		open_screen(self, "game")
-		load_puzzle_from_levels(self, message.category)
-
-		msg.post(".", "acquire_input_focus")
-		self.game_active = true
+		local mode = message.mode or "classic"
+		if mode == "blitz" then
+			self.screens:open("blitz_game")
+			start_blitz(self)
+			Audio.play_music_id("game")
+		elseif mode == "endless" then
+			self.screens:open("endless_game")
+			start_endless(self)
+			Audio.play_music_id("game")
+		else
+			self.screens:open("game")
+			self.classic:load_level(message.category, message.level)
+			Audio.play_music_id("game")
+		end
 
 	elseif message_id == hash("back_to_menu") then
-		if self.board_view then
-			self.board_view:Clear()
-		end
-		self.board = nil
-		self.input = nil
-		self.selection = nil
-		self.board_view = nil
-		self.current_mode = nil
-		self.current_level = 1
-		self.current_category = "easy"
-
-		open_screen(self, "menu")
-		self.game_active = false
+		self.classic:cleanup()
+		self.blitz:cleanup()
+		self.endless:cleanup()
+		self.screens:open("menu")
+		Audio.play_music_id("menu")
 
 	elseif message_id == hash("open_leaderboard") then
-		print("LEADERBOARD (TODO)")
-	elseif message_id == hash("open_classic_levels") then
-		open_screen(self, "classic_select")
-	end
-end
+		print("[Main] Leaderboard (TODO)")
 
-function on_input(self, action_id, action)
-	if not self.game_active or not self.input then
-		return
-	end
+	elseif message_id == hash("game_input") then
+		if self.popup:pauses_input() then return end
+		if self.classic then
+			self.classic:on_input(message.action_id, message.action)
+		end
 
-	if action_id == hash("touch") then
-		if action.pressed then
-			self.input:MousePressed(action.x, action.y)
-		elseif action.released then
-			self.input:MouseReleased(action.x, action.y)
-
-			if self.board:IsFull() then
-				local rectangles = self.board:GetAllRectangles()
-				if Solver.Check(self.board, rectangles) then
-					print("SOLVED! Mode:", self.current_mode, "Level:", self.current_level)
-					PlayerData.complete_level(self.current_category, self.current_level)
-
-					self.current_level = self.current_level + 1
-					if self.current_level > Levels.count(self.current_category) then
-						self.current_level = 1
-					end
-
-					Levels.set_level(self.current_category, self.current_level)
-					load_puzzle_from_levels(self, self.current_category)
-				else
-					print("WRONG!")
+	elseif message_id == hash("blitz_input") then
+		if self.popup:pauses_input() then return end
+		if self.blitz then
+			local handled = self.blitz:on_input(message.action_id, message.action)
+			if handled then
+				msg.post("/blitz_game", "update_hud", {
+					timer = self.blitz.timer,
+					score = self.blitz.score,
+					size  = self.blitz.grid_size,
+					game_over = self.blitz.is_game_over,
+				})
+				if self.blitz.is_game_over then
+					msg.post("/blitz_game", "show_game_over", { score = self.blitz.score })
 				end
 			end
 		end
-	end
-	
-	if action_id == hash("mouse_right") and action.pressed then
-		self.input:RightClick(action.x, action.y)
-	end
 
-	if action.x and action.y then
-		self.input:MouseMoved(action.x, action.y)
-	end
-end
-
-function load_puzzle_from_levels(self, category)
-	if self.board_view then
-		self.board_view:Clear()
-	end
-
-	local puzzle = Levels.load(category)
-	if not puzzle then
-		print("NO PUZZLE FOUND")
-		return
-	end
-
-	self.board = Board.new(puzzle.width, puzzle.height)
-
-	for y = 1, puzzle.height do
-		for x = 1, puzzle.width do
-			local number = puzzle.data[y][x]
-			if number and number ~= 0 then
-				self.board:GetCell(x, y):SetNumber(number)
+	elseif message_id == hash("endless_input") then
+		if self.popup:pauses_input() then return end
+		if self.endless then
+			local handled = self.endless:on_input(message.action_id, message.action)
+			if handled then
+				update_endless_hud(self)
 			end
 		end
+
+	elseif message_id == hash("use_hint") then
+		local ok, reason = self.classic:use_hint()
+		msg.post("/game", "update_hint_balance", { balance = HintsManager.GetBalance(), ok = ok, reason = reason })
+
+	elseif message_id == hash("use_hint_endless") then
+		local ok, reason = self.endless:use_hint()
+		if ok then
+			update_endless_hud(self)
+		end
+		msg.post("/endless_game", "update_hint_balance", { balance = HintsManager.GetBalance(), ok = ok, reason = reason })
+
+	elseif message_id == hash("use_hint_blitz") then
+		local ok, reason = self.blitz:use_hint()
+		if ok then
+			msg.post("/blitz_game", "update_hud", {
+				timer = self.blitz.timer,
+				score = self.blitz.score,
+				size  = self.blitz.grid_size,
+				game_over = self.blitz.is_game_over,
+			})
+		end
+		msg.post("/blitz_game", "update_hint_balance", {
+			balance = HintsManager.GetBalance(),
+			ok = ok,
+			reason = reason,
+		})
+
+	elseif message_id == hash("get_hint_balance") then
+		msg.post(sender, "update_hint_balance", { balance = HintsManager.GetBalance() })
 	end
-
-	local ww, wh = window.get_size()
-	self.board_view = BoardView.new("/Factories#cellfactory", {
-		cell_size = 64,
-		spacing = 32,
-		start_position = vmath.vector3(ww / 2, wh / 2, 0)
-	})
-	
-	self.board_view:Create(self.board)
-
-	self.selection = Selection.new(self.board)
-	self.input = Input.new(self.selection, self.board_view)
-
-	print("LOADED:", category, "puzzle #", (Levels.index[category] or 1) - 1)
-end
-
-function open_screen(self, name)
-	local url = self.screens[name]
-	if not url then
-		print("ERROR: Unknown screen:", name)
-		return
-	end
-
-	for _, u in pairs(self.screens) do
-		msg.post(u, "disable")
-	end
-
-	msg.post(url, "reset_ui")
-	msg.post(url, "enable")
-	msg.post(url, "acquire_input_focus")
-
-	print("SCREEN:", name)
 end

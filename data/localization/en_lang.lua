@@ -1,0 +1,62 @@
+return {
+	menu = {
+		blitz_stats = "Points",
+		play_text    = "Play",
+		leader_text  = "Leaderboard",
+		text_rules = "Rules",
+		en_text      = "EN",
+		ru_text      = "RU",
+		settings_title = "Settings",
+		sfx_text = "Sound",
+		music_text = "Music",
+		language_text = "Language",
+		statistic_text = "Your statistics\nby mode",
+		endless_text = "Endless", 
+		blitz_text = "Blitz",
+		classic_text = "Classic",
+
+		classic_text_1 = "Levels completed",
+		endless_text_1 = "Highest level reached",
+		blitz_text_1 = "Best score",
+	},
+
+	mode_select = {
+		blitz_text   = "BLITZ",
+		classic_text = "CLASSIC",
+	},
+
+	blitz_prepare = {
+		best_score_label = "Best Score",
+		rules_text       = "You have 60 seconds. Solve grids as fast as you can!\n• +15 sec per grid\n• +25 points per grid\n• Grids get harder\n• Mistakes are not penalized",
+		start_text       = "START",
+		back_text        = "BACK",
+		detailed_rules   = "Blitz Rules:\n1. Timer starts at 60 seconds\n2. +15 sec per solved grid (max 60)\n3. +25 points per solved grid\n4. Grid size grows: 5×5 → 6×6 → 7×7...\n5. Mistakes don't cost time, but take time to fix",
+	},
+
+	blitz_game = {
+		score_label  = "Score",
+		time_label   = "Time",
+		size_label   = "Grid",
+		game_over    = "TIME'S UP!",
+		final_score  = "Score",
+		best_score   = "Best",
+		new_best     = "NEW BEST!",
+		restart_text = "RESTART",
+		menu_text    = "MENU",
+	},
+
+	popup_exit_title = "Exit",
+	popup_exit_text = "Return to main menu?\nLevel progress will not be saved.",
+	popup_hint_title = "Hint",
+	popup_hint_text = "Use hint?\nRemaining: {balance}",
+	popup_no_hints_title = "No hints left",
+	popup_no_hints_text = "You have no hints left.",
+	popup_yes = "Yes",
+	popup_no = "No",
+	popup_ok = "OK",
+	popup_use = "Use",
+	popup_cancel = "Cancel",
+	popup_reward_title = "Reward!",
+	popup_reward_text = "5 levels completed!\nGet 5 hints.",
+	popup_get = "Get",
+}

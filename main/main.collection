@@ -14,6 +14,18 @@ embedded_instances {
   "  id: \"cellfactory\"\n"
   "  component: \"/factories/cell.factory\"\n"
   "}\n"
+  "components {\n"
+  "  id: \"selection_bg_factory\"\n"
+  "  component: \"/factories/selection_bg_factory.factory\"\n"
+  "}\n"
+  "components {\n"
+  "  id: \"grid_bg_factory\"\n"
+  "  component: \"/factories/grid_bg_factory.factory\"\n"
+  "}\n"
+  "components {\n"
+  "  id: \"badge_factory\"\n"
+  "  component: \"/factories/badge_factory.factory\"\n"
+  "}\n"
   ""
 }
 embedded_instances {
@@ -45,6 +57,51 @@ embedded_instances {
   data: "components {\n"
   "  id: \"classic_select\"\n"
   "  component: \"/ui/mode_select/classic_select.gui\"\n"
+  "}\n"
+  ""
+}
+embedded_instances {
+  id: "sounds"
+  data: "embedded_components {\n"
+  "  id: \"click\"\n"
+  "  type: \"sound\"\n"
+  "  data: \"sound: \\\"/assets/sounds/click.ogg\\\"\\n"
+  "\"\n"
+  "}\n"
+  ""
+}
+embedded_instances {
+  id: "music"
+  data: "embedded_components {\n"
+  "  id: \"menu\"\n"
+  "  type: \"sound\"\n"
+  "  data: \"sound: \\\"/assets/sounds/menu_music.ogg\\\"\\n"
+  "looping: 1\\n"
+  "\"\n"
+  "}\n"
+  ""
+}
+embedded_instances {
+  id: "blitz_game"
+  data: "components {\n"
+  "  id: \"blitz_game\"\n"
+  "  component: \"/ui/gameplay/blitz_game.gui\"\n"
+  "}\n"
+  ""
+}
+embedded_instances {
+  id: "endless_game"
+  data: "components {\n"
+  "  id: \"endless_game\"\n"
+  "  component: \"/ui/gameplay/endless_game.gui\"\n"
+  "}\n"
+  ""
+}
+embedded_instances {
+  id: "popup"
+  data: "components {\n"
+  "  id: \"popup\"\n"
+  "  component: \"/game/popup/popup.gui\"\n"
   "}\n"
   ""
 }

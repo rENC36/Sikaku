@@ -1,0 +1,55 @@
+local Anim = require("utils.animator")
+local CFG  = require("data.config.animations")
+local HintsManager = require("utils.hints_manager")
+
+local function safe_node(name)
+	local ok, n = pcall(gui.get_node, name)
+	return ok and n or nil
+end
+
+local function update_hint_display(self)
+	if self.hint_balance then
+		gui.set_text(self.hint_balance, tostring(HintsManager.GetBalance()))
+	end
+end
+
+function init(self)
+	msg.post(".", "acquire_input_focus")
+
+	self.hint_balance = safe_node("hint_balance")
+
+	update_hint_display(self)
+
+	self.buttons = Anim.register_buttons({
+		{ node = "btn_menu", anim = CFG.btn_menu, sound = "click",
+		action = function() msg.post("/main", "open_popup_exit") end },
+		{ node = "btn_hint", anim = CFG.btn_menu, sound = "click",
+		action = function() msg.post("/main", "open_popup_hint_blitz") end },
+	})
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("reset_ui") then
+		Anim.reset_buttons(self.buttons)
+		update_hint_display(self)
+
+	elseif message_id == hash("update_hud") then
+		local timer_node = safe_node("timer")
+		local score_node = safe_node("score")
+		local size_node  = safe_node("size")
+		if timer_node then gui.set_text(timer_node, tostring(message.timer or 0)) end
+		if score_node then gui.set_text(score_node, tostring(message.score or 0)) end
+		if size_node  then gui.set_text(size_node,  tostring(message.size or 0)) end
+
+	elseif message_id == hash("update_hint_balance") then
+		update_hint_display(self)
+	end
+end
+
+function on_input(self, action_id, action)
+	if Anim.handle_buttons(self.buttons, action_id, action) then
+		return true
+	end
+	msg.post("/main", "blitz_input", { action_id = action_id, action = action })
+	return false
+end
