@@ -8,8 +8,9 @@ M.GRID = {
 }
 
 M.ATLAS = {
-	NAME  = "game",
-	FRAME = "btn_lvl_3",
+	NAME          = "game",
+	FRAME         = "btn_lvl_3",
+	LINE_CATEGORY = "line_category",
 }
 
 M.STATUS = {
@@ -47,6 +48,16 @@ M.CATEGORY_COLORS = {
 		inactive = vmath.vector4(0.7, 0.7, 0.7, 0.4) 
 	},
 }
+
+M.CATEGORY_LINE_COLORS = {
+	easy   = vmath.vector4(0.62, 0.87, 0.70, 0.8),
+	medium = vmath.vector4(0.98, 0.88, 0.55, 1),
+	hard   = vmath.vector4(0.95, 0.72, 0.75, 1),
+}
+
+M.CATEGORY_LINE_HEIGHT = 6
+M.CATEGORY_LINE_GAP = 13
+M.CATEGORY_LINE_ANIMATION_TIME = 0.25
 
 M.ANIM = {
 	PRESSED = {
