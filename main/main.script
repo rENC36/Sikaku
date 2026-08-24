@@ -32,9 +32,22 @@ function init(self)
 
 	self.screens:open("menu")
 	Audio.play_music_id("menu")
-
-	pcall(function() yagames.init() end)
 	
+	self.yagames_ready = false
+
+	local function yagames_init_handler(self, err)
+		if err then
+			print("[YaGames] Init failed:", err)
+			self.yagames_ready = false
+		else
+			print("[YaGames] Initialized successfully")
+			self.yagames_ready = true
+			yagames.features_loadingapi_ready()
+		end
+	end
+
+	yagames.init(yagames_init_handler)
+
 	self.total_levels = PlayerData.get("hints.total_levels") or 0
 	self.last_reward_shown = PlayerData.get("hints.last_reward_shown") or 0
 end
@@ -117,24 +130,27 @@ function on_message(self, message_id, message, sender)
 		end
 
 	elseif message_id == hash("show_reward_ad") then
-		local ad_ok = pcall(function()
-			yagames.adv_show_rewarded_video(function(result)
-				if result and result.value then
-					HintsManager.AddHints(5)
-					self.last_reward_shown = self.total_levels
-					PlayerData.set("hints.last_reward_shown", self.last_reward_shown)
-					PlayerData.save()
-					msg.post("/game", "update_hint_balance", { balance = HintsManager.GetBalance() })
-				end
-			end)
-		end)
-		if not ad_ok then
+		-- === YaGames: проверяем готовность SDK ===
+		if not self.yagames_ready then
+			-- SDK не загрузился — выдаём награду без рекламы
 			HintsManager.AddHints(5)
 			self.last_reward_shown = self.total_levels
 			PlayerData.set("hints.last_reward_shown", self.last_reward_shown)
 			PlayerData.save()
 			msg.post("/game", "update_hint_balance", { balance = HintsManager.GetBalance() })
+			return
 		end
+
+		yagames.adv_show_rewarded_video(function(_, result)
+			if result and result.value then
+				HintsManager.AddHints(5)
+				self.last_reward_shown = self.total_levels
+				PlayerData.set("hints.last_reward_shown", self.last_reward_shown)
+				PlayerData.save()
+				msg.post("/game", "update_hint_balance", { balance = HintsManager.GetBalance() })
+			end
+		end)
+		-- === /YaGames ===
 
 	elseif message_id == hash("reward_dismissed") then
 		self.last_reward_shown = self.total_levels

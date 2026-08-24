@@ -12,7 +12,7 @@
       :with_symbols true
     }
     :last-bundle-command :project.bundle-html5
-    :output-directory "C:\\Users\\ushak\\OneDrive\\Documents\\sikaku"
+    :output-directory "C:\\Users\\ushak\\OneDrive\\Documents\\sikaku\\wasm-web"
   }
   :code {
     :breakpoints [
@@ -115,20 +115,32 @@
         :code
       ]
       [
-        "/main/main.script"
+        "/yagames/yagames.lua"
         :code
       ]
       [
-        "/yagames/yagames.lua"
+        "/yagames/helpers/mock.lua"
+        :code
+      ]
+      [
+        "/data/levels/medium.lua"
+        :code
+      ]
+      [
+        "/data/levels/easy.lua"
+        :code
+      ]
+      [
+        "/data/levels/hard.lua"
+        :code
+      ]
+      [
+        "/main/main.script"
         :code
       ]
       [
         "/game.project"
         :cljfx-form-view
-      ]
-      [
-        "/yagames/helpers/mock.lua"
-        :code
       ]
     ]
   }
