@@ -32,6 +32,15 @@ function RectangleOverlay:create(rectangle, color)
 	self.bg_map[rectangle] = id
 end
 
+function RectangleOverlay:reflow()
+	for rectangle, id in pairs(self.bg_map) do
+		local cx, cy, outer_w, outer_h = self.layout:get_preview_bounds(rectangle)
+		local pos = vmath.vector3(cx, cy, CFG.Z.placed_bg)
+		go.set_position(pos, id)
+		go.set(msg.url(nil, id, "sprite"), "size", vmath.vector3(outer_w, outer_h, 1))
+	end
+end
+
 function RectangleOverlay:remove(rectangle)
 	local id = self.bg_map[rectangle]
 	if not id then return end

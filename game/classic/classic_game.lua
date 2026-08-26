@@ -77,6 +77,7 @@ function ClassicGame:load_level(category, level)
 	})
 
 	self.board_view:Create(self.board)
+
 	self.selection = Selection.new(self.board)
 	self.input = Input.new(self.selection, self.board_view)
 	self.hints = HintsManager.new(self.board, self.board_view, self.input)

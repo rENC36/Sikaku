@@ -5,7 +5,7 @@ M.GAME_UI_BUTTONS = {
 }
 
 M.BOARD_VIEW = {
-	cell_size      = 84,
+	cell_size      = 64,
 	spacing        = 6,
 	base_cell_size = 64,
 	label_offset_y = -6,

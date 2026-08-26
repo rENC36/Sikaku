@@ -52,32 +52,40 @@ return nil
 end
 
 function EndlessGame:start_round()
-	if self.board_view then
-		self.board_view:Clear()
-	end
+if self.board_view then
+	self.board_view:Clear()
+end
 
-	self.board = self:_generate(self.grid_size)
-	if not self.board then
-		print("[EndlessGame] Board generation failed")
-		return false
-	end
+self.board = self:_generate(self.grid_size)
+if not self.board then
+	print("[EndlessGame] Board generation failed")
+	return false
+end
 
-	self.selection = Selection.new(self.board)
-	self.board_view:Create(self.board)
-	self.input = Input.new(self.selection, self.board_view)
-	self.hints = HintsManager.new(self.board, self.board_view, self.input)
-	return true
+self.selection = Selection.new(self.board)
+self.board_view:Create(self.board)
+
+local board_view_ref = self.board_view
+timer.delay(0.1, false, function()
+	if board_view_ref then
+		board_view_ref:Reflow()
+	end
+end)
+
+self.input = Input.new(self.selection, self.board_view)
+self.hints = HintsManager.new(self.board, self.board_view, self.input)
+return true
 end
 
 function EndlessGame:start()
-	self.score       = 0
-	self.grid_size   = START_SIZE
+self.score       = 0
+self.grid_size   = START_SIZE
 
-	if not self.board_view then
-		self:init_board_view()
-	end
+if not self.board_view then
+	self:init_board_view()
+end
 
-	self:start_round()
+self:start_round()
 end
 
 function EndlessGame:stop()
@@ -87,12 +95,12 @@ end
 end
 
 function EndlessGame:cleanup()
-	self:stop()
-	self.board_view = nil
-	self.board      = nil
-	self.selection  = nil
-	self.input      = nil
-	self.hints      = nil
+self:stop()
+self.board_view = nil
+self.board      = nil
+self.selection  = nil
+self.input      = nil
+self.hints      = nil
 end
 
 function EndlessGame:restart()
@@ -131,27 +139,27 @@ return false
 end
 
 function EndlessGame:solve_round()
-	self.score = self.score + 1
-	if self.score % 5 == 0 and self.grid_size < 10 then
-		self.grid_size = self.grid_size + 1
-	end
-	self:start_round()
+self.score = self.score + 1
+if self.score % 5 == 0 and self.grid_size < 10 then
+	self.grid_size = self.grid_size + 1
+end
+self:start_round()
 end
 
 function EndlessGame:use_hint()
-	if not self.hints then return false, "no_game" end
-	local ok, reason = self.hints:ApplyHint()
-	if ok then
-		if self.board and self.board:IsFull() then
-			local rects = self.board:GetAllRectangles()
-			if Solver.Check(self.board, rects) then
-				self:solve_round()
-			end
+if not self.hints then return false, "no_game" end
+local ok, reason = self.hints:ApplyHint()
+if ok then
+	if self.board and self.board:IsFull() then
+		local rects = self.board:GetAllRectangles()
+		if Solver.Check(self.board, rects) then
+			self:solve_round()
 		end
-	else
-		print("[EndlessGame] Hint failed:", reason)
 	end
-	return ok, reason
+else
+	print("[EndlessGame] Hint failed:", reason)
+end
+return ok, reason
 end
 
 return EndlessGame

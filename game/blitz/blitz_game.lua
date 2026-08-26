@@ -65,6 +65,14 @@ function BlitzGame:start_round()
 
 	self.selection = Selection.new(self.board)
 	self.board_view:Create(self.board)
+
+	local board_view_ref = self.board_view
+	timer.delay(0.1, false, function()
+		if board_view_ref then
+			board_view_ref:Reflow()
+		end
+	end)
+
 	self.input = Input.new(self.selection, self.board_view)
 	self.hints = HintsManager.new(self.board, self.board_view, self.input)
 	return true

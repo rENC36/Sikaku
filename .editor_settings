@@ -35,73 +35,13 @@
   :workflow {
     :open-tabs [
       [
+        [
+          "/main/render.render_script"
+          :code
+        ]
       ]
     ]
     :recent-files [
-      [
-        "/ui/mode_select/mode_select.gui"
-        :scene
-      ]
-      [
-        "/game/popup/popup_manager.lua"
-        :code
-      ]
-      [
-        "/utils/hints_manager.lua"
-        :code
-      ]
-      [
-        "/data/config/popup_congif.lua"
-        :code
-      ]
-      [
-        "/utils/animator.lua"
-        :code
-      ]
-      [
-        "/data/config/animations.lua"
-        :code
-      ]
-      [
-        "/game/popup/popup.gui"
-        :scene
-      ]
-      [
-        "/ui/gameplay/blitz_game.gui_script"
-        :code
-      ]
-      [
-        "/ui/gameplay/game.gui_script"
-        :code
-      ]
-      [
-        "/ui/gameplay/endless_game.gui_script"
-        :code
-      ]
-      [
-        "/utils/localization.lua"
-        :code
-      ]
-      [
-        "/utils/popup_system.lua"
-        :code
-      ]
-      [
-        "/data/localization/en_lang.lua"
-        :code
-      ]
-      [
-        "/data/localization/ru_lang.lua"
-        :code
-      ]
-      [
-        "/game/classic/classic_game.lua"
-        :code
-      ]
-      [
-        "/data/config/popup_config.lua"
-        :code
-      ]
       [
         "/game/popup/popup.gui_script"
         :code
@@ -127,20 +67,108 @@
         :code
       ]
       [
+        "/data/levels/hard.lua"
+        :code
+      ]
+      [
         "/data/levels/easy.lua"
         :code
       ]
       [
-        "/data/levels/hard.lua"
+        "/ui/mode_select/classic_select.gui"
+        :scene
+      ]
+      [
+        "/ui/gameplay/game.gui_script"
         :code
+      ]
+      [
+        "/objects/cell/cell.go"
+        :scene
+      ]
+      [
+        "/ui/mode_select/classic_select.gui_script"
+        :code
+      ]
+      [
+        "/objects/cell/cell.script"
+        :code
+      ]
+      [
+        "/ui/mode_select/mode_select.gui_script"
+        :code
+      ]
+      [
+        "/game/endless/endless_game.lua"
+        :code
+      ]
+      [
+        "/game/blitz/blitz_game.lua"
+        :code
+      ]
+      [
+        "/game/view/board_view/rectangle_overlay.lua"
+        :code
+      ]
+      [
+        "/game/view/board_view/board_bg.lua"
+        :code
+      ]
+      [
+        "/main/fake.display_profiles"
+        :cljfx-form-view
+      ]
+      [
+        "/builtins/render/default.display_profiles"
+        :cljfx-form-view
+      ]
+      [
+        "/game/classic/classic_game.lua"
+        :code
+      ]
+      [
+        "/game/view/board_view/board_view.lua"
+        :code
+      ]
+      [
+        "/game/view/board_view/cell_factory.lua"
+        :code
+      ]
+      [
+        "/game/view/board_view/layout.lua"
+        :code
+      ]
+      [
+        "/builtins/render/default.render"
+        :cljfx-form-view
+      ]
+      [
+        "/data/config/game_config.lua"
+        :code
+      ]
+      [
+        "/builtins/render/default.render_script"
+        :code
+      ]
+      [
+        "/objects/selection_bg.go"
+        :scene
       ]
       [
         "/main/main.script"
         :code
       ]
       [
+        "/main/render.render"
+        :cljfx-form-view
+      ]
+      [
         "/game.project"
         :cljfx-form-view
+      ]
+      [
+        "/main/render.render_script"
+        :code
       ]
     ]
   }

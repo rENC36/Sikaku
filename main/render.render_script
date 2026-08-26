@@ -1,0 +1,75 @@
+function init(self)
+	self.tile_pred = render.predicate({"tile"})
+	self.gui_pred = render.predicate({"gui"})
+	self.text_pred = render.predicate({"text"})
+	self.particle_pred = render.predicate({"particle"})
+
+	self.clear_color = vmath.vector4(0.969, 0.973, 1.0, 1.0)
+	self.near = -1
+	self.far = 1
+end
+
+function update(self)
+	-- Физические пиксели (backbuffer)
+	local phys_w = render.get_window_width()
+	local phys_h = render.get_window_height()
+
+	-- Логические пиксели (совпадают с layout.lua и GUI)
+	local log_w, log_h = window.get_size()
+
+	-- Масштаб физ/лог (1 или 2 при HighDPI)
+	local scale = phys_w / log_w
+
+	local target_width = 1920
+	local target_height = 1080
+	local target_ratio = target_width / target_height
+	local window_ratio = log_w / log_h
+
+	local view_width, view_height, offset_x, offset_y
+
+	-- Letterbox в логических координатах
+	if window_ratio > target_ratio then
+		view_height = log_h
+		view_width = view_height * target_ratio
+		offset_x = (log_w - view_width) / 2
+		offset_y = 0
+	else
+		view_width = log_w
+		view_height = view_width / target_ratio
+		offset_x = 0
+		offset_y = (log_h - view_height) / 2
+	end
+
+	-- 1. Очищаем весь физический экран
+	render.set_viewport(0, 0, phys_w, phys_h)
+	render.set_view(vmath.matrix4_look_at(vmath.vector3(0, 0, 1), vmath.vector3(0, 0, 0), vmath.vector3(0, 1, 0)))
+	render.set_projection(vmath.matrix4_orthographic(0, phys_w, 0, phys_h, self.near, self.far))
+	render.clear({[graphics.BUFFER_TYPE_COLOR0_BIT] = self.clear_color})
+
+	-- 2. Blending для прозрачности
+	render.enable_state(graphics.STATE_BLEND)
+	render.set_blend_func(graphics.BLEND_FACTOR_SRC_ALPHA, graphics.BLEND_FACTOR_ONE_MINUS_SRC_ALPHA)
+
+	-- 3. Мир: viewport масштабирован на физ. экран, projection = логические пиксели
+	-- Теперь board_bg, клетки и цифры совпадают с layout.lua — клики работают!
+	render.set_viewport(offset_x * scale, offset_y * scale, view_width * scale, view_height * scale)
+	render.set_view(vmath.matrix4_look_at(vmath.vector3(0, 0, 1), vmath.vector3(0, 0, 0), vmath.vector3(0, 1, 0)))
+	render.set_projection(vmath.matrix4_orthographic(0, log_w, 0, log_h, self.near, self.far))
+
+	render.draw(self.tile_pred)
+	render.draw(self.particle_pred)
+	render.draw_debug3d()
+
+	-- 4. GUI: полный экран, projection в логических пикселях (кнопки и хитбоксы ок)
+	render.set_viewport(0, 0, phys_w, phys_h)
+	render.set_view(vmath.matrix4_look_at(vmath.vector3(0, 0, 1), vmath.vector3(0, 0, 0), vmath.vector3(0, 1, 0)))
+	render.set_projection(vmath.matrix4_orthographic(0, log_w, 0, log_h, self.near, self.far))
+	render.draw(self.gui_pred)
+	render.draw(self.text_pred)
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("clear_color") then
+		self.clear_color = message.color
+	end
+end

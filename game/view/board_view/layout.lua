@@ -5,22 +5,12 @@ function Layout.new(settings)
 	local self = setmetatable({}, Layout)
 
 	self.settings = settings or {}
-
-	self.settings.cell_size =
-	self.settings.cell_size or 64
-
-	self.settings.spacing =
-	self.settings.spacing or 0
-
-	self.settings.start_position =
-	self.settings.start_position
-	or vmath.vector3(0, 0, 0)
-
-	self.base_cell_size =
-	self.settings.base_cell_size or 64
+	self.settings.cell_size = self.settings.cell_size or 64
+	self.settings.spacing = self.settings.spacing or 0
+	self.settings.start_position = self.settings.start_position or vmath.vector3(0, 0, 0)
+	self.base_cell_size = self.settings.base_cell_size or 64
 
 	self:reset()
-
 	return self
 end
 
@@ -41,17 +31,10 @@ function Layout:compute(board_width, board_height)
 	local total_h = board_height * step - spacing
 
 	local ww, wh = window.get_size()
-	local max_w, max_h = ww * 0.85, wh * 0.75
+	self.settings.start_position.x = ww / 2
+	self.settings.start_position.y = wh / 2
 
-	if total_w > max_w or total_h > max_h then
-		local scale = math.min(max_w / total_w, max_h / total_h)
-		cell_size = cell_size * scale
-		spacing   = spacing   * scale
-		step      = cell_size + spacing
-		total_w   = board_width  * step - spacing
-		total_h   = board_height * step - spacing
-	end
-
+	-- ВСЁ. Никакого подгона под окно. Размер клетки всегда фиксированный.
 	self.effective_cell_size = cell_size
 	self.effective_spacing   = spacing
 	self.effective_step      = step
@@ -81,15 +64,10 @@ function Layout:get_preview_bounds(rectangle)
 end
 
 function Layout:get_cell_from_position(px, py, board_width, board_height)
-	if not self.effective_step or not self.effective_cell_size then
-		return nil
-	end
+	if not self.effective_step or not self.effective_cell_size then return nil end
 
-	local start_x   = self.board_start_x
-	local start_y   = self.board_start_y
-	local step      = self.effective_step
-	local spacing   = self.effective_spacing
-	local cell_size = self.effective_cell_size
+	local start_x, start_y = self.board_start_x, self.board_start_y
+	local step, spacing, cell_size = self.effective_step, self.effective_spacing, self.effective_cell_size
 
 	local total_w = board_width  * step - spacing
 	local total_h = board_height * step - spacing
@@ -97,25 +75,19 @@ function Layout:get_cell_from_position(px, py, board_width, board_height)
 	local rel_x = px - start_x
 	local rel_y = start_y - py
 
-	if rel_x < 0 or rel_y < 0 or rel_x >= total_w or rel_y >= total_h then
-		return nil
-	end
+	if rel_x < 0 or rel_y < 0 or rel_x >= total_w or rel_y >= total_h then return nil end
 
 	local x = math.floor(rel_x / step) + 1
 	local y = math.floor(rel_y / step) + 1
 
-	if x < 1 or y < 1 or x > board_width or y > board_height then
-		return nil
-	end
+	if x < 1 or y < 1 or x > board_width or y > board_height then return nil end
 
 	local cell_left   = start_x + (x - 1) * step
 	local cell_right  = cell_left + cell_size
 	local cell_top    = start_y - (y - 1) * step
 	local cell_bottom = cell_top - cell_size
 
-	if px < cell_left or px > cell_right or py < cell_bottom or py > cell_top then
-		return nil
-	end
+	if px < cell_left or px > cell_right or py < cell_bottom or py > cell_top then return nil end
 
 	return x, y
 end

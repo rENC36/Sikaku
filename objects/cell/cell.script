@@ -5,7 +5,6 @@ function init(self)
 	self.selected = false
 end
 
-
 function on_message(self, message_id, message)
 	if message_id == hash("set_data") then
 		self.x = message.x
@@ -13,22 +12,11 @@ function on_message(self, message_id, message)
 		self.number = message.number
 
 		if self.number ~= nil then
-			label.set_text(
-			"#label",
-			tostring(self.number)
-		)
-	else
-		label.set_text(
-		"#label",
-		""
-	)
-end
-
-elseif message_id == hash("set_color") then
-go.set(
-"#sprite",
-"tint",
-message.color
-)
-end
+			label.set_text("#label", tostring(self.number))
+		else
+			label.set_text("#label", "")
+		end
+	elseif message_id == hash("set_color") then
+		go.set("#sprite", "tint", message.color)
+	end
 end
