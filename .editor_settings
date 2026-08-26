@@ -36,7 +36,7 @@
     :open-tabs [
       [
         [
-          "/data/levels/hard.lua"
+          "/data/levels/medium.lua"
           :code
         ]
       ]
@@ -127,7 +127,7 @@
         :code
       ]
       [
-        "/data/levels/easy.lua"
+        "/data/levels/hard.lua"
         :code
       ]
       [
@@ -139,11 +139,11 @@
         :cljfx-form-view
       ]
       [
-        "/data/levels/medium.lua"
+        "/data/levels/easy.lua"
         :code
       ]
       [
-        "/data/levels/hard.lua"
+        "/data/levels/medium.lua"
         :code
       ]
     ]
