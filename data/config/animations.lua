@@ -45,6 +45,14 @@ return {
 		released  = { scale = V3(1, 1, 1),       duration = 0.2,  easing = gui.EASING_OUTBACK, cancel = true },
 	},
 
+	btn_move = {
+		default   = { scale = V3(1, 1, 1) },
+		hover     = { scale = V3(1.06, 1.06, 1), duration = 0.5, easing = gui.EASING_OUTQUAD, cancel = true },
+		hover_off = { scale = V3(1, 1, 1),       duration = 0.5, easing = gui.EASING_OUTQUAD, cancel = true },
+		pressed   = { scale = V3(0.92, 0.92, 1), duration = 0.25, easing = gui.EASING_OUTQUAD, cancel = true },
+		released  = { scale = V3(1, 1, 1),       duration = 0.2,  easing = gui.EASING_OUTBACK, cancel = true },
+	},
+
 	btn_mode = {
 		default   = { scale = V3(1, 1, 1) },
 		hover     = { scale = V3(1.1, 1.1, 1), duration = 0.12, easing = gui.EASING_OUTQUAD, cancel = true },

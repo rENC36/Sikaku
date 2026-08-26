@@ -36,68 +36,24 @@
     :open-tabs [
       [
         [
+          "/objects/cell/cell.go"
+          :scene
+        ]
+        [
+          "/data/config/game_config.lua"
+          :code
+        ]
+        [
           "/main/render.render_script"
+          :code
+        ]
+        [
+          "/game/shikaku/input.lua"
           :code
         ]
       ]
     ]
     :recent-files [
-      [
-        "/game/popup/popup.gui_script"
-        :code
-      ]
-      [
-        "/yagames/ext.manifest"
-        :code
-      ]
-      [
-        "/utils/screen_manager.lua"
-        :code
-      ]
-      [
-        "/yagames/yagames.lua"
-        :code
-      ]
-      [
-        "/yagames/helpers/mock.lua"
-        :code
-      ]
-      [
-        "/data/levels/medium.lua"
-        :code
-      ]
-      [
-        "/data/levels/hard.lua"
-        :code
-      ]
-      [
-        "/data/levels/easy.lua"
-        :code
-      ]
-      [
-        "/ui/mode_select/classic_select.gui"
-        :scene
-      ]
-      [
-        "/ui/gameplay/game.gui_script"
-        :code
-      ]
-      [
-        "/objects/cell/cell.go"
-        :scene
-      ]
-      [
-        "/ui/mode_select/classic_select.gui_script"
-        :code
-      ]
-      [
-        "/objects/cell/cell.script"
-        :code
-      ]
-      [
-        "/ui/mode_select/mode_select.gui_script"
-        :code
-      ]
       [
         "/game/endless/endless_game.lua"
         :code
@@ -135,16 +91,8 @@
         :code
       ]
       [
-        "/game/view/board_view/layout.lua"
-        :code
-      ]
-      [
         "/builtins/render/default.render"
         :cljfx-form-view
-      ]
-      [
-        "/data/config/game_config.lua"
-        :code
       ]
       [
         "/builtins/render/default.render_script"
@@ -155,10 +103,6 @@
         :scene
       ]
       [
-        "/main/main.script"
-        :code
-      ]
-      [
         "/main/render.render"
         :cljfx-form-view
       ]
@@ -167,7 +111,75 @@
         :cljfx-form-view
       ]
       [
+        "/ui/mode_select/mode_select.gui_script"
+        :code
+      ]
+      [
+        "/ui/gameplay/game.gui_script"
+        :code
+      ]
+      [
+        "/ui/mode_select/classic_select.gui"
+        :scene
+      ]
+      [
+        "/data/config/blitz_config.lua"
+        :code
+      ]
+      [
+        "/data/config/popup_config.lua"
+        :code
+      ]
+      [
+        "/data/config/input_config.lua"
+        :code
+      ]
+      [
+        "/data/config/classic_select_config.lua"
+        :code
+      ]
+      [
+        "/data/config/animations.lua"
+        :code
+      ]
+      [
+        "/utils/screen_manager.lua"
+        :code
+      ]
+      [
+        "/utils/animator.lua"
+        :code
+      ]
+      [
+        "/ui/mode_select/classic_select.gui_script"
+        :code
+      ]
+      [
+        "/data/config/board_view_config.lua"
+        :code
+      ]
+      [
+        "/objects/cell/cell.go"
+        :scene
+      ]
+      [
+        "/game/view/board_view/layout.lua"
+        :code
+      ]
+      [
+        "/main/main.script"
+        :code
+      ]
+      [
         "/main/render.render_script"
+        :code
+      ]
+      [
+        "/data/config/game_config.lua"
+        :code
+      ]
+      [
+        "/game/shikaku/input.lua"
         :code
       ]
     ]

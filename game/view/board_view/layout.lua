@@ -33,8 +33,7 @@ function Layout:compute(board_width, board_height)
 	local ww, wh = window.get_size()
 	self.settings.start_position.x = ww / 2
 	self.settings.start_position.y = wh / 2
-
-	-- ВСЁ. Никакого подгона под окно. Размер клетки всегда фиксированный.
+	
 	self.effective_cell_size = cell_size
 	self.effective_spacing   = spacing
 	self.effective_step      = step

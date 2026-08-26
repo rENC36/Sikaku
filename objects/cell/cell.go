@@ -8,8 +8,8 @@ embedded_components {
   data: "default_animation: \"cell_tile\"\n"
   "material: \"/builtins/materials/sprite.material\"\n"
   "size {\n"
-  "  x: 64.0\n"
-  "  y: 64.0\n"
+  "  x: 170.0\n"
+  "  y: 170.0\n"
   "}\n"
   "size_mode: SIZE_MODE_MANUAL\n"
   "textures {\n"
@@ -17,6 +17,10 @@ embedded_components {
   "  texture: \"/assets/atlas/game.atlas\"\n"
   "}\n"
   ""
+  scale {
+    x: 0.4
+    y: 0.4
+  }
 }
 embedded_components {
   id: "label"

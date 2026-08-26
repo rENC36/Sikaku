@@ -26,9 +26,6 @@ function M.animate(node, preset, callback)
 	local easing   = preset.easing   or gui.EASING_OUTQUAD
 	local delay    = preset.delay    or 0
 
-	-- Блок с gui.cancel_animation был удален, так как он не нужен
-	-- и вызывает ошибку. Новые анимации автоматически перекрывают старые.
-
 	local total = 0
 	local done  = 0
 	local function check()
@@ -133,7 +130,10 @@ function M.handle_buttons(buttons, action_id, action)
 			if over then
 				buttons.locked = true
 				M.animate(pressed_btn.node, pressed_btn.anim.released, function()
-					pressed_btn.action()
+					local ok, err = pcall(pressed_btn.action)
+					if not ok then
+						print("[Animator] ERROR in button action:", err)
+					end
 					buttons.locked = false
 				end)
 			else
@@ -147,25 +147,28 @@ function M.handle_buttons(buttons, action_id, action)
 	if pressed_btn then return true end
 
 	for _, btn in ipairs(buttons.items) do
-		local over = gui.pick_node(btn.node, action.x, action.y)
+		-- Проверяем enabled — disabled кнопки игнорируются полностью
+		if gui.is_enabled(btn.node) then
+			local over = gui.pick_node(btn.node, action.x, action.y)
 
-		if action.pressed and over then
-			btn.pressed = true
-			M.animate(btn.node, btn.anim.pressed)
-			if btn.sound then
-				local ok, Audio = pcall(require, "utils.audio_manager")
-				if ok and Audio then Audio.play_sound_id(btn.sound) end
+			if action.pressed and over then
+				btn.pressed = true
+				M.animate(btn.node, btn.anim.pressed)
+				if btn.sound then
+					local ok, Audio = pcall(require, "utils.audio_manager")
+					if ok and Audio then Audio.play_sound_id(btn.sound) end
+				end
+				return true
 			end
-			return true
-		end
 
-		if not action.pressed then
-			if over and not btn.hovered then
-				btn.hovered = true
-				M.animate(btn.node, btn.anim.hover)
-			elseif not over and btn.hovered then
-				btn.hovered = false
-				M.animate(btn.node, btn.anim.hover_off)
+			if not action.pressed then
+				if over and not btn.hovered then
+					btn.hovered = true
+					M.animate(btn.node, btn.anim.hover)
+				elseif not over and btn.hovered then
+					btn.hovered = false
+					M.animate(btn.node, btn.anim.hover_off)
+				end
 			end
 		end
 	end
