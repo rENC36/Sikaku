@@ -7,9 +7,6 @@ function init(self)
 	self.clear_color = vmath.vector4(0.969, 0.973, 1.0, 1.0)
 	self.near = -100
 	self.far = 100
-
-	-- Для трансформации input'а из физических пикселей в 1920×1080
-	_G.RENDER_STATE = { offset_x = 0, offset_y = 0, scale = 1 }
 end
 
 function update(self)
@@ -29,21 +26,16 @@ function update(self)
 		view_w = phys_w
 		view_h = view_w / log_ratio
 	end
-
-	-- Округление до целых — убирает субпиксельное дрожание спрайтов и текста
+	
 	view_w = math.floor(view_w)
 	view_h = math.floor(view_h)
 	offset_x = math.floor((phys_w - view_w) / 2)
 	offset_y = math.floor((phys_h - view_h) / 2)
+	
+	local cam_x = 0
+	local cam_y = 0
 
-	local scale = view_w / log_w
-
-	-- Пишем параметры для input.lua
-	_G.RENDER_STATE.offset_x = offset_x
-	_G.RENDER_STATE.offset_y = offset_y
-	_G.RENDER_STATE.scale = scale
-
-	-- 1. Очищаем весь физический экран
+	-- 1. Очищаем экран
 	render.set_viewport(0, 0, phys_w, phys_h)
 	render.set_view(vmath.matrix4_look_at(vmath.vector3(0,0,1), vmath.vector3(0,0,0), vmath.vector3(0,1,0)))
 	render.set_projection(vmath.matrix4_orthographic(0, phys_w, 0, phys_h, self.near, self.far))
@@ -55,7 +47,7 @@ function update(self)
 
 	-- 3. Мир + GUI в одном projection'е 1920×1080 с целочисленным viewport'ом
 	render.set_viewport(offset_x, offset_y, view_w, view_h)
-	render.set_view(vmath.matrix4_look_at(vmath.vector3(0, 0, 1), vmath.vector3(0, 0, 0), vmath.vector3(0, 1, 0)))
+	render.set_view(vmath.matrix4_look_at(vmath.vector3(cam_x, cam_y, 1), vmath.vector3(cam_x, cam_y, 0), vmath.vector3(0, 1, 0)))
 	render.set_projection(vmath.matrix4_orthographic(0, log_w, 0, log_h, self.near, self.far))
 
 	render.draw(self.tile_pred)

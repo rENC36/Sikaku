@@ -35,22 +35,6 @@
   :workflow {
     :open-tabs [
       [
-        [
-          "/objects/cell/cell.go"
-          :scene
-        ]
-        [
-          "/data/config/game_config.lua"
-          :code
-        ]
-        [
-          "/main/render.render_script"
-          :code
-        ]
-        [
-          "/game/shikaku/input.lua"
-          :code
-        ]
       ]
     ]
     :recent-files [
@@ -159,10 +143,6 @@
         :code
       ]
       [
-        "/objects/cell/cell.go"
-        :scene
-      ]
-      [
         "/game/view/board_view/layout.lua"
         :code
       ]
@@ -171,11 +151,15 @@
         :code
       ]
       [
-        "/main/render.render_script"
+        "/data/config/game_config.lua"
         :code
       ]
       [
-        "/data/config/game_config.lua"
+        "/objects/cell/cell.go"
+        :scene
+      ]
+      [
+        "/main/render.render_script"
         :code
       ]
       [

@@ -21,6 +21,16 @@ local function hsv_to_rgb(h, s, v)
 	return vmath.vector4(r, g, b, 1)
 end
 
+local function transform_input(x, y)
+	local rs = _G.RENDER_STATE
+	if not rs or not rs.scale or rs.scale == 0 then
+		return x, y
+	end
+	local lx = (x - rs.offset_x) / rs.scale
+	local ly = (y - rs.offset_y) / rs.scale
+	return lx, ly
+end
+
 function Input.new(selection, board_view)
 	local self = setmetatable({}, Input)
 	self.selection = selection
@@ -140,6 +150,7 @@ function Input:RepaintPreview(rectangle, info)
 end
 
 function Input:MousePressed(x, y)
+	x, y = transform_input(x, y)
 	local cell = self.board_view:GetCellFromPosition(x, y)
 	if not cell then return false end
 
@@ -162,6 +173,7 @@ end
 function Input:MouseMoved(x, y)
 	if not self.dragging then return false end
 
+	x, y = transform_input(x, y)
 	local cell = self.board_view:GetCellFromPosition(x, y)
 	if not cell then return false end
 
@@ -185,6 +197,8 @@ end
 function Input:MouseReleased(x, y)
 	if not self.dragging then return false end
 	self.dragging = false
+
+	x, y = transform_input(x, y)
 
 	local rectangle = self.selection:GetRectangle()
 	if not rectangle then
@@ -243,6 +257,7 @@ function Input:RightClick(x, y)
 		return true
 	end
 
+	x, y = transform_input(x, y)
 	local cell = self.board_view:GetCellFromPosition(x, y)
 	if not cell then return false end
 
